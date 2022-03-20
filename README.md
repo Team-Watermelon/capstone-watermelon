@@ -5,5 +5,5 @@ GitHub source code for reference:
 https://github.com/amandeepmittal/react-native-examples/tree/main/expo-firebase-auth-example
 
 installations:
-npm install @react-navigation/native @react-navigation/stack
-expo install firebase dotenv expo-constants react-native-gesture-handler react-native-reanimated react-native-screens react-native-safe-area-context @react-native-community/masked-view
+1. npm install @react-navigation/native @react-navigation/stack
+2. expo install firebase dotenv expo-constants react-native-gesture-handler react-native-reanimated react-native-screens react-native-safe-area-context @react-native-community/masked-view
