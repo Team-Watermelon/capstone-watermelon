@@ -22,7 +22,7 @@ export default function HomeScreen() {
     <View style={styles.container}>
       <StatusBar style='dark-content' />
       <View style={styles.row}>
-        <Text style={styles.title}>open.</Text>
+        <Text style={styles.title}>Profile</Text>
         <IconButton
           name='logout'
           size={24}

@@ -11,6 +11,8 @@ const auth = Firebase.auth();
 export default function SignupScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  // const [firstName, setfirstName] = useState('');
+  // const [lastName, setlastName] = useState('');
   const [passwordVisibility, setPasswordVisibility] = useState(true);
   const [rightIcon, setRightIcon] = useState('eye');
   const [signupError, setSignupError] = useState('');
@@ -27,8 +29,8 @@ export default function SignupScreen({ navigation }) {
 
   const onHandleSignup = async () => {
     try {
-      if (email !== '' && password !== '') {
-        await auth.createUserWithEmailAndPassword(email, password);
+      if (firstName !== '' && lastName !== '' && email !== '' && password !== '') {
+        await auth.createUserWithEmailAndPassword(firstName, lastName, email, password);
       }
     } catch (error) {
       setSignupError(error.message);
@@ -39,6 +41,40 @@ export default function SignupScreen({ navigation }) {
     <View style={styles.container}>
       <StatusBar style='dark-content' />
       <Text style={styles.title}>Create new account</Text>
+      {/* <InputField
+        inputStyle={{
+          fontSize: 14,
+        }}
+        containerStyle={{
+          backgroundColor: '#fff',
+          marginBottom: 20,
+        }}
+        //leftIcon='firstName'
+        placeholder='Enter first name'
+        autoCapitalize='none'
+        //keyboardType='name'
+        //textContentType='firstName'
+        autoFocus={true}
+        value={firstName}
+        onChangeText={(text) => setfirstName(text)}
+      />
+      <InputField
+        inputStyle={{
+          fontSize: 14,
+        }}
+        containerStyle={{
+          backgroundColor: '#fff',
+          marginBottom: 20,
+        }}
+        //leftIcon='lastName'
+        placeholder='Enter last name'
+        autoCapitalize='none'
+        //keyboardType='name'
+        //textContentType='lastName'
+        autoFocus={true}
+        value={lastName}
+        onChangeText={(text) => setlastName(text)}
+      /> */}
       <InputField
         inputStyle={{
           fontSize: 14,
