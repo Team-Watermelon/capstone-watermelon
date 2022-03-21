@@ -5,7 +5,7 @@ import { StyleSheet, Text, View, Button as RNButton } from "react-native";
 
 import { Button, InputField, ErrorMessage } from "../components";
 import Firebase from "../config/firebase";
-import { registration } from '../api/addUser'
+import { registration } from '../api/registration'
 
 const auth = Firebase.auth();
 

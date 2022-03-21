@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useContext } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, RNButton } from 'react-native';
 
 import { IconButton } from '../components';
 import Firebase from '../config/firebase';
@@ -30,7 +30,14 @@ export default function HomeScreen() {
         />
       </View>
       <Text style={styles.text}>Your UID is: {user.uid} </Text>
+      {/* <RNButton
+        onPress={() => navigation.navigate('PersonalPage')}
+        //title='Go to Personal Page'
+        color='#fff'
+      /> */}
     </View>
+
+   
   );
 }
 
