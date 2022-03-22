@@ -6,6 +6,7 @@ import { IconButton } from '../components';
 import Firebase from '../config/firebase';
 import { AuthenticatedUserContext } from '../navigation/AuthenticatedUserProvider';
 
+
 const auth = Firebase.auth();
 
 export default function HomeScreen() {
@@ -21,7 +22,7 @@ export default function HomeScreen() {
     <View style={styles.container}>
       <StatusBar style='dark-content' />
       <View style={styles.row}>
-        <Text style={styles.title}>Welcome {user.email}!</Text>
+        <Text style={styles.title}>open.</Text>
         <IconButton
           name='logout'
           size={24}
@@ -30,14 +31,7 @@ export default function HomeScreen() {
         />
       </View>
       <Text style={styles.text}>Your UID is: {user.uid} </Text>
-      {/* <RNButton
-        onPress={() => navigation.navigate('PersonalPage')}
-        //title='Go to Personal Page'
-        color='#fff'
-      /> */}
     </View>
-
-   
   );
 }
 
@@ -65,3 +59,4 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
 });
+
