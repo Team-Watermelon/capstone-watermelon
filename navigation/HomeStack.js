@@ -14,10 +14,6 @@ const Tab = createMaterialBottomTabNavigator();
 
 export default function HomeTabs() {
   return (
-    <Stack.Navigator headerMode='none'>
-      <Stack.Screen name='Home' component={HomeScreen} />
-     
-    </Stack.Navigator>
     <Tab.Navigator
       initialRouteName='Home'
       activeColor='#e91e63'

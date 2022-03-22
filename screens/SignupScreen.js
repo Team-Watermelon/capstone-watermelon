@@ -43,7 +43,9 @@ export default function SignupScreen({ navigation }) {
       );
       // navigation.navigate('Loading');
       // emptyState();
-
+    }
+  }
+  
   return (
     <View style={styles.container}>
       <StatusBar style="dark-content" />
