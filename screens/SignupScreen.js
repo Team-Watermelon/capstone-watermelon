@@ -4,10 +4,10 @@ import { useState } from "react";
 import { StyleSheet, Text, View, Button as RNButton } from "react-native";
 
 import { Button, InputField, ErrorMessage } from "../components";
-import Firebase from "../config/firebase";
+//import Firebase from "../config/firebase";
 import { registration } from '../api/registration'
 
-const auth = Firebase.auth();
+// const auth = Firebase.auth();
 
 export default function SignupScreen({ navigation }) {
   const [email, setEmail] = useState("");
