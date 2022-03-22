@@ -5,6 +5,8 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import HomeScreen from '../screens/HomeScreen';
 import Messages from '../screens/Messages';
+import Profile from '../screens/Profile'
+import Calendar from '../screens/Calendar'
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -14,7 +16,7 @@ export default function HomeTabs() {
     <Tab.Navigator
       initialRouteName='Home'
       activeColor='#e91e63'
-      barStyle={{ backgroundColor: 'tomato' }}
+      barStyle={{ backgroundColor: 'aqua' }}
     >
       <Tab.Screen
         name='Home'
@@ -33,6 +35,26 @@ export default function HomeTabs() {
           tabBarLabel: 'Messages',
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name='message' color={color} size={26} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name='Calendar'
+        component={Calendar}
+        options={{
+          tabBarLabel: 'Calendar',
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name='calendar' color={color} size={26} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name='Profile'
+        component={Profile}
+        options={{
+          tabBarLabel: 'Profile',
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name='account' color={color} size={26} />
           ),
         }}
       />
