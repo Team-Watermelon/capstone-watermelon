@@ -17,7 +17,9 @@ export default {
     },
     assetBundlePatterns: ['**/*'],
     ios: {
-      supportsTablet: true
+      supportsTablet: true,
+      usesIcloudStorage: true,
+      bundleIdentifier: "com.capstone-watermelon"
     },
     android: {
       adaptiveIcon: {

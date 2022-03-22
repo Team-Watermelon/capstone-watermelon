@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useContext } from 'react';
-import { StyleSheet, Text, View, RNButton } from 'react-native';
+import React, { useContext} from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 
 import { IconButton } from '../components';
 import Firebase from '../config/firebase';
@@ -10,6 +10,8 @@ import { AuthenticatedUserContext } from '../navigation/AuthenticatedUserProvide
 const auth = Firebase.auth();
 
 export default function HomeScreen() {
+  
+
   const { user } = useContext(AuthenticatedUserContext);
   const handleSignOut = async () => {
     try {
