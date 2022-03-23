@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 export default function PersonalPage() {
   return (
     <View style={styles.container}>
-      <Text>Messages Page</Text>
+      <Text>List of messages!</Text>
     </View>
   );
 }
