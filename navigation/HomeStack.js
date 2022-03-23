@@ -12,6 +12,22 @@ import AudioRecord from '../screens/AudioRecord'
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
 
+// export function HomeStackScreen() {
+//   return (
+//     <HomeStack.Navigator headerMode='none'>
+//       <HomeStack.Screen name='Home' component={HomeScreen} />
+//       <HomeStack.Screen name='AudioRecord' component={AudioRecord} />
+//     </HomeStack.Navigator>
+//   );
+// }
+function StackScreen(){
+  return ( 
+  <Stack.Navigator>
+    <Stack.Screen name='Profile' component={Profile} />
+    <Stack.Screen name = 'AudioRecord'component={AudioRecord} />
+  </Stack.Navigator>
+  )
+}
 export default function HomeTabs() {
   return (
     <Tab.Navigator
@@ -51,7 +67,7 @@ export default function HomeTabs() {
       />
       <Tab.Screen
         name='Profile'
-        component={Profile}
+        component={StackScreen}
         options={{
           tabBarLabel: 'Profile',
           tabBarIcon: ({ color }) => (
@@ -59,19 +75,12 @@ export default function HomeTabs() {
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name='AudioRecord'
-        component={AudioRecord}
-      />
+        component={StackScreen}
+      /> */}
     </Tab.Navigator>
   );
 }
 
-// export function HomeStack() {
-//   return (
-//     <Stack.Navigator headerMode='none'>
-//       <Stack.Screen name='Home' component={HomeScreen} />
-//       <Stack.Screen name='AudioRecord' component={AudioRecord} />
-//     </Stack.Navigator>
-//   );
-// }
+
