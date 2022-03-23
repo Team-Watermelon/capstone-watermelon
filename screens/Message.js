@@ -1,10 +1,10 @@
 // this page will show individual message
 
-import React from 'react'
-import { GiftedChat } from 'react-native-gifted-chat'
+// import React from 'react'
+// import { GiftedChat } from 'react-native-gifted-chat'
 
-export default function MessageList() {
-  return (
-    <GiftedChat />
-  )
-}
+// export default function MessageList() {
+//   return (
+//     <GiftedChat />
+//   )
+// }
