@@ -1,11 +1,10 @@
-import { StatusBar } from 'expo-status-bar';
-import React, { useContext } from 'react';
-import { StyleSheet, Text, View, RNButton } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import React, { useContext } from "react";
+import { StyleSheet, Text, View, RNButton, Image } from "react-native";
 
-import { IconButton } from '../components';
-import Firebase from '../config/firebase';
-import { AuthenticatedUserContext } from '../navigation/AuthenticatedUserProvider';
-
+import { IconButton } from "../components";
+import Firebase from "../config/firebase";
+import { AuthenticatedUserContext } from "../navigation/AuthenticatedUserProvider";
 
 const auth = Firebase.auth();
 
@@ -20,13 +19,16 @@ export default function HomeScreen() {
   };
   return (
     <View style={styles.container}>
-      <StatusBar style='dark-content' />
-      <View style={styles.row}>
-        <Text style={styles.title}>open.</Text>
+      <StatusBar style="dark-content" />
+      <View>
+        <Image
+          source={require("../assets/logo.png")}
+          style={styles.smallLogo}
+        />
         <IconButton
-          name='logout'
-          size={24}
-          color='#fff'
+          style={styles.button}
+          name="logout"
+          size={100}
           onPress={handleSignOut}
         />
       </View>
@@ -38,25 +40,47 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#e93b81',
-    paddingTop: 50,
-    paddingHorizontal: 12,
-  },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 24,
+    paddingTop: 10,
+    paddingHorizontal: 10,
   },
   title: {
     fontSize: 24,
-    fontWeight: '600',
-    color: '#fff',
+    fontWeight: "600",
+    color: "#AF8EC9",
+    alignSelf: "center",
+    paddingBottom: 24,
   },
-  text: {
-    fontSize: 16,
-    fontWeight: 'normal',
-    color: '#fff',
+  image: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  logo: {
+    position: "absolute",
+    top: 0,
+    width: 300,
+    height: 400,
+    resizeMode: "contain",
+    alignSelf: "center",
+    padding: 0,
+  },
+  smallLogo: {
+    position: "absolute",
+    top: 0,
+    left: 10,
+    width: 100,
+    height: 200,
+    resizeMode: "contain",
+    padding: 0,
+  },
+  button: {
+    position: "absolute",
+    top: 0,
+    left: 10,
+    color: '#000'
+  },
+  text:{
+    top: 20,
+    left: 10,
+    padding:0
   },
 });
-
