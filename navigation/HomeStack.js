@@ -7,8 +7,7 @@ import HomeScreen from '../screens/HomeScreen';
 import Messages from '../screens/Messages';
 import Profile from '../screens/Profile'
 import Calendar from '../screens/Calendar'
-import AudioRecord from '../screens/AudioRecord';
-
+import AudioRecord from '../screens/AudioRecord'
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -60,14 +59,19 @@ export default function HomeTabs() {
           ),
         }}
       />
+      <Tab.Screen
+        name='AudioRecord'
+        component={AudioRecord}
+      />
     </Tab.Navigator>
   );
 }
 
-// export default function HomeStack() {
+// export function HomeStack() {
 //   return (
 //     <Stack.Navigator headerMode='none'>
 //       <Stack.Screen name='Home' component={HomeScreen} />
+//       <Stack.Screen name='AudioRecord' component={AudioRecord} />
 //     </Stack.Navigator>
 //   );
 // }

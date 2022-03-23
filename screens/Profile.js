@@ -5,9 +5,10 @@ import { StyleSheet, Text, View } from "react-native";
 import { Button } from "../components";
 //import * as DocumentPicker from "expo-document-picker";
 import {Alert} from "react-native";
+import ActionButton from 'react-native-action-button';
+import Icon from 'react-native-vector-icons/Ionicons';
 
-
-export default function PersonalPage() {
+export default function PersonalPage({ navigation }) {
   const [post, setPost] = useState("");
   //const [audioFile, setAudioFile] = useState(null);
 
@@ -62,6 +63,15 @@ export default function PersonalPage() {
           }
         }}
       />
+       <ActionButton buttonColor="blue" >
+          <ActionButton.Item buttonColor='#9b59b6' title="Add Audio" onPress={() => navigation.navigate('AudioRecord')}>
+            <Icon name="md-create" style={styles.actionButtonIcon} />
+          </ActionButton.Item>
+          {/* <ActionButton.Item buttonColor='#3498db' title="Add Video" onPress={() => navigation.navigate('AudioRecord')}>
+            <Icon name="md-notifications-off" style={styles.actionButtonIcon} />
+          </ActionButton.Item> */}
+       </ActionButton>
+
     </View>
   );
 }
@@ -72,5 +82,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#e93b81",
     paddingTop: 50,
     paddingHorizontal: 12,
+  },
+  actionButtonIcon: {
+    fontSize: 20,
+    height: 22,
+    color: 'white',
   },
 });
