@@ -4,7 +4,7 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import HomeScreen from '../screens/HomeScreen';
-import Messages from '../screens/Messages';
+import MessageList from '../screens/MessageList';
 import Profile from '../screens/Profile'
 import Calendar from '../screens/Calendar'
 
@@ -31,7 +31,7 @@ export default function HomeTabs() {
       />
       <Tab.Screen
         name='Messages'
-        component={Messages}
+        component={MessageList}
         options={{
           tabBarLabel: 'Messages',
           tabBarIcon: ({ color }) => (
