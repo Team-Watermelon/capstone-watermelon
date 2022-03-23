@@ -7,6 +7,7 @@ import HomeScreen from '../screens/HomeScreen';
 import Messages from '../screens/Messages';
 import Profile from '../screens/Profile'
 import Calendar from '../screens/Calendar'
+import AudioRecord from '../screens/AudioRecord';
 
 
 const Stack = createStackNavigator();

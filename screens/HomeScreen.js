@@ -6,7 +6,6 @@ import { IconButton } from '../components';
 import Firebase from '../config/firebase';
 import { AuthenticatedUserContext } from '../navigation/AuthenticatedUserProvider';
 
-
 const auth = Firebase.auth();
 
 export default function HomeScreen() {
@@ -33,6 +32,7 @@ export default function HomeScreen() {
         />
       </View>
       <Text style={styles.text}>Your UID is: {user.uid} </Text>
+     
     </View>
   );
 }

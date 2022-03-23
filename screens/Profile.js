@@ -3,8 +3,9 @@ import { useState } from "react";
 import { InputField } from "../components";
 import { StyleSheet, Text, View } from "react-native";
 import { Button } from "../components";
-import * as DocumentPicker from "expo-document-picker";
+//import * as DocumentPicker from "expo-document-picker";
 import {Alert} from "react-native";
+
 
 export default function PersonalPage() {
   const [post, setPost] = useState("");
