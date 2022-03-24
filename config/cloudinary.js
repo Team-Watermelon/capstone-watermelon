@@ -1,4 +1,4 @@
-import cloudinary from 'cloudinary';
+const cloudinary = require('cloudinary');
 
 cloudinary.config({ 
     cloud_name: 'capstonewatermelon', 
