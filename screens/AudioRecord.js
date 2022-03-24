@@ -44,7 +44,7 @@ export default function AudioRecord() {
       shouldCorrectPitch: true,
     });
     // recording.sound = sound;
-    // recording.duration = getDurationFormatted(status.durationMillis);
+     sound.duration = getDurationFormatted(status.durationMillis);
     setSound(sound)
     //setRecording(recording);
     console.log("recording when stop", recording);
@@ -180,7 +180,7 @@ export default function AudioRecord() {
         title={recording ? "Stop Recording" : "Start Recording"}
         onPress={recording ? stopRecording : startRecording}
       />
-      {/* <Text style={styles.fill}>Recording {recording.duration}</Text> */}
+      <Text style={styles.fill}>Recording 1 - {sound.duration}</Text>
       <Button
         style={styles.button}
         onPress={() => sound.replayAsync()}
