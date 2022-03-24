@@ -9,6 +9,9 @@ import {
   SafeAreaView,
 } from 'react-native';
 
+import firebase from "firebase/app";
+import "firebase/firestore";
+
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {AuthenticatedUserContext} from '../navigation/AuthenticatedUserProvider';
@@ -19,23 +22,23 @@ const PersonalPage = ({navigation, route}) => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // const getUser = async() => {
-  //     await firestore()
-  //   .collection('users')
-  //   .doc( route.params ? route.params.userId : user.uid)
-  //   .get()
-  //   .then((documentSnapshot) => {
-  //     if( documentSnapshot.exists ) {
-  //       console.log('User Data', documentSnapshot.data());
-  //       setUserData(documentSnapshot.data());
-  //     }
-  //   })
-  // }
+  const getUser = async() => {
+      await firebase.firestore()
+    .collection('users')
+    .doc( route.params ? route.params.userId : user.uid)
+    .get()
+    .then((documentSnapshot) => {
+      if( documentSnapshot.exists ) {
+        console.log('User Data', documentSnapshot.data());
+        setUserData(documentSnapshot.data());
+      }
+    })
+  }
 
-  // useEffect(() => {
-  //   getUser();
-  //   navigation.addListener("focus", () => setLoading(!loading));
-  // }, [navigation, loading]);
+  useEffect(() => {
+    getUser();
+    navigation.addListener("focus", () => setLoading(!loading));
+  }, [navigation, loading]);
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
@@ -48,15 +51,15 @@ const PersonalPage = ({navigation, route}) => {
           source={{
             uri: 'https://i.pinimg.com/custom_covers/222x/85498161615209203_1636332751.jpg'}}
         />
-        <Text style={styles.userName}>Jane Doe</Text>
+        <Text style={styles.userName}>{userData ? userData.firstName || 'Test' : 'Test'}</Text>
         
-        <Text style={styles.userLocation}>San Francisco, California</Text>
+        <Text style={styles.userLocation}>{userData ? userData.city || 'City' : 'City'}</Text>
         {/* <Icon name="map-marker-radius" color="#777777" size={15}/> */}
         <View style={styles.userBtnWrapper}>
           {route.params ? (
             <>
             <TouchableOpacity style={styles.userBtn} onPress={() => {}}>
-                <Text style={styles.userBtnTxt}>Jane's Story</Text>
+                <Text style={styles.userBtnTxt}>{userData ? userData.firstName || 'Test' : 'Test'}'s Story</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.userBtn} onPress={() => {}}>
                 <Text style={styles.userBtnTxt}>Message</Text>
