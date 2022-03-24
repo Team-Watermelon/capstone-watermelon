@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,10 @@ import {
   ImageBackground,
   TextInput,
   StyleSheet,
+  Alert,
+  Button,
+  Image,
+  Platform,
 } from 'react-native';
 
 import {useTheme} from 'react-native-paper';
@@ -17,86 +21,75 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import BottomSheet from 'reanimated-bottom-sheet';
 import Animated from 'react-native-reanimated';
 
+import firebase from "firebase/app";
+import "firebase/firestore";
+// import storage from '@react-native-firebase/storage';
+
+import {AuthenticatedUserContext} from '../navigation/AuthenticatedUserProvider';
+
 // import ImagePicker from 'react-native-image-crop-picker';
 
 const EditProfileScreen = () => {
 
 //   const [image, setImage] = useState('https://api.adorable.io/avatars/80/abott@adorable.png');
   const {colors} = useTheme();
+  const {user, logout} = useContext(AuthenticatedUserContext);
+  const [image, setImage] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [transferred, setTransferred] = useState(0);
+  const [userData, setUserData] = useState(null);
 
-//   const takePhotoFromCamera = () => {
-//     ImagePicker.openCamera({
-//       compressImageMaxWidth: 300,
-//       compressImageMaxHeight: 300,
-//       cropping: true,
-//       compressImageQuality: 0.7
-//     }).then(image => {
-//       console.log(image);
-//       setImage(image.path);
-//       this.bs.current.snapTo(1);
-//     });
-//   }
+  const getUser = async() => {
+    const currentUser = await firebase.firestore()
+    .collection('users')
+    .doc(user.uid)
+    .get()
+    .then((documentSnapshot) => {
+      if( documentSnapshot.exists ) {
+        console.log('User Data', documentSnapshot.data());
+        setUserData(documentSnapshot.data());
+      }
+    })
+  }
 
-//   const choosePhotoFromLibrary = () => {
-//     ImagePicker.openPicker({
-//       width: 300,
-//       height: 300,
-//       cropping: true,
-//       compressImageQuality: 0.7
-//     }).then(image => {
-//       console.log(image);
-//       setImage(image.path);
-//       this.bs.current.snapTo(1);
-//     });
-//   }
 
-//   renderInner = () => (
-//     <View style={styles.panel}>
-//       <View style={{alignItems: 'center'}}>
-//         <Text style={styles.panelTitle}>Upload Photo</Text>
-//         <Text style={styles.panelSubtitle}>Choose Your Profile Picture</Text>
-//       </View>
-//       <TouchableOpacity style={styles.panelButton} onPress={takePhotoFromCamera}>
-//         <Text style={styles.panelButtonTitle}>Take Photo</Text>
-//       </TouchableOpacity>
-//       <TouchableOpacity style={styles.panelButton} onPress={choosePhotoFromLibrary}>
-//         <Text style={styles.panelButtonTitle}>Choose From Library</Text>
-//       </TouchableOpacity>
-//       <TouchableOpacity
-//         style={styles.panelButton}
-//         onPress={() => this.bs.current.snapTo(1)}>
-//         <Text style={styles.panelButtonTitle}>Cancel</Text>
-//       </TouchableOpacity>
-//     </View>
-//   );
 
-//   renderHeader = () => (
-//     <View style={styles.header}>
-//       <View style={styles.panelHeader}>
-//         <View style={styles.panelHandle} />
-//       </View>
-//     </View>
-//   );
+  const handleUpdate = async() => {
+    // let imgUrl = await uploadImage();
 
-    bs = React.createRef();
-    fall = new Animated.Value(1);
+    // if( imgUrl == null && userData.userImg ) {
+    //   imgUrl = userData.userImg;
+    // }
+    firebase.firestore()
+    .collection('users')
+    .doc(user.uid)
+    .update({
+      firstName: userData.firstName,
+      // lname: userData.lname,
+      aboutMe: userData.aboutMe,
+      // phone: userData.phone,
+      // country: userData.country,
+      city: userData.city,
+      // userImg: imgUrl,
+    })
+    .then(() => {
+      console.log('User Updated!');
+      Alert.alert(
+        'Profile Updated!',
+        'Your profile has been updated successfully.'
+      );
+    })
+  }
+
+
+  useEffect(() => {
+    getUser();
+  }, []);
 
   return (
     <View style={styles.container}>
-      {/* <BottomSheet
-        // ref={this.bs}
-        snapPoints={[330, 0]}
-        // renderContent={this.renderInner}
-        // renderHeader={this.renderHeader}
-        initialSnap={1}
-        // callbackNode={this.fall}
-        enabledGestureInteraction={true}
-      /> */}
-      {/* <Animated.View style={{margin: 20,
-        opacity: Animated.add(0.1, Animated.multiply(this.fall, 1.0)),
-    }}> */}
         <View style={{alignItems: 'center'}}>
-        <TouchableOpacity onPress={() => {this.bs.current.snapTo(0)}}>
+        <TouchableOpacity onPress={() => {}}>
             <View
               style={{
                 height: 100,
@@ -107,7 +100,16 @@ const EditProfileScreen = () => {
               }}>
               <ImageBackground
                 source={{
-                    uri: 'https://i.pinimg.com/custom_covers/222x/85498161615209203_1636332751.jpg',
+                //   uri: image
+                //     ? image
+                //     : userData
+                //     ? userData.userImg ||
+                //       'https://i.pinimg.com/custom_covers/222x/85498161615209203_1636332751.jpg'
+                //     : 'https://i.pinimg.com/custom_covers/222x/85498161615209203_1636332751.jpg',
+                // }}
+                    
+                  
+                  uri: 'https://i.pinimg.com/custom_covers/222x/85498161615209203_1636332751.jpg',
                 }}
                 style={{height: 100, width: 100}}
                 imageStyle={{borderRadius: 15}}>
@@ -135,7 +137,7 @@ const EditProfileScreen = () => {
             </View>
           </TouchableOpacity>
           <Text style={{marginTop: 10, fontSize: 18, fontWeight: 'bold'}}>
-            Jane Doe
+          {userData ? userData.firstName : ''}
           </Text>
         </View>
         
@@ -143,9 +145,11 @@ const EditProfileScreen = () => {
         <View style={styles.action}>
           <FontAwesome name="user-o" color={colors.text} size={20} />
           <TextInput
-            placeholder="Full Name"
+            // placeholder="Full Name"
             placeholderTextColor="#666666"
             autoCorrect={false}
+            value={userData ? userData.firstName : ''}
+            onChangeText={(txt) => setUserData({...userData, firstName: txt})}
             style={[
               styles.textInput,
               {
@@ -154,7 +158,7 @@ const EditProfileScreen = () => {
             ]}
           />
         </View>
-        <View style={styles.action}>
+        {/* <View style={styles.action}>
           <FontAwesome name="envelope-o" color={colors.text} size={20} />
           <TextInput
             placeholder="Email"
@@ -168,13 +172,15 @@ const EditProfileScreen = () => {
               },
             ]}
           />
-        </View>
+        </View> */}
         <View style={styles.action}>
           <Icon name="map-marker-outline" color={colors.text} size={20} />
           <TextInput
             placeholder="City"
             placeholderTextColor="#666666"
             autoCorrect={false}
+            value={userData ? userData.city : ''}
+            onChangeText={(txt) => setUserData({...userData, city: txt})}
             style={[
               styles.textInput,
               {
@@ -189,6 +195,8 @@ const EditProfileScreen = () => {
             placeholder="About Me"
             placeholderTextColor="#666666"
             autoCorrect={false}
+            value={userData ? userData.aboutMe : ''}
+            onChangeText={(txt) => setUserData({...userData, aboutMe: txt})}
             style={[
               styles.textInput,
               {
@@ -198,7 +206,7 @@ const EditProfileScreen = () => {
           />
         </View>
         
-        <TouchableOpacity style={styles.commandButton} onPress={() => {}}>
+        <TouchableOpacity style={styles.commandButton} onPress={handleUpdate}>
           <Text style={styles.panelButtonTitle}>Submit</Text>
         </TouchableOpacity>
       {/* </Animated.View> */}

@@ -12,6 +12,8 @@ export async function registration(email, password) {
         .doc(currentUser.uid)
         .set({
           email: currentUser.email,
+          firstName: '',
+          userImg: null
         //   lastName: lastName,
         //   firstName: firstName,
         });
