@@ -207,7 +207,7 @@ const EditProfileScreen = () => {
         </View>
         
         <TouchableOpacity style={styles.commandButton} onPress={handleUpdate}>
-          <Text style={styles.panelButtonTitle}>Submit</Text>
+          <Text style={styles.panelButtonTitle}>Update</Text>
         </TouchableOpacity>
       {/* </Animated.View> */}
     </View>
@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
   commandButton: {
     padding: 15,
     borderRadius: 10,
-    backgroundColor: '#e93b81',
+    backgroundColor: '#AF8EC9',
     alignItems: 'center',
     marginTop: 10,
   },
