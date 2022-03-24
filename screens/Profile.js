@@ -83,6 +83,9 @@ const PersonalPage = ({navigation, route}) => {
             </>
           )}
         </View>
+        <View>
+        <Text style={styles.aboutMe}>{userData ? userData.aboutMe || 'About Me' : 'About Me'}</Text>
+        </View>
         <View style={styles.userInfoItem}>
             <Text style={styles.userInfoTitle}>10</Text>
             <Text style={styles.userInfoSubTitle}>Posts</Text>
@@ -102,7 +105,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#e93b81',
-    paddingTop: 50,
+    paddingTop: 140,
     paddingHorizontal: 12,
   },
   userImg: {
@@ -113,6 +116,11 @@ const styles = StyleSheet.create({
   userName: {
     fontSize: 18,
     fontWeight: 'bold',
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  aboutMe: {
+    fontSize: 14,
     marginTop: 10,
     marginBottom: 10,
   },
