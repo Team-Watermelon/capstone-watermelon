@@ -104,7 +104,7 @@ export default PersonalPage;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#e93b81',
+    backgroundColor: '#fff',
     paddingTop: 140,
     paddingHorizontal: 12,
   },
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   userBtn: {
-    borderColor: '#2e64e5',
+    borderColor: '#AF8EC9',
     borderWidth: 2,
     borderRadius: 3,
     paddingVertical: 8,
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   userBtnTxt: {
-    color: '#2e64e5',
+    color: '#AF8EC9',
   },
   userInfoItem: {
     justifyContent: 'center',

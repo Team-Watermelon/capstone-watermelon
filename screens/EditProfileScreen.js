@@ -145,7 +145,7 @@ const EditProfileScreen = () => {
         <View style={styles.action}>
           <FontAwesome name="user-o" color={colors.text} size={20} />
           <TextInput
-            // placeholder="Full Name"
+            placeholder="Full Name"
             placeholderTextColor="#666666"
             autoCorrect={false}
             value={userData ? userData.firstName : ''}
@@ -220,6 +220,8 @@ export default EditProfileScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#fff',
+    padding: 70,
   },
   commandButton: {
     padding: 15,
