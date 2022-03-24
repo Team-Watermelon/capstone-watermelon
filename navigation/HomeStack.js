@@ -7,6 +7,7 @@ import HomeScreen from '../screens/HomeScreen';
 import Messages from '../screens/Messages';
 import Profile from '../screens/Profile'
 import Calendar from '../screens/Calendar'
+import { LinearGradient } from 'expo-linear-gradient';
 
 
 const Stack = createStackNavigator();
@@ -14,11 +15,17 @@ const Tab = createMaterialBottomTabNavigator();
 
 export default function HomeTabs() {
   return (
+    <LinearGradient 
+    start={{x: 0.0, y: 0.25}} end={{x: 1, y: 1.0}}
+colors={['#E8A196', '#E8A196', '#AF8EC9']}
+style={{ flex: 1 }}
+>
     <Tab.Navigator
       initialRouteName='Home'
-      activeColor='#AF8EC9'
-      barStyle={{ backgroundColor: 'white' }}
+      activeColor='#fff'
+      barStyle={{ backgroundColor: 'transparent' }}
     >
+      
       <Tab.Screen
         name='Home'
         component={HomeScreen}
@@ -60,6 +67,7 @@ export default function HomeTabs() {
         }}
       />
     </Tab.Navigator>
+    </LinearGradient>
   );
 }
 
