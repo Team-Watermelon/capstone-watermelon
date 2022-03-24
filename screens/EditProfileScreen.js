@@ -78,8 +78,8 @@ const EditProfileScreen = () => {
 //     </View>
 //   );
 
-    // bs = React.createRef();
-    // fall = new Animated.Value(1);
+    bs = React.createRef();
+    fall = new Animated.Value(1);
 
   return (
     <View style={styles.container}>
@@ -91,8 +91,8 @@ const EditProfileScreen = () => {
         initialSnap={1}
         // callbackNode={this.fall}
         enabledGestureInteraction={true}
-      />
-      <Animated.View style={{margin: 20,
+      /> */}
+      {/* <Animated.View style={{margin: 20,
         opacity: Animated.add(0.1, Animated.multiply(this.fall, 1.0)),
     }}> */}
         <View style={{alignItems: 'center'}}>
@@ -184,7 +184,7 @@ const EditProfileScreen = () => {
           />
         </View>
         <View style={styles.action}>
-          <Icon name="info" color={colors.text} size={20} />
+          <Icon name="information-variant" color={colors.text} size={20} />
           <TextInput
             placeholder="About Me"
             placeholderTextColor="#666666"
