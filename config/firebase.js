@@ -1,8 +1,9 @@
-import firebase from 'firebase/app';
-import 'firebase/auth';
+import { initializeApp } from 'firebase/app';
 import Constants from 'expo-constants';
+import * as firebase from 'firebase';
+import 'firebase/firestore';
 
-// Initialize Firebase
+// Firebase config
 const firebaseConfig = {
   apiKey: Constants.manifest.extra.apiKey,
   authDomain: Constants.manifest.extra.authDomain,
@@ -13,9 +14,11 @@ const firebaseConfig = {
 };
 
 let Firebase;
-
 if (firebase.apps.length === 0) {
   Firebase = firebase.initializeApp(firebaseConfig);
 }
+
+export const db = firebase.firestore();
+export const chatsRef = db.collection('chats')
 
 export default Firebase;

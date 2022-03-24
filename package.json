@@ -8,7 +8,10 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.13.0",
     "@react-native-community/masked-view": "0.1.10",
+    "@react-native-firebase/app": "^14.6.0",
+    "@react-native-firebase/auth": "^14.6.0",
     "@react-native-masked-view/masked-view": "^0.2.6",
     "@react-navigation/material-bottom-tabs": "^6.1.1",
     "@react-navigation/native": "^5.9.8",
@@ -22,6 +25,7 @@
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-41.0.0.tar.gz",
     "react-native-gesture-handler": "~1.10.2",
+    "react-native-gifted-chat": "^0.16.3",
     "react-native-navigation-bar": "^0.2.1",
     "react-native-paper": "^4.11.2",
     "react-native-reanimated": "~2.1.0",
