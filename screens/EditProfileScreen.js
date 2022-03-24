@@ -220,8 +220,8 @@ export default EditProfileScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    padding: 70,
+    padding: 50,
+    backgroundColor: '#fff'
   },
   commandButton: {
     padding: 15,
