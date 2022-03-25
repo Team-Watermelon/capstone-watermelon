@@ -1,22 +1,35 @@
 // add logic to click on list of messages
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { GiftedChat } from 'react-native-gifted-chat';
+//what is this exactly? Has to do with how we are retrieving users from firestore
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StyleSheet, TextInput, View, Button } from 'react-native';
+//this is our chats collection in firestore
 import { chatsRef } from '../config/firebase';
+//this allows us to access auth data from firebase, which gives us the user id BUT not the user obj
+import { AuthenticatedUserContext } from '../navigation/AuthenticatedUserProvider';
+import firebase from 'firebase/app';
 
 export default function MessageList() {
-  const [user, setUser] = useState(null);
+  //this is wrong--this was to get auth user data. we need to use an async function to retrieve user obj using this uid
+  //the auth context user should probably be moved to setUser hook definition
+  const { user } = useContext(AuthenticatedUserContext);
+  console.log('this is user', user);
+  //uid is the right one--we just need to use it to request the right obj
+  console.log('this is userID', user.uid);
+  const [foundUser, setUser] = useState(null);
+  console.log('this is foundUser', foundUser);
+  //this will change to retrieving user name from user obj
   const [name, setName] = useState('');
+
   const [messages, setMessages] = useState([]);
 
-
-  // chat has an ID
-
   useEffect(() => {
+    //find the user
     readUser();
     const unsubscribe = chatsRef.onSnapshot((querySnapshot) => {
+      //this is how the message list is rendered
       const messagesFirestore = querySnapshot
         .docChanges()
         .filter(({ type }) => type === 'added')
@@ -28,6 +41,7 @@ export default function MessageList() {
           };
         })
         .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+      //this is where a new message is added using messages hook
       appendMessages(messagesFirestore);
     });
     return () => unsubscribe();
@@ -35,6 +49,7 @@ export default function MessageList() {
 
   const appendMessages = useCallback(
     (messages) => {
+      //where does previousMessages come from?
       setMessages((previousMessages) =>
         GiftedChat.append(previousMessages, messages)
       );
@@ -42,41 +57,63 @@ export default function MessageList() {
     [messages]
   );
 
-  async function readUser() {
-    const user = await AsyncStorage.getItem('user');
-    if (user) {
-      setUser(JSON.parse(user));
-    }
-  }
+  //right now we have the auth context setting user globally, but we really want to use it here to set locally and then
+  //we want to set the real user obj in setUser
+  // async function readUser() {
+  //   const user = await AsyncStorage.getItem('user');
+  //   if (user) {
+  //     setUser(JSON.parse(user));
+  //   }
+  // }
 
-  async function handlePress() {
-    // this could be id from user collection we get from firebase?
-    const _id = Math.random().toString(36).substring(7);
-    const user = { _id, name };
-    await AsyncStorage.setItem('user', JSON.stringify(user));
-    setUser(user);
-  }
+  //code from user profile
+  const readUser = async () => {
+    await firebase
+      .firestore()
+      .collection('users')
+      .doc(user.uid)
+      .get()
+      .then((documentSnapshot) => {
+        if (documentSnapshot.exists) {
+          console.log('User Data', documentSnapshot.data());
+          setUser(documentSnapshot.data());
+        }
+      });
+  };
+
+  // async function handlePress() {
+  //   // this could be id we get from firebase?
+  //   const _id = user.uid;
+  //   console.log("this is uid", _id);
+  //   const user = { _id, name };
+  //   //the below sets the uer that is now appaering in messages
+  //   await AsyncStorage.setItem("user", JSON.stringify(user));
+  //   setUser(user);
+  // }
 
   async function handleSend(messages) {
     const writes = messages.map((m) => chatsRef.add(m));
     await Promise.all(writes);
   }
 
-  if (!user) {
-    return (
-      <View style={styles.container}>
-        <TextInput
-          style={styles.input}
-          placeholder='Enter your name'
-          value={name}
-          onChangeText={setName}
-        />
-        <Button onPress={handlePress} title='💬 Enter chat room' />
-      </View>
-    );
-  }
+  // if (!user) {
+  //   return (
+  //     <View style={styles.container}>
+  //       <TextInput
+  //         style={styles.input}
+  //         placeholder="Enter your name"
+  //         value={name}
+  //         //this is proabably irrelevant, bc we will pull name from user obj
+  //         onChangeText={setName}
+  //       />
+  //       <Button onPress={handlePress} title="💬 Enter chat room" />
+  //     </View>
+  //   );
+  // }
 
-  return <GiftedChat messages={messages} user={user} onSend={handleSend} />;
+  return (
+    <GiftedChat messages={messages} user={foundUser} onSend={handleSend} />
+  );
 }
 
 const styles = StyleSheet.create({
