@@ -25,8 +25,8 @@ export default function AudioRecord() {
         );
         setRecorded({});
         setRecording(recording);
-        console.log("recording when start", recording);
-        console.log("recorded when start", recorded);
+        console.log("recording in startRecording", recording);
+        console.log("recorded in startRecording", recorded);
       } else {
         setMessage("Please grant permission to app to access microphone");
       }
@@ -36,7 +36,7 @@ export default function AudioRecord() {
   }
 
   async function stopRecording() {
-    console.log("Stopping recording..", recording);
+    console.log("Stopping recording..recording", recording);
     setRecording({});
     await recording.stopAndUnloadAsync();
     const { sound: sound } = await recording.createNewLoadedSoundAsync({
@@ -47,22 +47,25 @@ export default function AudioRecord() {
     });
     setSound(sound);
     setRecorded(recording);
-    console.log("After stoping recording,recording..", recording);
-    console.log("After stoping recording,recorded..", recorded);
+    console.log("recording in stop Recording..", recording);
+    console.log("recorded in stop Recording..", recorded);
   }
 
   const handleUpload = () => {
-    console.log("this is inside handleupload", recorded);
+    console.log("recording inside handleupload", recording);
+    console.log("recorded inside handleupload", recorded);
+  
     const cloudUri = btoa(recorded.getURI());
     //This line will let cloudinary know what MIME type is being sent
     let base64Aud = `data:audio/mpeg;base64,${cloudUri}`;
-    console.log('uri for recording',recorded.getURI())
+    console.log('recorded uri',recorded.getURI())
+    console.log('cloudUri', cloudUri)
     console.log('base64Aud',base64Aud)
     const formData = new FormData();
     formData.append("file", `${base64Aud}`);
     formData.append("upload_preset", "openArms");
     formData.append("cloud_name", "capstonewatermelon");
-    formData.append("resource_type", "video");
+    formData.append("resource_type", "audio");
     //formData.append("f_auto","MP4")
     fetch("https://api.cloudinary.com/v1_1/capstonewatermelon/auto/upload", {
       method: "post",
@@ -73,9 +76,8 @@ export default function AudioRecord() {
         console.log("Cloudinary Info in handleUpload:", recordedObj);
         const recordingURL = recordedObj.url;
         saveAudio(recordingURL);
-        console.log("saveAudio", saveAudio);
         console.log("recordingURL inside handleUpload", recordingURL);
-        console.log("audio saved? in handleUpdate");
+        console.log("audio saved in handleUpdate");
       })
       .catch((err) => {
         Alert.alert("An Error Occured While Uploading");

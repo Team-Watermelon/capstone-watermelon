@@ -7,59 +7,59 @@ import { Audio } from "expo-av";
 import firebase from "firebase/app";
 import "firebase/firestore";
 
-
-const sound = new Audio.Sound()
+const sound = new Audio.Sound();
 
 export default function AudioPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [soundPlaying, setSoundPlaying] = useState(false);
   const [playbackObject, setPlaybackObject] = useState(null);
   const [playbackStatus, setPlaybackStatus] = useState(null);
-  const [audioURL, setAudioURL] = useState(0)
+  const [audioURL, setAudioURL] = useState(0);
 
-  const getAudio = async() => {
+  const getAudio = async () => {
     const currentUser = firebase.auth().currentUser;
-    firebase.firestore()
-    .collection('users')
-    .doc(currentUser.uid)
-    .get()
-    .then((documentSnapshot) => {
-      if( documentSnapshot.exists ) {
-        console.log('Audio Data', documentSnapshot.data().audio);
-        const url = documentSnapshot.data().audio
-        console.log('url',url)
-        setAudioURL(url)
-        console.log('url in getAudio',audioURL)
-      }
-    })
-  }
+    firebase
+      .firestore()
+      .collection("users")
+      .doc(currentUser.uid)
+      .get()
+      .then((documentSnapshot) => {
+        if (documentSnapshot.exists) {
+          console.log("Audio Data", documentSnapshot.data().audio);
+          const url = documentSnapshot.data().audio;
+          console.log("url", url);
+          setAudioURL(url);
+          console.log("url in getAudio", audioURL);
+        }
+      });
+  };
 
-//   console.log("audioURL", audioURL);
+  //   console.log("audioURL", audioURL);
 
-//   useEffect(() => {
-//     if (playbackObject === null) {
-//       setPlaybackObject(sound);
-//     }
-//   }, []);
+  //   useEffect(() => {
+  //     if (playbackObject === null) {
+  //       setPlaybackObject(sound);
+  //     }
+  //   }, []);
 
   const handleAudioPlayPause = async () => {
     getAudio();
-    const urr= audioURL+'.m4a'
-    console.log('url in handleAudioPlay',urr)
-      try {
-          if (isPlaying){
-              await sound.pauseAsync();
-              setIsPlaying(false)
-          } else {
-              await sound.loadAsync(
-                { url: audioURL}
-              );
-              await sound.playAsync();
-              setIsPlaying (true);
-          }
-      } catch (error) {
-          console.log(error)
+    const url = atob(audioURL)
+    console.log("url in handleAudioPlay", url);
+    try {
+      if (isPlaying) {
+        await sound.pauseAsync();
+        setIsPlaying(false);
+      } else {
+        await sound.loadAsync({
+          url: audioURL
+        });
+        await sound.playAsync();
+        setIsPlaying(true);
       }
+    } catch (error) {
+      console.log(error);
+    }
     // if (playbackObject !== null && playbackStatus === null) {
     //   const status = await playbackObject.loadAsync(
     //     { url: audioURL },
