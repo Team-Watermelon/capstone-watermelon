@@ -1,13 +1,17 @@
 // add logic to click on list of messages
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { GiftedChat } from 'react-native-gifted-chat';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StyleSheet, TextInput, View, Button } from 'react-native';
 import { chatsRef } from '../config/firebase';
+import { AuthenticatedUserContext } from '../navigation/AuthenticatedUserProvider';
 
 export default function MessageList() {
-  const [user, setUser] = useState(null);
+  const { user } = useContext(AuthenticatedUserContext);
+  console.log('this is user', user)
+  console.log('this is userID', user.uid)
+  // const [user, setUser] = useState(null);
   const [name, setName] = useState('');
   const [messages, setMessages] = useState([]);
 
@@ -48,8 +52,10 @@ export default function MessageList() {
 
   async function handlePress() {
     // this could be id we get from firebase?
-    const _id = Math.random().toString(36).substring(7);
+    const _id = user.uid
+    console.log('this is uid', _id)
     const user = { _id, name };
+    //the below sets the uer that is now appaering in messages
     await AsyncStorage.setItem('user', JSON.stringify(user));
     setUser(user);
   }
