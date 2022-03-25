@@ -33,7 +33,7 @@ const EditProfileScreen = () => {
 
 //   const [image, setImage] = useState('https://api.adorable.io/avatars/80/abott@adorable.png');
   const {colors} = useTheme();
-  const {user, logout} = useContext(AuthenticatedUserContext);
+  const {user} = useContext(AuthenticatedUserContext);
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [transferred, setTransferred] = useState(0);

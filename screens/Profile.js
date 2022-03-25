@@ -17,7 +17,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {AuthenticatedUserContext} from '../navigation/AuthenticatedUserProvider';
 
 const PersonalPage = ({navigation, route}) => {
-  const {user, logout} = useContext(AuthenticatedUserContext);
+  const {user} = useContext(AuthenticatedUserContext);
   
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -73,12 +73,7 @@ const PersonalPage = ({navigation, route}) => {
                   navigation.navigate('EditProfile');
                 }}
                 >
-                <Text style={styles.userBtnTxt}>Edit</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.userBtn}
-              // onPress={() => logout()}
-              >
-                <Text style={styles.userBtnTxt}>Logout</Text>
+                <Text style={styles.userBtnTxt}>Edit Profile</Text>
               </TouchableOpacity>
             </>
           )}
