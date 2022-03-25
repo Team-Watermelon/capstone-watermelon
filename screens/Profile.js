@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { InputField } from "../components";
 import { StyleSheet, Text, View } from "react-native";
-import { Button } from "../components";
+import { Button,AudioPlayer } from "../components";
 import * as DocumentPicker from "expo-document-picker";
 import {Alert} from "react-native";
 import ActionButton from 'react-native-action-button';
@@ -10,11 +10,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 export default function PersonalPage({ navigation }) {
   const [post, setPost] = useState("");
-  //const [audioFile, setAudioFile] = useState(null);
 
-  //     console.log(result.uri);
-  //     console.log(result);
-  // };
   return (
     <View style={styles.container}>
       <Text>Profile Page</Text>
@@ -63,6 +59,7 @@ export default function PersonalPage({ navigation }) {
           }
         }}
       />
+      <AudioPlayer/>
        <ActionButton buttonColor="blue" >
           <ActionButton.Item buttonColor='#9b59b6' title="Add Audio" onPress={() => navigation.navigate('AudioRecord')}>
             <Icon name="md-create" style={styles.actionButtonIcon} />

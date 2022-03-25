@@ -2,7 +2,9 @@ import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
 import { Audio } from "expo-av";
-import Base64 from "../helpFunc/Base64";
+//import Base64 from "../helpFunc/Base64";
+import { saveAudio } from "../api/saveAudio";
+import { Alert } from "react-native";
 
 export default function AudioRecord() {
   const [recording, setRecording] = useState({});
@@ -33,32 +35,6 @@ export default function AudioRecord() {
     }
   }
 
-  const handleUpload = () => {
-    console.log("this is inside handleupload", recorded);
-    const cloudUri = Base64.encode(recorded.getURI());
-    //This line will let cloudinary know what MIME type is being sent
-    let base64Aud = `data:audio/mpeg;base64,${cloudUri}`;
-    const formData = new FormData();
-    formData.append("file", `${base64Aud}`);
-    formData.append("upload_preset", "openArms");
-    formData.append("cloud_name", "capstonewatermelon");
-    formData.append("resource_type", "video");
-    fetch("https://api.cloudinary.com/v1_1/capstonewatermelon/auto/upload", {
-      method: "post",
-      body: formData,
-    })
-      .then(async (response) => {
-        let recordedObj = await response.json();
-        console.log("Cloudinary Info in stopRecording:", recordedObj);
-        const recordingURL = recordedObj.url;
-        console.log("recordingURL inside stopRecording", recordingURL);
-        return recordingURL;
-      })
-      .catch((err) => {
-        Alert.alert("An Error Occured While Uploading");
-      });
-  };
-
   async function stopRecording() {
     console.log("Stopping recording..", recording);
     setRecording({});
@@ -73,34 +49,38 @@ export default function AudioRecord() {
     setRecorded(recording);
     console.log("After stoping recording,recording..", recording);
     console.log("After stoping recording,recorded..", recorded);
-
-    // //Call the `encode` method on the local URI that DocumentPicker                returns
-    // const cloudUri = Base64.encode(recording.getURI());
-    // console.log("cloudUri when stop", cloudUri);
-    // //This line will let cloudinary know what MIME type is being sent
-    // let base64Aud = `data:audio/mpeg;base64,${cloudUri}`;
-    // const formData = new FormData();
-    // //setRecording(recording);
-    // formData.append("file", `${base64Aud}`);
-    // formData.append("upload_preset", "openArms");
-    // formData.append("cloud_name", "capstonewatermelon");
-    // formData.append("resource_type", "video");
-    // //console.log("data", formData, "recording", cloudUri);
-    // fetch("https://api.cloudinary.com/v1_1/capstonewatermelon/auto/upload", {
-    //   method: "post",
-    //   body: formData,
-    // })
-    //   .then(async (response) => {
-    //     let recordedObj = await response.json();
-    //     console.log("Cloudinary Info in stopRecording:", recordedObj);
-    //     const recordingURL = recordedObj.url
-    //     console.log('recordingURL inside stopRecording',recordingURL)
-    //     return recordingURL;
-    //   })
-    //   .catch((err) => {
-    //     Alert.alert("An Error Occured While Uploading");
-    //   });
   }
+
+  const handleUpload = () => {
+    console.log("this is inside handleupload", recorded);
+    const cloudUri = btoa(recorded.getURI());
+    //This line will let cloudinary know what MIME type is being sent
+    let base64Aud = `data:audio/mpeg;base64,${cloudUri}`;
+    console.log('uri for recording',recorded.getURI())
+    console.log('base64Aud',base64Aud)
+    const formData = new FormData();
+    formData.append("file", `${base64Aud}`);
+    formData.append("upload_preset", "openArms");
+    formData.append("cloud_name", "capstonewatermelon");
+    formData.append("resource_type", "video");
+    //formData.append("f_auto","MP4")
+    fetch("https://api.cloudinary.com/v1_1/capstonewatermelon/auto/upload", {
+      method: "post",
+      body: formData,
+    })
+      .then(async (response) => {
+        let recordedObj = await response.json();
+        console.log("Cloudinary Info in handleUpload:", recordedObj);
+        const recordingURL = recordedObj.url;
+        saveAudio(recordingURL);
+        console.log("saveAudio", saveAudio);
+        console.log("recordingURL inside handleUpload", recordingURL);
+        console.log("audio saved? in handleUpdate");
+      })
+      .catch((err) => {
+        Alert.alert("An Error Occured While Uploading");
+      });
+  };
 
   return (
     <View style={styles.container}>
@@ -111,7 +91,6 @@ export default function AudioRecord() {
         }
         onPress={Object.keys(recording).length ? stopRecording : startRecording}
       />
-      {/* <Text style={styles.fill}>Recording 1 - {recourded.duration}</Text> */}
       <Button
         style={styles.button}
         onPress={() => sound.replayAsync()}

@@ -12,7 +12,6 @@ export async function registration(email, password) {
         .doc(currentUser.uid)
         .set({
           email: currentUser.email,
-        //   lastName: lastName,
         //   firstName: firstName,
         });
     } catch (err) {
