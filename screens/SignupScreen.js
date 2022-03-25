@@ -7,13 +7,9 @@ import { Button, InputField, ErrorMessage } from "../components";
 //import Firebase from "../config/firebase";
 import { registration } from '../api/registration'
 
-// const auth = Firebase.auth();
-
 export default function SignupScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  // const [firstName, setfirstName] = useState('');
-  // const [lastName, setlastName] = useState('');
 
   const [passwordVisibility, setPasswordVisibility] = useState(true);
   const [rightIcon, setRightIcon] = useState("eye");
@@ -37,56 +33,17 @@ export default function SignupScreen({ navigation }) {
     } else {
       registration(
         email,
-        password,
-        // lastName,
-        // firstName,
+        password
       );
-      // navigation.navigate('Loading');
-      // emptyState();
     }
   }
   
-
   return (
     <View style={styles.container}>
-       <ImageBackground source={require('../assets/coverhands.png')} resizeMode="cover" style={styles.image}>
+      <ImageBackground source={require('../assets/coverhands.png')} resizeMode="cover" style={styles.image}>
       <StatusBar style="dark-content" />
       <Image source={require('../assets/logo.png')}  style={styles.logo} />
       <Text style={styles.title}>Create new account</Text>
-      {/* <InputField
-        inputStyle={{
-          fontSize: 14,
-        }}
-        containerStyle={{
-          backgroundColor: '#fff',
-          marginBottom: 20,
-        }}
-        //leftIcon='firstName'
-        placeholder='Enter first name'
-        autoCapitalize='none'
-        //keyboardType='name'
-        //textContentType='firstName'
-        autoFocus={true}
-        value={firstName}
-        onChangeText={(text) => setfirstName(text)}
-      />
-      <InputField
-        inputStyle={{
-          fontSize: 14,
-        }}
-        containerStyle={{
-          backgroundColor: '#fff',
-          marginBottom: 20,
-        }}
-        //leftIcon='lastName'
-        placeholder='Enter last name'
-        autoCapitalize='none'
-        //keyboardType='name'
-        //textContentType='lastName'
-        autoFocus={true}
-        value={lastName}
-        onChangeText={(text) => setlastName(text)}
-      /> */}
       <InputField
         inputStyle={{
           fontSize: 14,

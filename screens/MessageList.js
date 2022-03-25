@@ -11,6 +11,9 @@ export default function MessageList() {
   const [name, setName] = useState('');
   const [messages, setMessages] = useState([]);
 
+
+  // chat has an ID
+
   useEffect(() => {
     readUser();
     const unsubscribe = chatsRef.onSnapshot((querySnapshot) => {
@@ -47,7 +50,7 @@ export default function MessageList() {
   }
 
   async function handlePress() {
-    // this could be id we get from firebase?
+    // this could be id from user collection we get from firebase?
     const _id = Math.random().toString(36).substring(7);
     const user = { _id, name };
     await AsyncStorage.setItem('user', JSON.stringify(user));
