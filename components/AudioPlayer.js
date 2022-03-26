@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View,TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Audio } from "expo-av";
-//import { getAudio } from "../api/getAudio";
-
 import firebase from "firebase/app";
 import "firebase/firestore";
 
@@ -110,6 +108,7 @@ export default function AudioPlayer() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 24,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center'

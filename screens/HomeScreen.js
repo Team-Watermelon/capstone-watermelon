@@ -10,7 +10,6 @@ const auth = Firebase.auth();
 
 export default function HomeScreen() {
   
-
   const { user } = useContext(AuthenticatedUserContext);
   const handleSignOut = async () => {
     try {
