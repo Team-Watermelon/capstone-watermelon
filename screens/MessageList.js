@@ -27,7 +27,6 @@ import { AuthenticatedUserContext } from '../navigation/AuthenticatedUserProvide
 // import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
   export default function MessageList() {
-    console.log("roomsref destructured: ", { roomsRef })
     const { user } = useContext(AuthenticatedUserContext);
     //const getRooms = () => {
       // const q = query(collection(roomsRef), where("usersInRoom", "array-contains", user.uid));
