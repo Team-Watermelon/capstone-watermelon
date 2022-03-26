@@ -9,6 +9,9 @@
   },
   "dependencies": {
     "@react-native-community/masked-view": "0.1.10",
+    "@react-native-firebase/app": "^14.6.0",
+    "@react-native-firebase/firestore": "^14.7.0",
+    "@react-native-firebase/storage": "^14.7.0",
     "@react-native-masked-view/masked-view": "^0.2.6",
     "@react-navigation/material-bottom-tabs": "^6.1.1",
     "@react-navigation/native": "^5.9.8",
@@ -22,6 +25,7 @@
     "expo-document-picker": "~9.1.2",
     "expo-media-library": "~12.0.2",
     "expo-modules-core": "^0.6.5",
+    "expo-image-picker": "~10.1.4",
     "expo-status-bar": "~1.0.4",
     "firebase": "8.2.3",
     "link": "^0.1.5",
@@ -32,13 +36,15 @@
     "react-native-action-button": "^2.8.5",
     "react-native-document-picker": "^8.0.0",
     "react-native-gesture-handler": "~1.10.2",
+    "react-native-image-crop-picker": "^0.37.3",
     "react-native-navigation-bar": "^0.2.1",
     "react-native-paper": "^4.11.2",
     "react-native-reanimated": "~2.1.0",
     "react-native-safe-area-context": "3.2.0",
     "react-native-screens": "~3.0.0",
     "react-native-vector-icons": "^9.1.0",
-    "react-native-web": "~0.13.12"
+    "react-native-web": "~0.13.12",
+    "reanimated-bottom-sheet": "^1.0.0-alpha.22"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0"

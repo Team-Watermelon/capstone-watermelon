@@ -12,7 +12,10 @@ export async function registration(email, password) {
         .doc(currentUser.uid)
         .set({
           email: currentUser.email,
-        //   firstName: firstName,
+          firstName: '',
+          userImg: null
+        //   lastName: lastName,
+
         });
     } catch (err) {
       Alert.alert("There is something wrong!!!!", err.message);
