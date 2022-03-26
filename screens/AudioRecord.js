@@ -1,15 +1,23 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import { Button, StyleSheet, Text, View } from "react-native";
+import {
+  Button,
+  StyleSheet,
+  Text,
+  View,
+  Modal,
+  TouchableOpacity,
+} from "react-native";
 import { Audio } from "expo-av";
 import { saveAudio } from "../api/saveAudio";
 import { Alert } from "react-native";
 
-export default function AudioRecord() {
+export default function AudioRecord({navigation}) {
   const [recording, setRecording] = useState({});
   const [recorded, setRecorded] = useState({});
   const [message, setMessage] = useState("");
   const [sound, setSound] = useState(null);
+  const [isModalVisible, setModalVisible] = useState(true);
 
   async function startRecording() {
     try {
@@ -94,27 +102,42 @@ export default function AudioRecord() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text>{message}</Text>
-      <Button
-        title={
-          Object.keys(recording).length ? "Stop Recording" : "Start Recording"
-        }
-        onPress={Object.keys(recording).length ? stopRecording : startRecording}
-      />
-      <Button
-        style={styles.button}
-        onPress={() => sound.replayAsync()}
-        title="Play"
-      ></Button>
-      <Button
-        title="Save"
-        onPress={() => {
-          handleUpload();
-        }}
-      ></Button>
-      <StatusBar style="auto" />
-    </View>
+    <Modal
+      visible={isModalVisible}
+      animationType="slide"
+      presentationStyle="pageSheet"
+      onRequestClose={() => {
+        Alert.alert("Modal has been closed.");
+        setModalVisible(false);
+      }}
+    >
+      <View style={styles.container}>
+        <Text>{message}</Text>
+        <Button
+          title={
+            Object.keys(recording).length ? "Stop Recording" : "Start Recording"
+          }
+          onPress={
+            Object.keys(recording).length ? stopRecording : startRecording
+          }
+        />
+        <Button
+          style={styles.button}
+          onPress={() => sound.replayAsync()}
+          title="Play"
+        ></Button>
+        <Button
+          title="Save"
+          onPress={() => {
+            handleUpload();
+          }}
+        ></Button>
+        <StatusBar style="auto" />
+        <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+          <Text style={styles.modalHeaderCloseText}>X</Text>
+        </TouchableOpacity>
+      </View>
+    </Modal>
   );
 }
 
@@ -136,6 +159,11 @@ const styles = StyleSheet.create({
   },
   button: {
     margin: 16,
+  },
+  modalHeaderCloseText: {
+    textAlign: "center",
+    paddingLeft: 5,
+    paddingRight: 5,
   },
 });
 
