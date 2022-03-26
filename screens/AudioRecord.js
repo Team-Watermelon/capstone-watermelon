@@ -105,13 +105,13 @@ export default function AudioRecord({navigation}) {
     <Modal
       visible={isModalVisible}
       animationType="slide"
-      presentationStyle="pageSheet"
+      presentationStyle="fullScreen"
       onRequestClose={() => {
         Alert.alert("Modal has been closed.");
         setModalVisible(false);
       }}
     >
-      <View style={styles.container}>
+      <View style={styles.modal}>
         <Text>{message}</Text>
         <Button
           title={
@@ -164,6 +164,20 @@ const styles = StyleSheet.create({
     textAlign: "center",
     paddingLeft: 5,
     paddingRight: 5,
+  },
+  modal: {
+    flex: 1,
+    margin: 15,
+    padding: 15,
+    backgroundColor: "white",
+    shadowColor: "purple",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
 });
 
