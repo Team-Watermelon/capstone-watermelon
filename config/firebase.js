@@ -20,6 +20,7 @@ if (firebase.apps.length === 0) {
 
 export const db = firebase.firestore();
 export const chatsRef = db.collection('chats')
+export const roomsRef = db.collection('rooms')
 // leads to list of messages
 // each message is in a chat room
 
