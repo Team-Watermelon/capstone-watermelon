@@ -44,8 +44,7 @@ export default function AudioPlayer() {
 
   const handleAudioPlayPause = async () => {
     getAudio();
-    const url = atob(audioURL)
-    console.log("url in handleAudioPlay", url);
+    console.log("url in handleAudioPlay", audioURL);
     try {
       if (isPlaying) {
         await sound.pauseAsync();

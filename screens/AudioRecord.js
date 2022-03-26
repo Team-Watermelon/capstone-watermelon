@@ -2,7 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
 import { Audio } from "expo-av";
-//import Base64 from "../helpFunc/Base64";
+import Base64 from "../helpFunc/Base64";
 import { saveAudio } from "../api/saveAudio";
 import { Alert } from "react-native";
 
@@ -25,8 +25,8 @@ export default function AudioRecord() {
         );
         setRecorded({});
         setRecording(recording);
-        console.log("recording in startRecording", recording);
-        console.log("recorded in startRecording", recorded);
+        // console.log("recording in startRecording", recording);
+        // console.log("recorded in startRecording", recorded);
       } else {
         setMessage("Please grant permission to app to access microphone");
       }
@@ -36,7 +36,7 @@ export default function AudioRecord() {
   }
 
   async function stopRecording() {
-    console.log("Stopping recording..recording", recording);
+    // console.log("Stopping recording..recording", recording);
     setRecording({});
     await recording.stopAndUnloadAsync();
     const { sound: sound } = await recording.createNewLoadedSoundAsync({
@@ -47,41 +47,65 @@ export default function AudioRecord() {
     });
     setSound(sound);
     setRecorded(recording);
-    console.log("recording in stop Recording..", recording);
-    console.log("recorded in stop Recording..", recorded);
+    // console.log("recording in stop Recording..", recording);
+    //console.log("recorded in stop Recording..", recorded);
   }
 
-  const handleUpload = () => {
-    console.log("recording inside handleupload", recording);
-    console.log("recorded inside handleupload", recorded);
+  function toDataURL(uri, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function() {
+      var reader = new FileReader();
+      reader.onloadend = function() {
+        callback(reader.result);
+      }
+      reader.readAsDataURL(xhr.response);
+    };
+    xhr.open('GET', uri, true);
+    xhr.responseType = 'blob';
+    xhr.send();
+  }
   
-    const cloudUri = btoa(recorded.getURI());
-    //This line will let cloudinary know what MIME type is being sent
-    let base64Aud = `data:audio/mpeg;base64,${cloudUri}`;
-    console.log('recorded uri',recorded.getURI())
-    console.log('cloudUri', cloudUri)
-    console.log('base64Aud',base64Aud)
-    const formData = new FormData();
-    formData.append("file", `${base64Aud}`);
-    formData.append("upload_preset", "openArms");
-    formData.append("cloud_name", "capstonewatermelon");
-    formData.append("resource_type", "audio");
-    //formData.append("f_auto","MP4")
-    fetch("https://api.cloudinary.com/v1_1/capstonewatermelon/auto/upload", {
-      method: "post",
-      body: formData,
-    })
-      .then(async (response) => {
-        let recordedObj = await response.json();
-        console.log("Cloudinary Info in handleUpload:", recordedObj);
-        const recordingURL = recordedObj.url;
-        saveAudio(recordingURL);
-        console.log("recordingURL inside handleUpload", recordingURL);
-        console.log("audio saved in handleUpdate");
+  const handleUpload = () => {
+    //console.log("recording inside handleupload", recording);
+    //console.log("recorded inside handleupload", recorded);
+    const recordedURI= recorded.getURI();
+    //const recordedURI =
+      //"file:///Users/leishi/Library/Developer/CoreSimulator/Devices/55CE61A9-970C-4AE3-A951-C2DFE61E7890/data/Containers/Data/Application/F17501CC-4C3A-479E-B98A-9DFC828BA2AB/Library/Caches/ExponentExperienceData/%2540anonymous%252Fcapstone-watermelon-a7895481-c0e2-4ca0-bb83-3f9cd6f39b37/AV/recording-E0F42EDE-4032-47D9-9936-13AA50E10EA8.m4a";
+
+    // utitlity function to convert BLOB to BASE64
+    // Fetch audio binary blob data
+    //const audioURI = recording.getURI();
+  toDataURL(recordedURI, function(dataUrl) {
+      console.log('RESULT:', dataUrl)
+      const formData = new FormData();
+      formData.append("file", `${dataUrl}`);
+      formData.append("upload_preset", "openArms");
+      formData.append("cloud_name", "capstonewatermelon");
+      formData.append("resource_type", "audio");
+      //formData.append("f_auto","MP4")
+      fetch("https://api.cloudinary.com/v1_1/capstonewatermelon/auto/upload", {
+        method: "post",
+        body: formData,
       })
-      .catch((err) => {
-        Alert.alert("An Error Occured While Uploading");
-      });
+        .then(async (response) => {
+          let recordedObj = await response.json();
+          console.log("Cloudinary Info in handleUpload:", recordedObj);
+          const recordingURL = recordedObj.url;
+          saveAudio(recordingURL);
+          console.log("recordingURL inside handleUpload", recordingURL);
+          console.log("audio saved in handleUpdate");
+        })
+        .catch((err) => {
+          Alert.alert("An Error Occured While Uploading");
+        });
+    })
+    // console.log("recordedURI", recordedURI);
+    // console.log('reader.onloadend',reader.onloadend())
+    //This line will let cloudinary know what MIME type is being sent
+    // let base64Aud = `data:audio/mpeg;base64,${base64data}`;
+    // console.log('recorded uri',recordedURI)
+    // console.log('cloudUri', cloudUri)
+    // console.log('decodedUri',decodedUri)
   };
 
   return (
