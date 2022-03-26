@@ -51,7 +51,7 @@ export default function AudioPlayer() {
         setIsPlaying(false);
       } else {
         await sound.loadAsync({
-          url: audioURL
+          uri: audioURL
         });
         await sound.playAsync();
         setIsPlaying(true);
