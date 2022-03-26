@@ -8,11 +8,13 @@ import {
   ScrollView,
   SafeAreaView,
 } from 'react-native';
+import { AudioPlayer, RNActionButton } from "../components";
+import Icon from "react-native-vector-icons/Ionicons";
 
 import firebase from "firebase/app";
 import "firebase/firestore";
 
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+// import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {AuthenticatedUserContext} from '../navigation/AuthenticatedUserProvider';
 
@@ -85,12 +87,24 @@ const PersonalPage = ({navigation, route}) => {
             <Text style={styles.userInfoTitle}>10</Text>
             <Text style={styles.userInfoSubTitle}>Posts</Text>
           </View>
+          <View>
+          <AudioPlayer />
+      <RNActionButton buttonColor="blue">
+        <RNActionButton.Item
+          buttonColor="#9b59b6"
+          title="Add Audio"
+          onPress={() => navigation.navigate("AudioRecord")}
+        >
+          <Icon name="md-create" style={styles.actionButtonIcon} />
+        </RNActionButton.Item>
+        {/* add video story from here? */}
+        {/* <RNActionButton.Item buttonColor='#3498db' title="Add Video" onPress={() => navigation.navigate('upload video story?')}>
+            <Icon name="md-create" style={styles.actionButtonIcon} />
+          </RNActionButton.Item> */}
+      </RNActionButton>
+          </View>
         </ScrollView>
     </SafeAreaView>
-
-    // <View style={styles.container}>
-    //   <Text>Profile Page</Text>
-    // </View>
   );
 }
 
@@ -99,6 +113,14 @@ export default PersonalPage;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#fff",
+    paddingTop: 50,
+    paddingHorizontal: 12,
+  },
+  actionButtonIcon: {
+    fontSize: 20,
+    height: 22,
+    color: "white",
     backgroundColor: '#fff',
     paddingTop: 140,
     paddingHorizontal: 12,

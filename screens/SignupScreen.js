@@ -5,13 +5,13 @@ import { StyleSheet, Text, View, Button as RNButton } from "react-native";
 
 import { Button, InputField, ErrorMessage } from "../components";
 //import Firebase from "../config/firebase";
-import { registration } from '../api/registration'
+import { registration } from "../api/registration";
 
 // const auth = Firebase.auth();
 
 export default function SignupScreen({ navigation }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   // const [firstName, setfirstName] = useState('');
   // const [lastName, setlastName] = useState('');
 
@@ -31,21 +31,21 @@ export default function SignupScreen({ navigation }) {
 
   const onHandleSignup = () => {
     if (!email) {
-      Alert.alert('Email field is required.');
+      Alert.alert("Email field is required.");
     } else if (!password) {
-      Alert.alert('Password field is required.');
+      Alert.alert("Password field is required.");
     } else {
       registration(
         email,
-        password,
+        password
         // lastName,
         // firstName,
       );
       // navigation.navigate('Loading');
       // emptyState();
     }
-  }
-  
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar style="dark-content" />

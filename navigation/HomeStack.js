@@ -8,10 +8,13 @@ import HomeScreen from '../screens/HomeScreen';
 import Messages from '../screens/Messages';
 import Profile from '../screens/Profile'
 import Calendar from '../screens/Calendar'
+import AudioRecord from '../screens/AudioRecord'
 import EditProfileScreen from '../screens/EditProfileScreen';
+
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
+
 
 const ProfileStackScreen = ({navigation}) => (
   <Stack.Navigator>
@@ -22,6 +25,7 @@ const ProfileStackScreen = ({navigation}) => (
         headerShown: false,
       }}
     />
+    <Stack.Screen name = 'AudioRecord'component={AudioRecord} />
     <Stack.Screen
       name="EditProfile"
       component={EditProfileScreen}
@@ -38,7 +42,6 @@ const ProfileStackScreen = ({navigation}) => (
     />
   </Stack.Navigator>
 );
-
 
 export default function HomeTabs() {
   return (
@@ -91,10 +94,4 @@ export default function HomeTabs() {
   );
 }
 
-// export default function HomeStack() {
-//   return (
-//     <Stack.Navigator headerMode='none'>
-//       <Stack.Screen name='Home' component={HomeScreen} />
-//     </Stack.Navigator>
-//   );
-// }
+

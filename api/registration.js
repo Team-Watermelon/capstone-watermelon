@@ -15,7 +15,7 @@ export async function registration(email, password) {
           firstName: '',
           userImg: null
         //   lastName: lastName,
-        //   firstName: firstName,
+
         });
     } catch (err) {
       Alert.alert("There is something wrong!!!!", err.message);
