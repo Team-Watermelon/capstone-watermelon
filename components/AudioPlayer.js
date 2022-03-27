@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View,TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Audio } from "expo-av";
+import { Feather } from "@expo/vector-icons";
 import firebase from "firebase/app";
 import "firebase/firestore";
 
-const sound = new Audio.Sound();
-
 export default function AudioPlayer() {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [soundPlaying, setSoundPlaying] = useState(false);
-  const [playbackObject, setPlaybackObject] = useState(null);
-  const [playbackStatus, setPlaybackStatus] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [playbackObj, setPlaybackObj] = useState(null);
+  const [playbackStatus, setplaybackStatus] = useState(null);
   const [audioURL, setAudioURL] = useState(0);
+  // const [soundPlaying, setSoundPlaying] = useState(false);
 
   const getAudio = async () => {
     const currentUser = firebase.auth().currentUser;
@@ -25,8 +24,9 @@ export default function AudioPlayer() {
         if (documentSnapshot.exists) {
           console.log("Audio Data", documentSnapshot.data().audio);
           const url = documentSnapshot.data().audio;
-          setAudioURL(url);
-          console.log("url in getAudio", audioURL);
+          console.log("url in getAudio be4 set", audioURL);
+          return setAudioURL(url);
+          console.log("url in getAudio after set", audioURL);
         }
       });
   };
@@ -37,20 +37,40 @@ export default function AudioPlayer() {
   //   }, []);
 
   const handleAudioPlayPause = async (url) => {
-    getAudio();
-    console.log("url in handleAudioPlay", audioURL);
+    await getAudio();
+    console.log("playbackObj", playbackObj);
+    console.log("playingStatus", playbackStatus);
     try {
-      if (isPlaying) {
-        await sound.pauseAsync();
-        setIsPlaying(false);
-      } else {
-       
+      console.log("url in handleAudioPlay", audioURL);
+      //playing audio for the first time
+      if (playbackObj !== null && playbackStatus.isLoaded || playbackObj === null) {
+        const playbackObj = new Audio.Sound();
+        const status = await playbackObj.loadAsync(
+          {
+            uri: url,
+          },
+          { shouldPlay: true }
+        );
+        setplaybackStatus(status)
+        await playbackObj.playAsync();
         setIsPlaying(true);
-        await sound.loadAsync({
-          uri: url
-        });
-        await sound.playAsync();
-        
+        console.log("playbackObj after pause", playbackObj);
+        console.log("playbackStatus after pause", playbackStatus);
+        console.log("playbackStatus after pause", playbackStatus);
+        return  setPlaybackObj(playbackObj)
+      }
+      //pause audio
+      if (playbackStatus.isLoaded && playbackStatus.isPlaying) {
+        const status = await playbackObj.pauseAsync();
+        setIsPlaying(false);
+        return setplaybackStatus(status);
+        console.log("isPlaying after play for resuem");
+        // }
+      }
+      if (playbackStatus.isLoaded && !playbackStatus.isPlaying) {
+        const status = await playbackObj.playAsync();
+        setIsPlaying(true);
+        return setplaybackStatus(status);
       }
     } catch (error) {
       console.log(error);
@@ -83,23 +103,24 @@ export default function AudioPlayer() {
       <Text style={{ fontWeight: "bold", fontSize: 18, marginBottom: 15 }}>
         My story
       </Text>
-      <TouchableOpacity 
-      style = {styles.control}
-      size={24}
+      <TouchableOpacity
+        style={styles.control}
+        size={24}
         color="white"
-        onPress={()=>handleAudioPlayPause(audioURL)}>
+        onPress={() => handleAudioPlayPause(audioURL)}
+      >
         {/* style={{
         //   alignSelf: "center",
         //   backgroundColor: "gray",
         //   padding: 10,
         //   borderRadius: 50,
         // }} */}
-        {isPlaying ? (
+        <Feather name={isPlaying? "pause":"play"} size={35} color="#3D425C"></Feather>
+        {/* {isPlaying ? (
           <Ionicons name='ios-pause' size={48} color='#444' />
         ) : (
           <Ionicons name='ios-play-circle' size={48} color='#444' />
-        )}
-       
+        )} */}
       </TouchableOpacity>
     </View>
   );
@@ -109,16 +130,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center'
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
   trackInfoText: {
-    textAlign: 'center',
-    flexWrap: 'wrap',
-    color: '#550088'
+    textAlign: "center",
+    flexWrap: "wrap",
+    color: "#550088",
   },
   control: {
-    margin: 20
+    margin: 20,
   },
-})
+});

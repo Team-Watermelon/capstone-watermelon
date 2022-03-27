@@ -38,7 +38,8 @@ const EditProfileScreen = () => {
   const [uploading, setUploading] = useState(false);
   const [transferred, setTransferred] = useState(0);
   const [userData, setUserData] = useState(null);
-
+  const bs = React.createRef();
+  const fall = new Animated.Value(1);
   const getUser = async() => {
     const currentUser = await firebase.firestore()
     .collection('users')
@@ -51,8 +52,6 @@ const EditProfileScreen = () => {
       }
     })
   }
-
-
 
   const handleUpdate = async() => {
     // let imgUrl = await uploadImage();
@@ -80,14 +79,78 @@ const EditProfileScreen = () => {
       );
     })
   }
-
-
   useEffect(() => {
     getUser();
   }, []);
 
+  // const takePhotoFromCamera = () => {
+  //   ImagePicker.openCamera({
+  //     compressImageMaxWidth: 300,
+  //     compressImageMaxHeight: 300,
+  //     cropping: true,
+  //     compressImageQuality: 0.7
+  //   }).then(image => {
+  //     console.log(image);
+  //     setImage(image.path);
+  //     bs.current.snapTo(1);
+  //   });
+  // }
+
+  // const choosePhotoFromLibrary = () => {
+  //   ImagePicker.openPicker({
+  //     width: 300,
+  //     height: 300,
+  //     cropping: true,
+  //     compressImageQuality: 0.7
+  //   }).then(image => {
+  //     console.log(image);
+  //     setImage(image.path);
+  //     bs.current.snapTo(1);
+  //   });
+  // }
+
+  const renderInner = () => (
+    <View style={styles.panel}>
+      <View style={{alignItems: 'center'}}>
+        <Text style={styles.panelTitle}>Upload Photo</Text>
+        <Text style={styles.panelSubtitle}>Choose Your Profile Picture</Text>
+      </View>
+      <TouchableOpacity style={styles.panelButton} onPress={takePhotoFromCamera}>
+        <Text style={styles.panelButtonTitle}>Take Photo</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.panelButton} onPress={choosePhotoFromLibrary}>
+        <Text style={styles.panelButtonTitle}>Choose From Library</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.panelButton}
+        onPress={() => bs.current.snapTo(1)}>
+        <Text style={styles.panelButtonTitle}>Cancel</Text>
+      </TouchableOpacity>
+    </View>
+  );
+ 
+  const  renderHeader = () => (
+    <View style={styles.header}>
+      <View style={styles.panelHeader}>
+        <View style={styles.panelHandle} />
+      </View>
+    </View>
+  );
+
   return (
     <View style={styles.container}>
+       {/* <BottomSheet
+        ref={bs}
+        snapPoints={[330, 0]}
+        renderContent={renderInner}
+        // renderHeader={renderHeader}
+        initialSnap={1}
+        callbackNode={fall}
+        enabledGestureInteraction={true}
+      /> */}
+      {/* <Animated.View style={{margin: 20,
+        opacity: Animated.add(0.1, Animated.multiply(fall, 1.0)),
+    }}> */}
         <View style={{alignItems: 'center'}}>
         <TouchableOpacity onPress={() => {}}>
             <View
@@ -107,8 +170,7 @@ const EditProfileScreen = () => {
                 //       'https://i.pinimg.com/custom_covers/222x/85498161615209203_1636332751.jpg'
                 //     : 'https://i.pinimg.com/custom_covers/222x/85498161615209203_1636332751.jpg',
                 // }}
-                    
-                  
+                        
                   uri: 'https://i.pinimg.com/custom_covers/222x/85498161615209203_1636332751.jpg',
                 }}
                 style={{height: 100, width: 100}}
