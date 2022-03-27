@@ -43,7 +43,7 @@ export default function AudioPlayer() {
     try {
       console.log("url in handleAudioPlay", audioURL);
       //playing audio for the first time
-      if (playbackObj !== null && playbackStatus.isLoaded || playbackObj === null) {
+      if (playbackObj === null && playbackStatus.isPlaying===false || playbackStatus.isLoaded  ) {
         const playbackObj = new Audio.Sound();
         const status = await playbackObj.loadAsync(
           {
@@ -52,26 +52,27 @@ export default function AudioPlayer() {
           { shouldPlay: true }
         );
         setplaybackStatus(status)
-        await playbackObj.playAsync();
+        //await playbackObj.playAsync();
         setIsPlaying(true);
+        playbackStatus.isPlaying=true;
+        console.log('isPlaying in start',isPlaying)
         console.log("playbackObj after pause", playbackObj);
         console.log("playbackStatus after pause", playbackStatus);
-        console.log("playbackStatus after pause", playbackStatus);
         return  setPlaybackObj(playbackObj)
-      }
-      //pause audio
-      if (playbackStatus.isLoaded && playbackStatus.isPlaying) {
+      } else if (playbackStatus.isPlaying) {
         const status = await playbackObj.pauseAsync();
         setIsPlaying(false);
+        console.log('isPlaying in pause',isPlaying)
+        playbackStatus.isPlaying = false;
         return setplaybackStatus(status);
         console.log("isPlaying after play for resuem");
         // }
-      }
-      if (playbackStatus.isLoaded && !playbackStatus.isPlaying) {
-        const status = await playbackObj.playAsync();
-        setIsPlaying(true);
-        return setplaybackStatus(status);
-      }
+      } 
+      // else if (playbackStatus.isLoaded && !playbackStatus.isPlaying) {
+      //   const status = await playbackObj.playAsync();
+      //   setIsPlaying(true);
+      //   return setplaybackStatus(status);
+      // }
     } catch (error) {
       console.log(error);
     }
