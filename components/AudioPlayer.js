@@ -22,28 +22,33 @@ export default function AudioPlayer() {
       .get()
       .then((documentSnapshot) => {
         if (documentSnapshot.exists) {
-          console.log("Audio Data", documentSnapshot.data().audio);
+          console.log("new url ", documentSnapshot.data().audio);
           const url = documentSnapshot.data().audio;
           console.log("url in getAudio be4 set", audioURL);
-          return setAudioURL(url);
+          setAudioURL(url);
+          handleAudioPlayPause(url)
+          
           console.log("url in getAudio after set", audioURL);
         }
       });
   };
-  //   useEffect(() => {
-  //     if (playbackObject === null) {
-  //       setPlaybackObject(sound);
-  //     }
-  //   }, []);
+ 
+
+    // useEffect(() => {
+    //   if (playbackObj === null) {
+    //     setPlaybackObj(sound);
+    //   }
+    // }, []);
 
   const handleAudioPlayPause = async (url) => {
-    await getAudio();
-    console.log("playbackObj", playbackObj);
-    console.log("playingStatus", playbackStatus);
+    //await getAudio();
+    console.log("playbackObj in handle player", playbackObj);
+    console.log("playingStatus in handle player", playbackStatus);
     try {
       console.log("url in handleAudioPlay", audioURL);
+      
       //playing audio for the first time
-      if (playbackObj === null && playbackStatus.isPlaying===false || playbackStatus.isLoaded  ) {
+      if (playbackObj !== null && playbackStatus === null ) {
         const playbackObj = new Audio.Sound();
         const status = await playbackObj.loadAsync(
           {
@@ -51,28 +56,40 @@ export default function AudioPlayer() {
           },
           { shouldPlay: true }
         );
-        setplaybackStatus(status)
+        setPlaybackObj(playbackObj)
         //await playbackObj.playAsync();
-        setIsPlaying(true);
-        playbackStatus.isPlaying=true;
+        setIsPlaying(false);
+        //playbackStatus.isPlaying=true;
         console.log('isPlaying in start',isPlaying)
-        console.log("playbackObj after pause", playbackObj);
-        console.log("playbackStatus after pause", playbackStatus);
-        return  setPlaybackObj(playbackObj)
-      } else if (playbackStatus.isPlaying) {
+        // console.log("playbackObj after set", playbackObj);
+        console.log("playbackStatus after set", playbackStatus);
+        return setplaybackStatus(status)
+      } 
+   //pasue
+      if (playbackStatus.isPlaying===true) {
         const status = await playbackObj.pauseAsync();
         setIsPlaying(false);
         console.log('isPlaying in pause',isPlaying)
-        playbackStatus.isPlaying = false;
+        console.log('playbackObj status in pause',playbackObj)
+        console.log('playingback status in pause',playbackStatus)
+        // playbackStatus.isPlaying = false;
+        // console.log('isPlaying in pause',isPlaying)
         return setplaybackStatus(status);
         console.log("isPlaying after play for resuem");
         // }
       } 
-      // else if (playbackStatus.isLoaded && !playbackStatus.isPlaying) {
-      //   const status = await playbackObj.playAsync();
-      //   setIsPlaying(true);
-      //   return setplaybackStatus(status);
-      // }
+      //resume 
+     if (playbackStatus.isPlaying===false) {
+        await playbackObj.setStatusAsync({ shouldPlay: true })
+        const status = await playbackObj.playAsync();
+        console.log('this is resume',isPlaying)
+        console.log('playbackObj status in resume',playbackObj)
+        console.log('playingback status in resume',playbackStatus)
+        // playbackStatus.isPlaying = true;
+        setIsPlaying(true);
+        console.log('this is resume',isPlaying)
+         setplaybackStatus(status);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -108,7 +125,7 @@ export default function AudioPlayer() {
         style={styles.control}
         size={24}
         color="white"
-        onPress={() => handleAudioPlayPause(audioURL)}
+        onPress={() => {getAudio ()}}
       >
         {/* style={{
         //   alignSelf: "center",
