@@ -7,6 +7,10 @@ import HomeScreen from '../screens/HomeScreen';
 import MessageList from '../screens/MessageList';
 import Profile from '../screens/Profile'
 import Calendar from '../screens/Calendar'
+import AddRoomScreen from '../screens/AddRoomScreen';
+
+const ChatAppStack = createStackNavigator();
+const ModalStack = createStackNavigator();
 
 
 const Stack = createStackNavigator();
@@ -64,10 +68,30 @@ export default function HomeTabs() {
   );
 }
 
-// export default function HomeStack() {
-//   return (
-//     <Stack.Navigator headerMode='none'>
-//       <Stack.Screen name='Home' component={HomeScreen} />
-//     </Stack.Navigator>
-//   );
-// }
+export function ChatApp() {
+  return (
+    <ChatAppStack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: '#6646ee',
+        },
+        headerTintColor: '#ffffff',
+        headerTitleStyle: {
+          fontSize: 22,
+        },
+      }}
+    >
+      <ChatAppStack.Screen name='Home' component={HomeScreen} />
+    </ChatAppStack.Navigator>
+  );
+}
+
+export function HomeStack() {
+  return (
+    <ModalStack.Navigator mode='modal' headerMode='none'>
+      <ModalStack.Screen name='ChatApp' component={ChatApp} />
+      <ModalStack.Screen name='AddRoomScreen' component={AddRoomScreen} />
+      <ModalStack.Screen name='MessageList' component={MessageList} />
+    </ModalStack.Navigator>
+  );
+}
