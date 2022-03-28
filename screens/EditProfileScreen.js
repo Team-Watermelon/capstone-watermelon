@@ -12,6 +12,8 @@ import {
   Platform,
 } from 'react-native';
 
+import DropDown from '../components/DropDown'
+
 import {useTheme} from 'react-native-paper';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -140,8 +142,6 @@ const EditProfileScreen = () => {
           {userData ? userData.firstName : ''}
           </Text>
         </View>
-        
-
         <View style={styles.action}>
           <FontAwesome name="user-o" color={colors.text} size={20} />
           <TextInput
@@ -205,7 +205,7 @@ const EditProfileScreen = () => {
             ]}
           />
         </View>
-        
+        <DropDown />
         <TouchableOpacity style={styles.commandButton} onPress={handleUpdate}>
           <Text style={styles.panelButtonTitle}>Update</Text>
         </TouchableOpacity>
