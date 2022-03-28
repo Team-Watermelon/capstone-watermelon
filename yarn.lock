@@ -6159,6 +6159,11 @@
   dependencies:
     "prop-types" "^15.5.10"
 
+"react-native-card-component@^0.1.0":
+  "integrity" "sha512-EnuhKEg+hmNgEOC/Qxxq64xrVM0rVW5tcT+8nCQHAkn4p+Wix/mBMK1FqcQVJjHAHbRrziCzjoQoEBfsr/jzxg=="
+  "resolved" "https://registry.npmjs.org/react-native-card-component/-/react-native-card-component-0.1.0.tgz"
+  "version" "0.1.0"
+
 "react-native-document-picker@^8.0.0":
   "integrity" "sha512-4O1FNOJHzfZ7BBFOJhNoeCKHSjthFtZyMEWJsAxX1ORdShGSa6miLvTHtQjpCDMNWSoPU1C7fXLNNPrv8GAarQ=="
   "resolved" "https://registry.npmjs.org/react-native-document-picker/-/react-native-document-picker-8.0.0.tgz"

@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useContext} from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-
+import UserCard from '../components/UserCard';
 import { IconButton } from '../components';
 import Firebase from '../config/firebase';
 import { AuthenticatedUserContext } from '../navigation/AuthenticatedUserProvider';
@@ -30,6 +30,7 @@ export default function HomeScreen() {
           onPress={handleSignOut}
         />
       </View>
+      <UserCard />
       <Text style={styles.text}>Your UID is: {user.uid} </Text>
      
     </View>
