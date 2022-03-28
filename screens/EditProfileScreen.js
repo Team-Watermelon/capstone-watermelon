@@ -177,7 +177,7 @@ const EditProfileScreen = () => {
           ]}
         />
       </View>
-     
+      <View style={styles.action}>
           <TextInput
             placeholder="Email"
             placeholderTextColor="#666666"
