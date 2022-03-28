@@ -27,6 +27,9 @@ export default function HomeScreen( {navigation}) {
             _id: documentSnapshot.id,
             // give defaults
             name: documentSnapshot.name,
+            latestMessage: {
+              text: ''
+            },
             ...documentSnapshot.data(),
           };
         });
@@ -62,7 +65,7 @@ export default function HomeScreen( {navigation}) {
           >
           <List.Item
             title={item.name}
-            description="Item description"
+            description={item.latestMessage.text}
             titleNumberOfLines={1}
             titleStyle={styles.listTitle}
             descriptionStyle={styles.listDescription}
@@ -93,6 +96,7 @@ const styles = StyleSheet.create({
     borderColor: "gray",
   },
   container: {
+    paddingTop: 40,
     backgroundColor: '#f5f5f5',
     flex: 1,
   },

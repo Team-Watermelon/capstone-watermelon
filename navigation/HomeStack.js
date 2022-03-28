@@ -17,6 +17,32 @@ const ModalStack = createStackNavigator();
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
 
+const MessagesStack = ({navigation}) => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name="MessagesList"
+      component={MessageList}
+      options={{
+        headerShown: false,
+      }}
+    />
+    <Stack.Screen
+      name="Message"
+      component={Message}
+      options={{
+        headerTitle: 'Messages',
+        headerBackTitleVisible: false,
+        headerTitleAlign: 'center',
+        headerStyle: {
+          backgroundColor: '#fff',
+          shadowColor: '#fff',
+          elevation: 0,
+        },
+      }}
+    />
+  </Stack.Navigator>
+);
+
 
 export default function HomeTabs() {
   return (
@@ -37,7 +63,7 @@ export default function HomeTabs() {
       />
       <Tab.Screen
         name='Messages'
-        component={MessageList}
+        component={MessagesStack}
         options={{
           tabBarLabel: 'Messages',
           tabBarIcon: ({ color }) => (
@@ -65,7 +91,7 @@ export default function HomeTabs() {
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name='Message'
         component={Message}
         options={{
@@ -74,7 +100,7 @@ export default function HomeTabs() {
             <MaterialCommunityIcons name='account' color={color} size={26} />
           ),
         }}
-      />
+      /> */}
     </Tab.Navigator>
   );
 }
