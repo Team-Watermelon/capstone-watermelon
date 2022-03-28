@@ -22,17 +22,20 @@ export default function HomeScreen() {
     <View style={styles.container}>
       <StatusBar style='dark-content' />
       <View style={styles.row}>
-        <Text style={styles.title}>open.</Text>
+        <Text style={styles.title}>open.{"\n"}{"\n"}{"\n"}</Text>
         <IconButton
           name='logout'
           size={24}
-          color='#fff'
+          color='black'
           onPress={handleSignOut}
         />
+        <Text style={styles.text}>Your UID is: {user.uid}{"\n"}{"\n"}{"\n"}</Text>
+        
       </View>
-      <UserCard />
-      <Text style={styles.text}>Your UID is: {user.uid} </Text>
-     
+      <Text style={styles.stories}>
+        Stories
+      </Text>
+      <UserCard />    
     </View>
   );
 }
@@ -40,7 +43,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#e93b81',
+    backgroundColor: '#fff',
     paddingTop: 50,
     paddingHorizontal: 12,
   },
@@ -53,12 +56,18 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: '600',
-    color: '#fff',
+    color: '#AC9292',
   },
   text: {
     fontSize: 16,
     fontWeight: 'normal',
-    color: '#fff',
+    color: '#AC9292',
   },
+  stories: {
+    fontSize: 28,
+    fontWeight: 'normal',
+    color: '#AC9292',
+    padding: 10,
+  }
 });
 
