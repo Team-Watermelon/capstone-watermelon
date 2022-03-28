@@ -17,7 +17,6 @@ import { AuthenticatedUserContext } from "../navigation/AuthenticatedUserProvide
 
 const PersonalPage = ({ navigation, route }) => {
   const { user } = useContext(AuthenticatedUserContext);
-
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -59,14 +58,17 @@ const PersonalPage = ({ navigation, route }) => {
               : "https://i.pinimg.com/custom_covers/222x/85498161615209203_1636332751.jpg",
           }}
         />
-        <Text style={styles.userName}>
-          {userData ? userData.firstName || "Test" : "Test"}
-        </Text>
-
-        <Text style={styles.userLocation}>
-          {userData ? userData.city || "City" : "City"}
-        </Text>
-        {/* <Icon name="map-marker-radius" color="#777777" size={15}/> */}
+        <Text style={styles.userName}>{userData ? userData.firstName || 'Test' : 'Test'}</Text>
+        
+        <Text style={styles.userLocation}>{userData ? userData.city || 'City' : 'City'}</Text>
+        {/* <Icon name="map-marker-outline" color="#777777" size={15}/> */}
+        <View>
+          <TouchableOpacity
+                style={styles.userCategoryIvf}
+                >
+                <Text style={styles.userCategoryBtnTxtIvf}>{userData ? userData.category || 'Category' : 'Category'}</Text>
+              </TouchableOpacity>
+        </View>
         <View style={styles.userBtnWrapper}>
           {route.params ? (
             <>
@@ -97,11 +99,11 @@ const PersonalPage = ({ navigation, route }) => {
             {userData ? userData.aboutMe || "About Me" : "About Me"}
           </Text>
         </View>
-        <View style={styles.userInfoItem}>
-          <Text style={styles.userInfoTitle}>10</Text>
-          <Text style={styles.userInfoSubTitle}>Posts</Text>
-        </View>
-        <View>
+        {/* <View style={styles.userInfoItem}>
+            <Text style={styles.userInfoTitle}>10</Text>
+            <Text style={styles.userInfoSubTitle}>Posts</Text>
+          </View> */}
+          <View>
           <AudioPlayer />
           <RNActionButton buttonColor="blue">
             <RNActionButton.Item
@@ -178,6 +180,19 @@ const styles = StyleSheet.create({
   },
   userBtnTxt: {
     color: "#AF8EC9",
+  },
+  userCategoryIvf: {
+    borderColor: '#E8A196',
+    borderWidth: 2,
+    borderRadius: 10,
+    paddingVertical: 4,
+    paddingHorizontal: 6,
+    marginHorizontal: 15,
+    backgroundColor: '#E8A196'
+  },
+  userCategoryBtnTxtIvf: {
+    color: '#fff',
+    backgroundColor: '#E8A196'
   },
   userInfoItem: {
     justifyContent: "center",

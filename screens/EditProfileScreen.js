@@ -11,10 +11,11 @@ import {
   Image,
   Platform,
 } from "react-native";
-
 import { useTheme } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import DropDown from '../components/DropDown'
+
 // import Feather from 'react-native-vector-icons/Feather';
 import firebase from "firebase/app";
 import "firebase/firestore";
@@ -176,8 +177,7 @@ const EditProfileScreen = () => {
           ]}
         />
       </View>
-      {/* <View style={styles.action}>
-          <FontAwesome name="envelope-o" color={colors.text} size={20} />
+     
           <TextInput
             placeholder="Email"
             placeholderTextColor="#666666"
@@ -190,42 +190,43 @@ const EditProfileScreen = () => {
               },
             ]}
           />
-        </View> */}
-      <View style={styles.action}>
-        <Icon name="map-marker-outline" color={colors.text} size={20} />
-        <TextInput
-          placeholder="City"
-          placeholderTextColor="#666666"
-          autoCorrect={false}
-          value={userData ? userData.city : ""}
-          onChangeText={(txt) => setUserData({ ...userData, city: txt })}
-          style={[
-            styles.textInput,
-            {
-              color: colors.text,
-            },
-          ]}
-        />
-      </View>
-      <View style={styles.action}>
-        <Icon name="information-variant" color={colors.text} size={20} />
-        <TextInput
-          placeholder="About Me"
-          placeholderTextColor="#666666"
-          autoCorrect={false}
-          value={userData ? userData.aboutMe : ""}
-          onChangeText={(txt) => setUserData({ ...userData, aboutMe: txt })}
-          style={[
-            styles.textInput,
-            {
-              color: colors.text,
-            },
-          ]}
-        />
-      </View>
-      <TouchableOpacity style={styles.commandButton} onPress={handleUpdate}>
-        <Text style={styles.panelButtonTitle}>Update</Text>
-      </TouchableOpacity>
+        </View>
+        <View style={styles.action}>
+          <Icon name="map-marker-outline" color={colors.text} size={20} />
+          <TextInput
+            placeholder="City"
+            placeholderTextColor="#666666"
+            autoCorrect={false}
+            value={userData ? userData.city : ''}
+            onChangeText={(txt) => setUserData({...userData, city: txt})}
+            style={[
+              styles.textInput,
+              {
+                color: colors.text,
+              },
+            ]}
+          />
+        </View>
+        <View style={styles.action}>
+          <Icon name="information-variant" color={colors.text} size={20} />
+          <TextInput
+            placeholder="About Me"
+            placeholderTextColor="#666666"
+            autoCorrect={false}
+            value={userData ? userData.aboutMe : ''}
+            onChangeText={(txt) => setUserData({...userData, aboutMe: txt})}
+            style={[
+              styles.textInput,
+              {
+                color: colors.text,
+              },
+            ]}
+          />
+        </View>
+        <DropDown />
+        <TouchableOpacity style={styles.commandButton} onPress={handleUpdate}>
+          <Text style={styles.panelButtonTitle}>Update</Text>
+        </TouchableOpacity>
     </View>
   );
 };
