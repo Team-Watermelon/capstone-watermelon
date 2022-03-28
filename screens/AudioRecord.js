@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { Audio } from "expo-av";
 import { saveAudio } from "../api/saveAudio";
+import { toDataURL } from "../helper/Base64";
 import { Alert } from "react-native";
 
 export default function AudioRecord({navigation}) {
@@ -56,20 +57,6 @@ export default function AudioRecord({navigation}) {
     setRecorded(recording);
     // console.log("recording in stop Recording..", recording);
     //console.log("recorded in stop Recording..", recorded);
-  }
-
-  function toDataURL(uri, callback) {
-    var xhr = new XMLHttpRequest();
-    xhr.onload = function () {
-      var reader = new FileReader();
-      reader.onloadend = function () {
-        callback(reader.result);
-      };
-      reader.readAsDataURL(xhr.response);
-    };
-    xhr.open("GET", uri, true);
-    xhr.responseType = "blob";
-    xhr.send();
   }
 
   const handleUpload = () => {

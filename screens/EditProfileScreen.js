@@ -57,12 +57,12 @@ const EditProfileScreen = () => {
       allowsEditing: true,
       aspect: [3, 3],
     });
-    console.log('pickerResult.uri',pickerResult.uri);
+    console.log("pickerResult.uri", pickerResult.uri);
     return setImageURI(pickerResult.uri);
   };
   //uploud image uri to cloudinary after converting to base64
   const uploadImage = () => {
-      //convert image uri to base64 for cloudinary uplaoding
+    //convert image uri to base64 for cloudinary uplaoding
     toDataURL(imageURI, function (dataUrl) {
       const formData = new FormData();
       formData.append("file", `${dataUrl}`);
@@ -74,8 +74,8 @@ const EditProfileScreen = () => {
       })
         .then((resp) => resp.json())
         .then((data) => {
-          const url = data.url
-          saveProfileImage(url)
+          const url = data.url;
+          saveProfileImage(url);
           console.log("data.url in uploadImage", data.url);
           //setUserData({ ...userData, userImage: data.url });
         });
@@ -98,7 +98,7 @@ const EditProfileScreen = () => {
         userImage: userData.userImage,
       })
       .then(() => {
-        console.log("User Updated!",userData.userImage);
+        console.log("User Updated!", userData.userImage);
         Alert.alert(
           "Profile Updated!",
           "Your profile has been updated successfully."
