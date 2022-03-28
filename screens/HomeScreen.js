@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useContext} from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import UserCard from '../components/UserCard';
 import { IconButton } from '../components';
 import Firebase from '../config/firebase';
@@ -20,6 +20,7 @@ export default function HomeScreen() {
   };
   return (
     <View style={styles.container}>
+      <ScrollView>
       <StatusBar style='dark-content' />
       <View style={styles.row}>
         <Text style={styles.title}>open.{"\n"}{"\n"}{"\n"}</Text>
@@ -35,7 +36,8 @@ export default function HomeScreen() {
       <Text style={styles.stories}>
         Stories
       </Text>
-      <UserCard />    
+      <UserCard />
+      </ScrollView>
     </View>
   );
 }
