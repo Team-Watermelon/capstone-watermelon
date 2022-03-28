@@ -22,18 +22,16 @@ export default function AudioPlayer() {
       .get()
       .then((documentSnapshot) => {
         if (documentSnapshot.exists) {
-          console.log("new url ", documentSnapshot.data().audio);
+          console.log("getAudio url ", documentSnapshot.data().audio);
           const url = documentSnapshot.data().audio;
-          console.log("url in getAudio be4 set", audioURL);
-          setAudioURL(url);
+          // console.log("getAudio audioURL be4 set", audioURL);
+          //setAudioURL(url);
           handleAudioPlayPause(url)
-          
-          console.log("url in getAudio after set", audioURL);
+          console.log("getAudio audioURL after set", audioURL);
         }
       });
   };
  
-
     // useEffect(() => {
     //   if (playbackObj === null) {
     //     setPlaybackObj(sound);
@@ -42,13 +40,13 @@ export default function AudioPlayer() {
 
   const handleAudioPlayPause = async (url) => {
     //await getAudio();
-    console.log("playbackObj in handle player", playbackObj);
-    console.log("playingStatus in handle player", playbackStatus);
+    console.log("HandlePlayer audioURL", audioURL);
+    // console.log("HandlePlayer playbackObj", playbackObj);
+    console.log("HandlePlayer playStatus", playbackStatus);
     try {
-      console.log("url in handleAudioPlay", audioURL);
-      
-      //playing audio for the first time
-      if (playbackObj !== null && playbackStatus === null ) {
+      //playing audio for the first time: if playbackObj is null or new audio url is set
+      //then create new playbackObj and load it with new audio url
+      if (playbackObj === null || url !==audioURL ) {
         const playbackObj = new Audio.Sound();
         const status = await playbackObj.loadAsync(
           {
@@ -57,39 +55,37 @@ export default function AudioPlayer() {
           { shouldPlay: true }
         );
         setPlaybackObj(playbackObj)
+        setAudioURL(url)
         //await playbackObj.playAsync();
         setIsPlaying(false);
         //playbackStatus.isPlaying=true;
-        console.log('isPlaying in start',isPlaying)
-        // console.log("playbackObj after set", playbackObj);
-        console.log("playbackStatus after set", playbackStatus);
+        console.log('PLAY isPlaying',isPlaying)
+        // console.log("PLAY playbackObj after set", playbackObj);
+        console.log("PLAY status", status);
+        console.log("PLAY playbackStatus before set", playbackStatus);
         return setplaybackStatus(status)
       } 
-   //pasue
+   //pasue; if playbackStatus.isPlaying is true, pauseAsync, reset the status (.isPlaying should change to false)
       if (playbackStatus.isPlaying===true) {
+        //const status = await playbackObj.setStatusAsync({isBuffering: false, isPlaying:false , shouldPlay: false })
         const status = await playbackObj.pauseAsync();
         setIsPlaying(false);
-        console.log('isPlaying in pause',isPlaying)
-        console.log('playbackObj status in pause',playbackObj)
-        console.log('playingback status in pause',playbackStatus)
-        // playbackStatus.isPlaying = false;
-        // console.log('isPlaying in pause',isPlaying)
+        console.log('PAUSE isPlaying',isPlaying)
+        // console.log('PAUSE playbackObj',playbackObj)
+        console.log('PAUSE playbackStatus before set',playbackStatus)
         return setplaybackStatus(status);
-        console.log("isPlaying after play for resuem");
-        // }
       } 
       //resume 
      if (playbackStatus.isPlaying===false) {
-        await playbackObj.setStatusAsync({ shouldPlay: true })
+        //const status = await playbackObj.setStatusAsync({ isBuffering: true, isPlaying:false, shouldPlay: true})
         const status = await playbackObj.playAsync();
-        console.log('this is resume',isPlaying)
-        console.log('playbackObj status in resume',playbackObj)
-        console.log('playingback status in resume',playbackStatus)
-        // playbackStatus.isPlaying = true;
         setIsPlaying(true);
-        console.log('this is resume',isPlaying)
-         setplaybackStatus(status);
+        console.log('RESUME isPlaying',isPlaying)
+        // console.log('RESUME playbackObj',playbackObj)
+        console.log('RESUME playbackStatus before set',playbackStatus)
+         return setplaybackStatus(status);
       }
+
     } catch (error) {
       console.log(error);
     }

@@ -13,33 +13,28 @@ import {
 } from 'react-native';
 
 import {useTheme} from 'react-native-paper';
-
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 // import Feather from 'react-native-vector-icons/Feather';
-
 import BottomSheet from 'reanimated-bottom-sheet';
 import Animated from 'react-native-reanimated';
-
 import firebase from "firebase/app";
 import "firebase/firestore";
 // import storage from '@react-native-firebase/storage';
-
 import {AuthenticatedUserContext} from '../navigation/AuthenticatedUserProvider';
-
-// import ImagePicker from 'react-native-image-crop-picker';
+import * as ImagePicker from 'expo-image-picker';
 
 const EditProfileScreen = () => {
 
-//   const [image, setImage] = useState('https://api.adorable.io/avatars/80/abott@adorable.png');
+// const [image, setImage] = useState('https://api.adorable.io/avatars/80/abott@adorable.png');
   const {colors} = useTheme();
   const {user} = useContext(AuthenticatedUserContext);
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [transferred, setTransferred] = useState(0);
   const [userData, setUserData] = useState(null);
-  const bs = React.createRef();
-  const fall = new Animated.Value(1);
+  const [imagURL, setImageURL] = useState(0)
+
   const getUser = async() => {
     const currentUser = await firebase.firestore()
     .collection('users')
@@ -52,6 +47,48 @@ const EditProfileScreen = () => {
       }
     })
   }
+
+  function toDataURL(uri, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+      var reader = new FileReader();
+      reader.onloadend = function () {
+        callback(reader.result);
+      };
+      reader.readAsDataURL(xhr.response);
+    };
+    xhr.open("GET", uri, true);
+    xhr.responseType = "blob";
+    xhr.send();
+  }
+  const openImagePickerAsync = async () => {
+    const permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
+    if (permissionResult.granted === false) {
+      alert('Permission to access camera roll is required!');
+      return;
+    }
+    const pickerResult = await ImagePicker.launchImageLibraryAsync();
+    console.log(pickerResult.uri);
+    setImage(pickerResult.uri)
+  };
+
+  const uploadImage = ()=>{
+    toDataURL(image, function (dataUrl) { 
+    const formData = new FormData();
+    formData.append("file", `${dataUrl}`);
+      formData.append("upload_preset", "openArms");
+      formData.append("cloud_name", "capstonewatermelon");
+      fetch("https://api.cloudinary.com/v1_1/capstonewatermelon/auto/upload", {
+        method: "post",
+        body: formData,
+      })
+      .then(resp => resp.json())
+      .then(data => {
+        console.log('data in uploadImage',data)
+        setImageURL(data.url)
+      })
+    });
+  };
 
   const handleUpdate = async() => {
     // let imgUrl = await uploadImage();
@@ -109,34 +146,6 @@ const EditProfileScreen = () => {
   //   });
   // }
 
-  const renderInner = () => (
-    <View style={styles.panel}>
-      <View style={{alignItems: 'center'}}>
-        <Text style={styles.panelTitle}>Upload Photo</Text>
-        <Text style={styles.panelSubtitle}>Choose Your Profile Picture</Text>
-      </View>
-      <TouchableOpacity style={styles.panelButton} onPress={takePhotoFromCamera}>
-        <Text style={styles.panelButtonTitle}>Take Photo</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.panelButton} onPress={choosePhotoFromLibrary}>
-        <Text style={styles.panelButtonTitle}>Choose From Library</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.panelButton}
-        onPress={() => bs.current.snapTo(1)}>
-        <Text style={styles.panelButtonTitle}>Cancel</Text>
-      </TouchableOpacity>
-    </View>
-  );
- 
-  const  renderHeader = () => (
-    <View style={styles.header}>
-      <View style={styles.panelHeader}>
-        <View style={styles.panelHandle} />
-      </View>
-    </View>
-  );
-
   return (
     <View style={styles.container}>
        {/* <BottomSheet
@@ -151,6 +160,12 @@ const EditProfileScreen = () => {
       {/* <Animated.View style={{margin: 20,
         opacity: Animated.add(0.1, Animated.multiply(fall, 1.0)),
     }}> */}
+      <TouchableOpacity onPress={openImagePickerAsync} style={styles.button}>
+        <Text style={styles.buttonText}>Pick a photo</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={uploadImage} style={styles.button}>
+        <Text style={styles.buttonText}>UpLoad</Text>
+      </TouchableOpacity>
         <View style={{alignItems: 'center'}}>
         <TouchableOpacity onPress={() => {}}>
             <View
