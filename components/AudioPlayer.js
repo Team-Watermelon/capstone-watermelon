@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View,TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Audio } from "expo-av";
+import { Feather } from "@expo/vector-icons";
 import firebase from "firebase/app";
 import "firebase/firestore";
 
-const sound = new Audio.Sound();
-
 export default function AudioPlayer() {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [soundPlaying, setSoundPlaying] = useState(false);
-  const [playbackObject, setPlaybackObject] = useState(null);
-  const [playbackStatus, setPlaybackStatus] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [playbackObj, setPlaybackObj] = useState(null);
+  const [playbackStatus, setplaybackStatus] = useState(null);
   const [audioURL, setAudioURL] = useState(0);
+  // const [soundPlaying, setSoundPlaying] = useState(false);
 
   const getAudio = async () => {
     const currentUser = firebase.auth().currentUser;
@@ -23,35 +22,70 @@ export default function AudioPlayer() {
       .get()
       .then((documentSnapshot) => {
         if (documentSnapshot.exists) {
-          console.log("Audio Data", documentSnapshot.data().audio);
+          console.log("getAudio url ", documentSnapshot.data().audio);
           const url = documentSnapshot.data().audio;
-          setAudioURL(url);
-          console.log("url in getAudio", audioURL);
+          // console.log("getAudio audioURL be4 set", audioURL);
+          //setAudioURL(url);
+          handleAudioPlayPause(url)
+          console.log("getAudio audioURL after set", audioURL);
         }
       });
   };
-  //   useEffect(() => {
-  //     if (playbackObject === null) {
-  //       setPlaybackObject(sound);
-  //     }
-  //   }, []);
+ 
+    // useEffect(() => {
+    //   if (playbackObj === null) {
+    //     setPlaybackObj(sound);
+    //   }
+    // }, []);
 
   const handleAudioPlayPause = async (url) => {
-    getAudio();
-    console.log("url in handleAudioPlay", audioURL);
+    //await getAudio();
+    console.log("HandlePlayer audioURL", audioURL);
+    // console.log("HandlePlayer playbackObj", playbackObj);
+    console.log("HandlePlayer playStatus", playbackStatus);
     try {
-      if (isPlaying) {
-        await sound.pauseAsync();
+      //playing audio for the first time: if playbackObj is null or new audio url is set
+      //then create new playbackObj and load it with new audio url
+      if (playbackObj === null || url !==audioURL ) {
+        const playbackObj = new Audio.Sound();
+        const status = await playbackObj.loadAsync(
+          {
+            uri: url,
+          },
+          { shouldPlay: true }
+        );
+        setPlaybackObj(playbackObj)
+        setAudioURL(url)
+        //await playbackObj.playAsync();
         setIsPlaying(false);
-      } else {
-       
+        //playbackStatus.isPlaying=true;
+        console.log('PLAY isPlaying',isPlaying)
+        // console.log("PLAY playbackObj after set", playbackObj);
+        console.log("PLAY status", status);
+        console.log("PLAY playbackStatus before set", playbackStatus);
+        return setplaybackStatus(status)
+      } 
+   //pasue; if playbackStatus.isPlaying is true, pauseAsync, reset the status (.isPlaying should change to false)
+      if (playbackStatus.isPlaying===true) {
+        //const status = await playbackObj.setStatusAsync({isBuffering: false, isPlaying:false , shouldPlay: false })
+        const status = await playbackObj.pauseAsync();
+        setIsPlaying(false);
+        console.log('PAUSE isPlaying',isPlaying)
+        // console.log('PAUSE playbackObj',playbackObj)
+        console.log('PAUSE playbackStatus before set',playbackStatus)
+        return setplaybackStatus(status);
+      } 
+      //resume 
+     if (playbackStatus.isPlaying===false) {
+        //const status = await playbackObj.setStatusAsync({ isBuffering: true, isPlaying:false, shouldPlay: true})
+        const status = await playbackObj.playAsync();
         setIsPlaying(true);
-        await sound.loadAsync({
-          uri: url
-        });
-        await sound.playAsync();
-        
+        console.log('RESUME isPlaying',isPlaying)
+        // console.log('RESUME playbackObj',playbackObj)
+        console.log('RESUME playbackStatus before set',playbackStatus)
+         return setplaybackStatus(status);
       }
+
     } catch (error) {
       console.log(error);
     }
@@ -83,23 +117,24 @@ export default function AudioPlayer() {
       <Text style={{ fontWeight: "bold", fontSize: 18, marginBottom: 15 }}>
         My story
       </Text>
-      <TouchableOpacity 
-      style = {styles.control}
-      size={24}
+      <TouchableOpacity
+        style={styles.control}
+        size={24}
         color="white"
-        onPress={()=>handleAudioPlayPause(audioURL)}>
+        onPress={() => {getAudio ()}}
+      >
         {/* style={{
         //   alignSelf: "center",
         //   backgroundColor: "gray",
         //   padding: 10,
         //   borderRadius: 50,
         // }} */}
-        {isPlaying ? (
+        <Feather name={isPlaying? "pause":"play"} size={35} color="#3D425C"></Feather>
+        {/* {isPlaying ? (
           <Ionicons name='ios-pause' size={48} color='#444' />
         ) : (
           <Ionicons name='ios-play-circle' size={48} color='#444' />
-        )}
-       
+        )} */}
       </TouchableOpacity>
     </View>
   );
@@ -109,16 +144,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center'
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
   trackInfoText: {
-    textAlign: 'center',
-    flexWrap: 'wrap',
-    color: '#550088'
+    textAlign: "center",
+    flexWrap: "wrap",
+    color: "#550088",
   },
   control: {
-    margin: 20
+    margin: 20,
   },
-})
+});

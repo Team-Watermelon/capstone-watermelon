@@ -1,15 +1,24 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import { Button, StyleSheet, Text, View } from "react-native";
+import {
+  Button,
+  StyleSheet,
+  Text,
+  View,
+  Modal,
+  TouchableOpacity,
+} from "react-native";
 import { Audio } from "expo-av";
 import { saveAudio } from "../api/saveAudio";
+import { toDataURL } from "../helper/Base64";
 import { Alert } from "react-native";
 
-export default function AudioRecord() {
+export default function AudioRecord({navigation}) {
   const [recording, setRecording] = useState({});
   const [recorded, setRecorded] = useState({});
   const [message, setMessage] = useState("");
   const [sound, setSound] = useState(null);
+  const [isModalVisible, setModalVisible] = useState(true);
 
   async function startRecording() {
     try {
@@ -50,20 +59,6 @@ export default function AudioRecord() {
     //console.log("recorded in stop Recording..", recorded);
   }
 
-  function toDataURL(uri, callback) {
-    var xhr = new XMLHttpRequest();
-    xhr.onload = function () {
-      var reader = new FileReader();
-      reader.onloadend = function () {
-        callback(reader.result);
-      };
-      reader.readAsDataURL(xhr.response);
-    };
-    xhr.open("GET", uri, true);
-    xhr.responseType = "blob";
-    xhr.send();
-  }
-
   const handleUpload = () => {
     //console.log("recording inside handleupload", recording);
     //console.log("recorded inside handleupload", recorded);
@@ -94,27 +89,42 @@ export default function AudioRecord() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text>{message}</Text>
-      <Button
-        title={
-          Object.keys(recording).length ? "Stop Recording" : "Start Recording"
-        }
-        onPress={Object.keys(recording).length ? stopRecording : startRecording}
-      />
-      <Button
-        style={styles.button}
-        onPress={() => sound.replayAsync()}
-        title="Play"
-      ></Button>
-      <Button
-        title="Save"
-        onPress={() => {
-          handleUpload();
-        }}
-      ></Button>
-      <StatusBar style="auto" />
-    </View>
+    <Modal
+      visible={isModalVisible}
+      animationType="slide"
+      presentationStyle="fullScreen"
+      onRequestClose={() => {
+        Alert.alert("Modal has been closed.");
+        setModalVisible(false);
+      }}
+    >
+      <View style={styles.modal}>
+        <Text>{message}</Text>
+        <Button
+          title={
+            Object.keys(recording).length ? "Stop Recording" : "Start Recording"
+          }
+          onPress={
+            Object.keys(recording).length ? stopRecording : startRecording
+          }
+        />
+        <Button
+          style={styles.button}
+          onPress={() => sound.replayAsync()}
+          title="Play"
+        ></Button>
+        <Button
+          title="Save"
+          onPress={() => {
+            handleUpload();
+          }}
+        ></Button>
+        <StatusBar style="auto" />
+        <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+          <Text style={styles.modalHeaderCloseText}>X</Text>
+        </TouchableOpacity>
+      </View>
+    </Modal>
   );
 }
 
@@ -136,6 +146,25 @@ const styles = StyleSheet.create({
   },
   button: {
     margin: 16,
+  },
+  modalHeaderCloseText: {
+    textAlign: "center",
+    paddingLeft: 5,
+    paddingRight: 5,
+  },
+  modal: {
+    flex: 1,
+    margin: 15,
+    padding: 15,
+    backgroundColor: "white",
+    shadowColor: "purple",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
 });
 

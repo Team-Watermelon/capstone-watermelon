@@ -14,7 +14,6 @@ export default function SignupScreen({ navigation }) {
   const [password, setPassword] = useState("");
   // const [firstName, setfirstName] = useState('');
   // const [lastName, setlastName] = useState('');
-
   const [passwordVisibility, setPasswordVisibility] = useState(true);
   const [rightIcon, setRightIcon] = useState("eye");
   const [signupError, setSignupError] = useState("");
