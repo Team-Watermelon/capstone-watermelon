@@ -3,14 +3,14 @@ import { Title } from "react-native-paper";
 import { AuthenticatedUserContext } from "../navigation/AuthenticatedUserProvider";
 import Button from "../components/Button";
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, FlatList } from "react-native";
+import { View, StyleSheet, FlatList, TouchableOpacity } from "react-native";
 import { List, Divider } from "react-native-paper";
 import "firebase/firestore";
 import firebase from "firebase/app";
 
 import Loading from '../components/Loading';
 
-export default function HomeScreen() {
+export default function HomeScreen( {navigation}) {
   const [threads, setThreads] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -57,6 +57,9 @@ export default function HomeScreen() {
         keyExtractor={(item) => item._id}
         ItemSeparatorComponent={() => <Divider />}
         renderItem={({ item }) => (
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Message', { thread: item })}
+          >
           <List.Item
             title={item.name}
             description="Item description"
@@ -65,6 +68,7 @@ export default function HomeScreen() {
             descriptionStyle={styles.listDescription}
             descriptionNumberOfLines={1}
           />
+          </TouchableOpacity>
         )}
       />
     </View>

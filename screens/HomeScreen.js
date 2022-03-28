@@ -11,7 +11,6 @@ const auth = Firebase.auth();
 
 export default function HomeScreen() {
   const { user } = useContext(AuthenticatedUserContext);
-  //console.log({ user })
   const handleSignOut = async () => {
     try {
       await auth.signOut();

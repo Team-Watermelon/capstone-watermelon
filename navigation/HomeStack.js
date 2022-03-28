@@ -8,6 +8,7 @@ import MessageList from '../screens/MessageList';
 import Profile from '../screens/Profile'
 import Calendar from '../screens/Calendar'
 import AddRoomScreen from '../screens/AddRoomScreen';
+import Message from '../screens/Message';
 
 const ChatAppStack = createStackNavigator();
 const ModalStack = createStackNavigator();
@@ -64,11 +65,21 @@ export default function HomeTabs() {
           ),
         }}
       />
+      <Tab.Screen
+        name='Message'
+        component={Message}
+        options={{
+          tabBarLabel: 'Message',
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name='account' color={color} size={26} />
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 }
 
-export function ChatApp() {
+function ChatApp() {
   return (
     <ChatAppStack.Navigator
       screenOptions={{
@@ -82,16 +93,15 @@ export function ChatApp() {
       }}
     >
       <ChatAppStack.Screen name='Home' component={HomeScreen} />
+      <ChatAppStack.Screen name='Message' component={Message} />
     </ChatAppStack.Navigator>
   );
 }
 
 export function HomeStack() {
   return (
-    <ModalStack.Navigator mode='modal' headerMode='none'>
-      <ModalStack.Screen name='ChatApp' component={ChatApp} />
-      <ModalStack.Screen name='AddRoomScreen' component={AddRoomScreen} />
-      <ModalStack.Screen name='MessageList' component={MessageList} />
-    </ModalStack.Navigator>
+      <Stack.Navigator>
+        <Stack.Screen name = 'Message'component={Message}/>
+      </Stack.Navigator>
   );
 }
