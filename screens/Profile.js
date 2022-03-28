@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
   userCategoryIvf: {
     borderColor: '#E8A196',
     borderWidth: 2,
-    borderRadius: 1,
+    borderRadius: 10,
     paddingVertical: 4,
     paddingHorizontal: 6,
     marginHorizontal: 15,
