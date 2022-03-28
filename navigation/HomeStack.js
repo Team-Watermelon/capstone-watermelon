@@ -1,4 +1,5 @@
 import React from 'react';
+import {View, TouchableOpacity, Text} from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -7,10 +8,40 @@ import HomeScreen from '../screens/HomeScreen';
 import Messages from '../screens/Messages';
 import Profile from '../screens/Profile'
 import Calendar from '../screens/Calendar'
+import AudioRecord from '../screens/AudioRecord'
+import EditProfileScreen from '../screens/EditProfileScreen';
 
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
+
+
+const ProfileStackScreen = ({navigation}) => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name="Profile"
+      component={Profile}
+      options={{
+        headerShown: false,
+      }}
+    />
+    <Stack.Screen name = 'AudioRecord'component={AudioRecord} />
+    <Stack.Screen
+      name="EditProfile"
+      component={EditProfileScreen}
+      options={{
+        headerTitle: 'Edit Profile',
+        headerBackTitleVisible: false,
+        headerTitleAlign: 'center',
+        headerStyle: {
+          backgroundColor: '#fff',
+          shadowColor: '#fff',
+          elevation: 0,
+        },
+      }}
+    />
+  </Stack.Navigator>
+);
 
 export default function HomeTabs() {
   return (
@@ -51,7 +82,7 @@ export default function HomeTabs() {
       />
       <Tab.Screen
         name='Profile'
-        component={Profile}
+        component={ProfileStackScreen}
         options={{
           tabBarLabel: 'Profile',
           tabBarIcon: ({ color }) => (
@@ -63,10 +94,4 @@ export default function HomeTabs() {
   );
 }
 
-// export default function HomeStack() {
-//   return (
-//     <Stack.Navigator headerMode='none'>
-//       <Stack.Screen name='Home' component={HomeScreen} />
-//     </Stack.Navigator>
-//   );
-// }
+
