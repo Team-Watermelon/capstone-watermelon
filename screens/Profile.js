@@ -29,7 +29,7 @@ const PersonalPage = ({ navigation, route }) => {
       .get()
       .then((documentSnapshot) => {
         if (documentSnapshot.exists) {
-          console.log("User Data", documentSnapshot.data());
+          console.log("User Data in Profile", documentSnapshot.data().userImage);
           setUserData(documentSnapshot.data());
         }
       });

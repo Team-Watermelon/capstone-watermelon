@@ -16,24 +16,20 @@ import { useTheme } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 // import Feather from 'react-native-vector-icons/Feather';
-import BottomSheet from "reanimated-bottom-sheet";
-import Animated from "react-native-reanimated";
 import firebase from "firebase/app";
 import "firebase/firestore";
-// import storage from '@react-native-firebase/storage';
 import { AuthenticatedUserContext } from "../navigation/AuthenticatedUserProvider";
 import * as ImagePicker from "expo-image-picker";
 import { saveProfileImage } from "../api/saveProfileImage";
+import { toDataURL } from "../helper/Base64";
 
 const EditProfileScreen = () => {
-  // const [image, setImage] = useState('https://api.adorable.io/avatars/80/abott@adorable.png');
   const { colors } = useTheme();
   const { user } = useContext(AuthenticatedUserContext);
-  const [image, setImage] = useState(null);
+  const [imageURI, setImageURI] = useState(null);
   // const [uploading, setUploading] = useState(false);
   // const [transferred, setTransferred] = useState(0);
   const [userData, setUserData] = useState(null);
-  // const [imageURL, setImageURL] = useState(0);
 
   const getUser = async () => {
     const currentUser = await firebase
@@ -43,43 +39,31 @@ const EditProfileScreen = () => {
       .get()
       .then((documentSnapshot) => {
         if (documentSnapshot.exists) {
-          console.log("User Data", documentSnapshot.data());
+          console.log("User Data in EditProfile", documentSnapshot.data());
           setUserData(documentSnapshot.data());
-          setImage(documentSnapshot.data().userImage)
+          setImageURI(documentSnapshot.data().userImage);
         }
       });
   };
-//convert image uri to base64 for cloudinary uplaoding
-  function toDataURL(uri, callback) {
-    var xhr = new XMLHttpRequest();
-    xhr.onload = function () {
-      var reader = new FileReader();
-      reader.onloadend = function () {
-        callback(reader.result);
-      };
-      reader.readAsDataURL(xhr.response);
-    };
-    xhr.open("GET", uri, true);
-    xhr.responseType = "blob";
-    xhr.send();
-  }
+
   const openImagePickerAsync = async () => {
     const permissionResult =
-      await ImagePicker.requestMediaLibraryPermissionsAsync()
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (permissionResult.granted === false) {
       alert("Permission to access camera roll is required!");
       return;
     }
-    const pickerResult = await  ImagePicker.launchImageLibraryAsync({
+    const pickerResult = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
       aspect: [3, 3],
-    })
-    console.log(pickerResult);
-   setImage(pickerResult.uri)
+    });
+    console.log('pickerResult.uri',pickerResult.uri);
+    return setImageURI(pickerResult.uri);
   };
-//uploud image uri to cloudinary after converting to base64
+  //uploud image uri to cloudinary after converting to base64
   const uploadImage = () => {
-    toDataURL(image, function (dataUrl) {
+      //convert image uri to base64 for cloudinary uplaoding
+    toDataURL(imageURI, function (dataUrl) {
       const formData = new FormData();
       formData.append("file", `${dataUrl}`);
       formData.append("upload_preset", "openArms");
@@ -90,20 +74,17 @@ const EditProfileScreen = () => {
       })
         .then((resp) => resp.json())
         .then((data) => {
-          //save image url to firebase
-          saveProfileImage(data.url);
-          //set imageURL 
-          //setImageURL(data.url)
-          setUserData({ ...userData, userImage: data.url })
-          console.log("data in uploadImage", data.url);
+          const url = data.url
+          saveProfileImage(url)
+          console.log("data.url in uploadImage", data.url);
+          //setUserData({ ...userData, userImage: data.url });
         });
     });
   };
 
   const handleUpdate = async () => {
-    //upload image to cloudinary and firebase
     uploadImage();
-    firebase
+    await firebase
       .firestore()
       .collection("users")
       .doc(user.uid)
@@ -117,13 +98,14 @@ const EditProfileScreen = () => {
         userImage: userData.userImage,
       })
       .then(() => {
-        console.log("User Updated!");
+        console.log("User Updated!",userData.userImage);
         Alert.alert(
           "Profile Updated!",
           "Your profile has been updated successfully."
         );
       });
   };
+
   useEffect(() => {
     getUser();
   }, []);
@@ -143,7 +125,9 @@ const EditProfileScreen = () => {
           >
             <ImageBackground
               source={{
-                uri:  image ? image : "https://preview.redd.it/v0caqchbtn741.jpg?auto=webp&s=c5d05662a039c031f50032e22a7c77dfcf1bfddc",
+                uri: imageURI
+                  ? imageURI
+                  : "https://i.pinimg.com/custom_covers/222x/85498161615209203_1636332751.jpg",
               }}
               style={{ height: 100, width: 100 }}
               imageStyle={{ borderRadius: 15 }}
