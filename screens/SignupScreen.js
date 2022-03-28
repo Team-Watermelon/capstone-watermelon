@@ -1,7 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { useState } from "react";
-import { StyleSheet, Text, View, Button as RNButton } from "react-native";
+import { StyleSheet, Text, View, Button as RNButton, ImageBackground, Image } from "react-native";
 
 import { Button, InputField, ErrorMessage } from "../components";
 //import Firebase from "../config/firebase";
@@ -45,9 +45,12 @@ export default function SignupScreen({ navigation }) {
     }
   };
 
+
   return (
     <View style={styles.container}>
+       <ImageBackground source={require('../assets/coverhands.png')} resizeMode="cover" style={styles.image}>
       <StatusBar style="dark-content" />
+      <Image source={require('../assets/logo.png')}  style={styles.logo} />
       <Text style={styles.title}>Create new account</Text>
       {/* <InputField
         inputStyle={{
@@ -122,7 +125,7 @@ export default function SignupScreen({ navigation }) {
       {signupError ? <ErrorMessage error={signupError} visible={true} /> : null}
       <Button
         onPress={onHandleSignup}
-        backgroundColor="#f57c00"
+        backgroundColor="#AF8EC9"
         title="Signup"
         tileColor="#fff"
         titleSize={20}
@@ -133,8 +136,9 @@ export default function SignupScreen({ navigation }) {
       <RNButton
         onPress={() => navigation.navigate("Login")}
         title="Go to Login"
-        color="#fff"
+        color="#AF8EC9"
       />
+      </ImageBackground>
     </View>
   );
 }
@@ -142,15 +146,25 @@ export default function SignupScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#e93b81",
-    paddingTop: 50,
+    paddingTop: 0,
     paddingHorizontal: 12,
   },
   title: {
     fontSize: 24,
     fontWeight: "600",
-    color: "#fff",
+    color: "#AF8EC9",
     alignSelf: "center",
     paddingBottom: 24,
+  },
+  image: {
+    flex: 1,
+    justifyContent: "center"
+  },
+  logo:{
+    width: 300,
+    height: 400,
+    resizeMode: 'contain',
+    alignSelf: 'center',
+    padding:0
   },
 });
