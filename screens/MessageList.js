@@ -2,7 +2,7 @@
 import { Title } from "react-native-paper";
 import { AuthenticatedUserContext } from "../navigation/AuthenticatedUserProvider";
 import Button from "../components/Button";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, StyleSheet, FlatList, TouchableOpacity } from "react-native";
 import { List, Divider } from "react-native-paper";
 import "firebase/firestore";
@@ -10,13 +10,34 @@ import firebase from "firebase/app";
 
 import Loading from '../components/Loading';
 
+
+
 export default function HomeScreen( {navigation}) {
+  const { user } = useContext(AuthenticatedUserContext);
   const [threads, setThreads] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const getThreads = async () => {
+    await
+    firebase
+  .firestore()
+  .collection("THREADS")
+  .where("user1", "==", "FsRU4JsDPLZUC5qRWBg1jU3S5F33"  )
+  .get()
+  .then((querySnapshot) => {
+    const data = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    console.log("Users with id FsRU4JsDPLZUC5qRWBg1jU3S5F33", data);
+  });
+  }
+
   useEffect(() => {
+    getThreads()
     const unsubscribe = firebase.firestore()
       .collection("THREADS")
+      .where("users", "array-contains", user.uid)
       .onSnapshot((querySnapshot) => {
         const threads = querySnapshot.docs.map((documentSnapshot) => {
           // console.log('this is querysnapshot', querySnapshot)

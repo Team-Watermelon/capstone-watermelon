@@ -105,29 +105,29 @@ export default function HomeTabs() {
   );
 }
 
-function ChatApp() {
-  return (
-    <ChatAppStack.Navigator
-      screenOptions={{
-        headerStyle: {
-          backgroundColor: '#6646ee',
-        },
-        headerTintColor: '#ffffff',
-        headerTitleStyle: {
-          fontSize: 22,
-        },
-      }}
-    >
-      <ChatAppStack.Screen name='Home' component={HomeScreen} />
-      <ChatAppStack.Screen name='Message' component={Message} />
-    </ChatAppStack.Navigator>
-  );
-}
+// function ChatApp() {
+//   return (
+//     <ChatAppStack.Navigator
+//       screenOptions={{
+//         headerStyle: {
+//           backgroundColor: '#6646ee',
+//         },
+//         headerTintColor: '#ffffff',
+//         headerTitleStyle: {
+//           fontSize: 22,
+//         },
+//       }}
+//     >
+//       <ChatAppStack.Screen name='Home' component={HomeScreen} />
+//       <ChatAppStack.Screen name='Message' component={Message} />
+//     </ChatAppStack.Navigator>
+//   );
+// }
 
-export function HomeStack() {
-  return (
-      <Stack.Navigator>
-        <Stack.Screen name = 'Message'component={Message}/>
-      </Stack.Navigator>
-  );
-}
+// export function HomeStack() {
+//   return (
+//       <Stack.Navigator>
+//         <Stack.Screen name = 'Message'component={Message}/>
+//       </Stack.Navigator>
+//   );
+// }
