@@ -1,4 +1,5 @@
 import React from 'react';
+import {View, TouchableOpacity, Text} from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -6,13 +7,14 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import HomeScreen from '../screens/HomeScreen';
 import MessageList from '../screens/MessageList';
 import Profile from '../screens/Profile'
-import Calendar from '../screens/Calendar'
 import AddRoomScreen from '../screens/AddRoomScreen';
 import Message from '../screens/Message';
+import Map from '../screens/Map'
+import AudioRecord from '../screens/AudioRecord'
+import EditProfileScreen from '../screens/EditProfileScreen';
 
 const ChatAppStack = createStackNavigator();
 const ModalStack = createStackNavigator();
-
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -43,17 +45,72 @@ const MessagesStack = ({navigation}) => (
   </Stack.Navigator>
 );
 
+const ProfileStackScreen = ({navigation}) => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name="Profile"
+      component={Profile}
+      options={{
+        headerShown: false,
+      }}
+    />
+    <Stack.Screen
+      name="Message"
+      component={Message}
+      options={{
+        headerTitle: 'Messages',
+               
+    <Stack.Screen name = 'AudioRecord'component={AudioRecord} />
+    <Stack.Screen
+      name="EditProfile"
+      component={EditProfileScreen}
+      options={{
+        headerTitle: 'Edit Profile',
+        headerBackTitleVisible: false,
+        headerTitleAlign: 'center',
+        headerStyle: {
+          backgroundColor: '#fff',
+          shadowColor: '#fff',
+          elevation: 0,
+        },
+      }}
+    />
+  </Stack.Navigator>
+);
+
+const HomeStackScreen = ({navigation}) => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name="Home"
+      component={HomeScreen}
+      options={{
+        headerShown: false,
+      }}
+    />
+    <Stack.Screen
+      name="HomeProfile"
+      component={Profile}
+      options={{
+        headerShown: false,
+      }}
+    />
+  </Stack.Navigator>
+);
 
 export default function HomeTabs() {
   return (
     <Tab.Navigator
       initialRouteName='Home'
-      activeColor='#e91e63'
-      barStyle={{ backgroundColor: 'aqua' }}
+      activeColor='#AF8EC9'
+      barStyle={{ 
+        background: 'rgb(175,142,201)'
+        // backgroundColor: '#fff' 
+      }}
+      
     >
       <Tab.Screen
         name='Home'
-        component={HomeScreen}
+        component={HomeStackScreen}
         options={{
           tabBarLabel: 'Home',
           tabBarIcon: ({ color }) => (
@@ -72,18 +129,18 @@ export default function HomeTabs() {
         }}
       />
       <Tab.Screen
-        name='Calendar'
-        component={Calendar}
+        name='Map'
+        component={Map}
         options={{
-          tabBarLabel: 'Calendar',
+          tabBarLabel: 'Map',
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name='calendar' color={color} size={26} />
+            <MaterialCommunityIcons name='map' color={color} size={26} />
           ),
         }}
       />
       <Tab.Screen
         name='Profile'
-        component={Profile}
+        component={ProfileStackScreen}
         options={{
           tabBarLabel: 'Profile',
           tabBarIcon: ({ color }) => (
@@ -91,43 +148,7 @@ export default function HomeTabs() {
           ),
         }}
       />
-      {/* <Tab.Screen
-        name='Message'
-        component={Message}
-        options={{
-          tabBarLabel: 'Message',
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name='account' color={color} size={26} />
-          ),
-        }}
-      /> */}
     </Tab.Navigator>
   );
 }
 
-// function ChatApp() {
-//   return (
-//     <ChatAppStack.Navigator
-//       screenOptions={{
-//         headerStyle: {
-//           backgroundColor: '#6646ee',
-//         },
-//         headerTintColor: '#ffffff',
-//         headerTitleStyle: {
-//           fontSize: 22,
-//         },
-//       }}
-//     >
-//       <ChatAppStack.Screen name='Home' component={HomeScreen} />
-//       <ChatAppStack.Screen name='Message' component={Message} />
-//     </ChatAppStack.Navigator>
-//   );
-// }
-
-// export function HomeStack() {
-//   return (
-//       <Stack.Navigator>
-//         <Stack.Screen name = 'Message'component={Message}/>
-//       </Stack.Navigator>
-//   );
-// }

@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-export default function PersonalPage() {
+export default function Map() {
   return (
     <View style={styles.container}>
-      <Text>Calendar Page</Text>
+      <Text>Map Page</Text>
     </View>
   );
 }

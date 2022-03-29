@@ -5,12 +5,13 @@ import { StyleSheet, Text, View, Button as RNButton, ImageBackground, Image } fr
 
 import { Button, InputField, ErrorMessage } from "../components";
 //import Firebase from "../config/firebase";
-import { registration } from '../api/registration'
+import { registration } from "../api/registration";
 
 export default function SignupScreen({ navigation }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  // const [firstName, setfirstName] = useState('');
+  // const [lastName, setlastName] = useState('');
   const [passwordVisibility, setPasswordVisibility] = useState(true);
   const [rightIcon, setRightIcon] = useState("eye");
   const [signupError, setSignupError] = useState("");
@@ -27,9 +28,9 @@ export default function SignupScreen({ navigation }) {
 
   const onHandleSignup = () => {
     if (!email) {
-      Alert.alert('Email field is required.');
+      Alert.alert("Email field is required.");
     } else if (!password) {
-      Alert.alert('Password field is required.');
+      Alert.alert("Password field is required.");
     } else {
       registration(
         email,
@@ -37,7 +38,7 @@ export default function SignupScreen({ navigation }) {
       );
     }
   }
-  
+
   return (
     <View style={styles.container}>
       <ImageBackground source={require('../assets/coverhands.png')} resizeMode="cover" style={styles.image}>
