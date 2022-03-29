@@ -5,16 +5,45 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import HomeScreen from '../screens/HomeScreen';
-import Messages from '../screens/Messages';
+import MessageList from '../screens/MessageList';
 import Profile from '../screens/Profile'
+import AddRoomScreen from '../screens/AddRoomScreen';
+import Message from '../screens/Message';
 import Map from '../screens/Map'
 import AudioRecord from '../screens/AudioRecord'
 import EditProfileScreen from '../screens/EditProfileScreen';
 
+const ChatAppStack = createStackNavigator();
+const ModalStack = createStackNavigator();
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
 
+const MessagesStack = ({navigation}) => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name="MessagesList"
+      component={MessageList}
+      options={{
+        headerShown: false,
+      }}
+    />
+    <Stack.Screen
+      name="Message"
+      component={Message}
+      options={{
+        headerTitle: 'Messages',
+        headerBackTitleVisible: false,
+        headerTitleAlign: 'center',
+        headerStyle: {
+          backgroundColor: '#fff',
+          shadowColor: '#fff',
+          elevation: 0,
+        },
+      }}
+    />
+  </Stack.Navigator>
+);
 
 const ProfileStackScreen = ({navigation}) => (
   <Stack.Navigator>
@@ -25,6 +54,12 @@ const ProfileStackScreen = ({navigation}) => (
         headerShown: false,
       }}
     />
+    <Stack.Screen
+      name="Message"
+      component={Message}
+      options={{
+        headerTitle: 'Messages',
+               
     <Stack.Screen name = 'AudioRecord'component={AudioRecord} />
     <Stack.Screen
       name="EditProfile"
@@ -85,7 +120,7 @@ export default function HomeTabs() {
       />
       <Tab.Screen
         name='Messages'
-        component={Messages}
+        component={MessagesStack}
         options={{
           tabBarLabel: 'Messages',
           tabBarIcon: ({ color }) => (
@@ -116,5 +151,4 @@ export default function HomeTabs() {
     </Tab.Navigator>
   );
 }
-
 
