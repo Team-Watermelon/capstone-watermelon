@@ -1,10 +1,10 @@
-import { StatusBar } from "expo-status-bar";
-import React, { useContext } from "react";
-import { StyleSheet, Text, View } from "react-native";
-
-import { IconButton, Button } from "../components";
-import Firebase from "../config/firebase";
-import { AuthenticatedUserContext } from "../navigation/AuthenticatedUserProvider";
+import { StatusBar } from 'expo-status-bar';
+import React, { useContext} from 'react';
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import UserCard from '../components/UserCard';
+import { IconButton } from '../components';
+import Firebase from '../config/firebase';
+import { AuthenticatedUserContext } from '../navigation/AuthenticatedUserProvider';
 
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -13,7 +13,8 @@ const Tab = createMaterialBottomTabNavigator();
 const auth = Firebase.auth();
 //const Tab = createMaterialBottomTabNavigator();
 
-export default function HomeScreen({ navigation }) {
+export default function HomeScreen() {
+  
   const { user } = useContext(AuthenticatedUserContext);
   const handleSignOut = async () => {
     try {
@@ -24,45 +25,24 @@ export default function HomeScreen({ navigation }) {
   };
   return (
     <View style={styles.container}>
-      <StatusBar style="dark-content" />
+      <ScrollView>
+      <StatusBar style='dark-content' />
       <View style={styles.row}>
-        <Text style={styles.title}>Welcome {user.email}!</Text>
+        <Text style={styles.title}>open.{"\n"}{"\n"}{"\n"}</Text>
         <IconButton
           name="logout"
           size={24}
-          color="#fff"
+          color='black'
           onPress={handleSignOut}
         />
+        <Text style={styles.text}>Your UID is: {user.uid}{"\n"}{"\n"}{"\n"}</Text>
+        
       </View>
-      <Text style={styles.text}>Your UID is: {user.uid} </Text>
-      <Button
-        onPress={() => navigation.navigate("PersonalPage")}
-        title="Go to Personal Page"
-        color="#fff"
-      />
-      <Tab.Navigator
-        initialRouteName="Feed"
-        labeled={false}
-        tabBarOptions={{
-          showIcon: true,
-          showLabel: false,
-          indicatorStyle: {
-            opacity: 0,
-          },
-        }}
-        barStyle={{ backgroundColor: "#ffffff" }}
-      >
-        <Tab.Screen
-          key={Date.now()}
-          name="Home"
-          component={HomeScreen}
-          options={{
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons name="home" color={color} size={26} />
-            ),
-          }}
-        />
-      </Tab.Navigator>
+      <Text style={styles.stories}>
+        Stories
+      </Text>
+      <UserCard />
+      </ScrollView>
     </View>
   );
 }
@@ -70,7 +50,7 @@ export default function HomeScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#e93b81",
+    backgroundColor: '#fff',
     paddingTop: 50,
     paddingHorizontal: 12,
   },
@@ -82,12 +62,19 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontWeight: "600",
-    color: "#fff",
+    fontWeight: '600',
+    color: '#AC9292',
   },
   text: {
     fontSize: 16,
-    fontWeight: "normal",
-    color: "#fff",
+    fontWeight: 'normal',
+    color: '#AC9292',
   },
+  stories: {
+    fontSize: 28,
+    fontWeight: 'normal',
+    color: '#AC9292',
+    padding: 10,
+  }
 });
+
