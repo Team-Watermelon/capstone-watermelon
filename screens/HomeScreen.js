@@ -17,7 +17,7 @@ import { AuthenticatedUserContext } from '../navigation/AuthenticatedUserProvide
 
 const auth = Firebase.auth();
 
-export default function HomeScreen() {
+export default function HomeScreen({navigation}) {
   const [users, setUsers] = useState(null);
   const [loading, setLoading] = useState(true);
   
@@ -99,9 +99,9 @@ useEffect(() => {
               <UserCard
                 item={item}
                 // onDelete={handleDelete}
-                // onPress={() =>
-                //   navigation.navigate('HomeProfile', {userId: item.userId})
-                // }
+                onPress={() =>
+                  navigation.navigate('HomeProfile',{id:item.id})
+                }
               />
             )}
             keyExtractor={(item) => item.id}

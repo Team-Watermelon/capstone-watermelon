@@ -5,8 +5,9 @@ import { Button, Text } from 'react-native-paper';
 import firebase from "firebase/app";
 import "firebase/firestore";
 import { AuthenticatedUserContext } from '../navigation/AuthenticatedUserProvider';
+import NewAudioPlayer from './NewAudioPlayer';
 
-const UserCard = ({item}) => {
+const UserCard = ({item, onPress}) => {
     const {user, logout} = useContext(AuthenticatedUserContext);
     const [userData, setUserData] = useState(null);
 
@@ -50,15 +51,13 @@ const UserCard = ({item}) => {
           <Text>
           {item ? item.firstName || 'Test' : 'Test'}{' '}
           </Text>
-          <Text>
-          {item ? item.city || 'Test City' : 'Test City'}{' '}
-          </Text>
         {/* text={'Ex Lorem magna sint labore ex commodo dolor minim ad.'}
         /> */}
         {/* </Card.Title> */}
         <Card.Row>
         <Card.Col>
-            <Button mode={'outlined'}>Listen to their story</Button>
+            {/* <Button mode={'outlined'}>Listen to their story</Button> */}
+            <NewAudioPlayer url ={item.audio}/>
         </Card.Col>
         <Card.Col>
             <Button mode={'contained'}>Connect with {userData ? userData.firstName || 'Test' : 'Test'}{' '}</Button>

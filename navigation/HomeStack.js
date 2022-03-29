@@ -43,6 +43,25 @@ const ProfileStackScreen = ({navigation}) => (
   </Stack.Navigator>
 );
 
+const HomeStackScreen = ({navigation}) => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name="Home"
+      component={HomeScreen}
+      options={{
+        headerShown: false,
+      }}
+    />
+    <Stack.Screen
+      name="HomeProfile"
+      component={Profile}
+      options={{
+        headerShown: false,
+      }}
+    />
+  </Stack.Navigator>
+);
+
 export default function HomeTabs() {
   return (
     <Tab.Navigator
@@ -56,7 +75,7 @@ export default function HomeTabs() {
     >
       <Tab.Screen
         name='Home'
-        component={HomeScreen}
+        component={HomeStackScreen}
         options={{
           tabBarLabel: 'Home',
           tabBarIcon: ({ color }) => (
