@@ -7,7 +7,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import HomeScreen from '../screens/HomeScreen';
 import Messages from '../screens/Messages';
 import Profile from '../screens/Profile'
-import Calendar from '../screens/Calendar'
+import Map from '../screens/Map'
 import AudioRecord from '../screens/AudioRecord'
 import EditProfileScreen from '../screens/EditProfileScreen';
 
@@ -47,8 +47,8 @@ export default function HomeTabs() {
   return (
     <Tab.Navigator
       initialRouteName='Home'
-      activeColor='#e91e63'
-      barStyle={{ backgroundColor: 'aqua' }}
+      activeColor='#AF8EC9'
+      barStyle={{ backgroundColor: '#fff' }}
     >
       <Tab.Screen
         name='Home'
@@ -71,12 +71,12 @@ export default function HomeTabs() {
         }}
       />
       <Tab.Screen
-        name='Calendar'
-        component={Calendar}
+        name='Map'
+        component={Map}
         options={{
-          tabBarLabel: 'Calendar',
+          tabBarLabel: 'Map',
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name='calendar' color={color} size={26} />
+            <MaterialCommunityIcons name='map' color={color} size={26} />
           ),
         }}
       />
