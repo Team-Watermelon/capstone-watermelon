@@ -12,6 +12,7 @@ import Message from '../screens/Message';
 import Map from '../screens/Map'
 import AudioRecord from '../screens/AudioRecord'
 import EditProfileScreen from '../screens/EditProfileScreen';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const ChatAppStack = createStackNavigator();
 const ModalStack = createStackNavigator();
@@ -99,13 +100,15 @@ const HomeStackScreen = ({navigation}) => (
 
 export default function HomeTabs() {
   return (
+    <LinearGradient 
+    start={{x: 0.0, y: 0.25}} end={{x: 1, y: 1.0}}
+colors={['#E8A196', '#E8A196', '#AF8EC9']}
+style={{ flex: 1 }}
+>
     <Tab.Navigator
       initialRouteName='Home'
-      activeColor='#AF8EC9'
-      barStyle={{ 
-        background: 'rgb(175,142,201)'
-        // backgroundColor: '#fff' 
-      }}
+      activeColor='#fff'
+      barStyle={{ backgroundColor: 'transparent' }}
       
     >
       <Tab.Screen
@@ -149,6 +152,7 @@ export default function HomeTabs() {
         }}
       />
     </Tab.Navigator>
+    </LinearGradient>
   );
 }
 

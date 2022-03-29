@@ -116,6 +116,8 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   logo:{
+    position: "absolute",
+    top: 0,
     width: 300,
     height: 400,
     resizeMode: 'contain',
