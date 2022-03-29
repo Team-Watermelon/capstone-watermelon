@@ -49,6 +49,8 @@ const PersonalPage = ({ navigation, route }) => {
         }}
         showsVerticalScrollIndicator={false}
       >
+        <Text style={styles.userName}>{userData ? userData.firstName || 'Test' : 'Test'}</Text>
+        <Text style={styles.userLocation}>{userData ? userData.city || 'City' : 'City'}</Text>
         <Image
           style={styles.userImage}
           source={{
@@ -57,10 +59,8 @@ const PersonalPage = ({ navigation, route }) => {
                 "https://i.pinimg.com/custom_covers/222x/85498161615209203_1636332751.jpg"
               : "https://i.pinimg.com/custom_covers/222x/85498161615209203_1636332751.jpg",
           }}
-        />
-        <Text style={styles.userName}>{userData ? userData.firstName || 'Test' : 'Test'}</Text>
+        />        
         
-        <Text style={styles.userLocation}>{userData ? userData.city || 'City' : 'City'}</Text>
         {/* <Icon name="map-marker-outline" color="#777777" size={15}/> */}
         <View>
           <TouchableOpacity

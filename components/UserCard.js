@@ -1,12 +1,12 @@
 import React, {useContext, useEffect, useState} from 'react'
 import Card from "react-native-card-component";
 import { SafeAreaView, StyleSheet} from 'react-native';
-import { Button } from 'react-native-paper';
+import { Button, Text } from 'react-native-paper';
 import firebase from "firebase/app";
 import "firebase/firestore";
 import { AuthenticatedUserContext } from '../navigation/AuthenticatedUserProvider';
 
-const UserCard = () => {
+const UserCard = ({item}) => {
     const {user, logout} = useContext(AuthenticatedUserContext);
     const [userData, setUserData] = useState(null);
 
@@ -14,7 +14,7 @@ const UserCard = () => {
         await firebase
           .firestore()
           .collection("users")
-          .doc(user.uid)
+          .doc(item.uid)
           .get()
           .then((documentSnapshot) => {
             if (documentSnapshot.exists) {
@@ -30,11 +30,11 @@ const UserCard = () => {
 
     return (
 <SafeAreaView >
-    <Card>
+    <Card key={item.id}>
         <Card.Thumbnail
         source={{
-            uri: userData
-              ? userData.userImg ||
+            uri: item
+              ? item.userImage ||
                 'https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg'
               : 'https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg',
           }} 
@@ -46,69 +46,22 @@ const UserCard = () => {
         containerStyle={{ justifyContent: 'center', alignItems: 'center' }}
     />
     <Card.Content>
-        <Card.Title>
-        {userData ? userData.firstName || 'Test' : 'Test'}{' '}
-
+        {/* <Card.Title> */}
+          <Text>
+          {item ? item.firstName || 'Test' : 'Test'}{' '}
+          </Text>
+          <Text>
+          {item ? item.city || 'Test City' : 'Test City'}{' '}
+          </Text>
         {/* text={'Ex Lorem magna sint labore ex commodo dolor minim ad.'}
         /> */}
-        </Card.Title>
-        {/* <Card.Row>
-        <Card.Col>
-            <Button mode={'outlined'}>Listen to Mary's Story</Button>
-        </Card.Col>
-        <Card.Col>
-            <Button mode={'contained'}>Connect with Mary</Button>
-        </Card.Col>
-        </Card.Row> */}
-    </Card.Content>
-</Card>
-<Card>
-    <Card.Thumbnail
-        source={{ uri: 'https://i.pinimg.com/custom_covers/222x/85498161615209203_1636332751.jpg' }}
-        style={{ height: 85, width: 97 }}
-        align={'left'}
-        // stretch
-        // imageProps={{resizeMode: 'contain'}}
-        containerStyle={{ justifyContent: 'center', alignItems: 'center' }}
-    />
-    <Card.Content>
-        <Card.Title
-        text={'Ex Lorem magna sint labore ex commodo dolor minim ad.'}
-        />
+        {/* </Card.Title> */}
         <Card.Row>
         <Card.Col>
-            <Button mode={'outlined'}>Listen to Mary's Story</Button>
+            <Button mode={'outlined'}>Listen to their story</Button>
         </Card.Col>
         <Card.Col>
-            <Button mode={'contained'}>Connect with Mary</Button>
-        </Card.Col>
-        </Card.Row>
-    </Card.Content>
-</Card>
-<Card>
-    <Card.Thumbnail
-        source={{ 
-            uri: userData
-              ? userData.userImg ||
-                'https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg'
-              : 'https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg',
-          }}
-        style={{ height: 85, width: 97 }}
-        align={'left'}
-        // stretch
-        // imageProps={{resizeMode: 'contain'}}
-        containerStyle={{ justifyContent: 'center', alignItems: 'center' }}
-    />
-    <Card.Content>
-        <Card.Title
-        text={'Ex Lorem magna sint labore ex commodo dolor minim ad.'}
-        />
-        <Card.Row>
-        <Card.Col>
-            <Button mode={'outlined'}>Listen to Mary's Story</Button>
-        </Card.Col>
-        <Card.Col>
-            <Button mode={'contained'}>Connect with Mary</Button>
+            <Button mode={'contained'}>Connect with {userData ? userData.firstName || 'Test' : 'Test'}{' '}</Button>
         </Card.Col>
         </Card.Row>
     </Card.Content>
