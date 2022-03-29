@@ -8,7 +8,7 @@ import {
   ScrollView,
   SafeAreaView,
 } from "react-native";
-import { AudioPlayer, RNActionButton } from "../components";
+import { NewAudioPlayer, RNActionButton } from "../components";
 import Icon from "react-native-vector-icons/Ionicons";
 import firebase from "firebase/app";
 import "firebase/firestore";
@@ -104,7 +104,7 @@ const PersonalPage = ({ navigation, route }) => {
             <Text style={styles.userInfoSubTitle}>Posts</Text>
           </View> */}
           <View>
-          <AudioPlayer />
+          <NewAudioPlayer url={userData ? userData.audio:null } />
           <RNActionButton buttonColor="blue">
             <RNActionButton.Item
               buttonColor="#9b59b6"

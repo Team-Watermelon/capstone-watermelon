@@ -4,18 +4,17 @@ import { Ionicons } from "@expo/vector-icons";
 import { Audio } from "expo-av";
 import { Feather } from "@expo/vector-icons";
 
-
 export default function NewAudioPlayer({url}) {
     const [isPlaying, setIsPlaying] = useState(true);
     const [playbackObj, setPlaybackObj] = useState(null);
     const [playbackStatus, setplaybackStatus] = useState(null);
     const [audioURL, setAudioURL] = useState(0);
 
-
   const handleAudioPlayPause = async (url) => {
-    //await getAudio();
+    if(url===null){
+        console.log('need recording somethig')
+    }
     console.log("HandlePlayer audioURL", audioURL);
-    // console.log("HandlePlayer playbackObj", playbackObj);
     console.log("HandlePlayer playStatus", playbackStatus);
     try {
       //playing audio for the first time: if playbackObj is null or new audio url is set
@@ -32,9 +31,7 @@ export default function NewAudioPlayer({url}) {
         setAudioURL(url)
         //await playbackObj.playAsync();
         setIsPlaying(false);
-        //playbackStatus.isPlaying=true;
         console.log('PLAY isPlaying',isPlaying)
-        // console.log("PLAY playbackObj after set", playbackObj);
         console.log("PLAY status", status);
         console.log("PLAY playbackStatus before set", playbackStatus);
         return setplaybackStatus(status)
@@ -45,7 +42,6 @@ export default function NewAudioPlayer({url}) {
         const status = await playbackObj.pauseAsync();
         setIsPlaying(false);
         console.log('PAUSE isPlaying',isPlaying)
-        // console.log('PAUSE playbackObj',playbackObj)
         console.log('PAUSE playbackStatus before set',playbackStatus)
         return setplaybackStatus(status);
       } 
@@ -55,7 +51,6 @@ export default function NewAudioPlayer({url}) {
         const status = await playbackObj.playAsync();
         setIsPlaying(true);
         console.log('RESUME isPlaying',isPlaying)
-        // console.log('RESUME playbackObj',playbackObj)
         console.log('RESUME playbackStatus before set',playbackStatus)
          return setplaybackStatus(status);
       }

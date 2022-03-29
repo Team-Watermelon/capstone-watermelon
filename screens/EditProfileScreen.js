@@ -14,7 +14,7 @@ import {
 import { useTheme } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import DropDown from '../components/DropDown'
+import DropDown from "../components/DropDown";
 
 // import Feather from 'react-native-vector-icons/Feather';
 import firebase from "firebase/app";
@@ -31,6 +31,7 @@ const EditProfileScreen = () => {
   // const [uploading, setUploading] = useState(false);
   // const [transferred, setTransferred] = useState(0);
   const [userData, setUserData] = useState(null);
+  const [imageURL, setImageURL] = useState(null);
 
   const getUser = async () => {
     const currentUser = await firebase
@@ -75,8 +76,9 @@ const EditProfileScreen = () => {
       })
         .then((resp) => resp.json())
         .then((data) => {
-          const url = data.url;
-          saveProfileImage(url);
+          //const url = data.url;
+          //saveProfileImage(url);
+          setImageURL(data.url);
           console.log("data.url in uploadImage", data.url);
           //setUserData({ ...userData, userImage: data.url });
         });
@@ -85,26 +87,28 @@ const EditProfileScreen = () => {
 
   const handleUpdate = async () => {
     uploadImage();
-    await firebase
-      .firestore()
-      .collection("users")
-      .doc(user.uid)
-      .update({
-        firstName: userData.firstName,
-        // lname: userData.lname,
-        aboutMe: userData.aboutMe,
-        // phone: userData.phone,
-        // country: userData.country,
-        city: userData.city,
-        userImage: userData.userImage,
-      })
-      .then(() => {
-        console.log("User Updated!", userData.userImage);
-        Alert.alert(
-          "Profile Updated!",
-          "Your profile has been updated successfully."
-        );
-      });
+    if (imageURL !== null) {
+      await firebase
+        .firestore()
+        .collection("users")
+        .doc(user.uid)
+        .update({
+          firstName: userData.firstName,
+          // lname: userData.lname,
+          aboutMe: userData.aboutMe,
+          // phone: userData.phone,
+          // country: userData.country,
+          city: userData.city,
+          userImage: imageURL,
+        })
+        .then(() => {
+          console.log("User Updated!", userData.userImage);
+          Alert.alert(
+            "Profile Updated!",
+            "Your profile has been updated successfully."
+          );
+        });
+    }
   };
 
   useEffect(() => {
@@ -178,55 +182,55 @@ const EditProfileScreen = () => {
         />
       </View>
       <View style={styles.action}>
-          <TextInput
-            placeholder="Email"
-            placeholderTextColor="#666666"
-            keyboardType="email-address"
-            autoCorrect={false}
-            style={[
-              styles.textInput,
-              {
-                color: colors.text,
-              },
-            ]}
-          />
-        </View>
-        <View style={styles.action}>
-          <Icon name="map-marker-outline" color={colors.text} size={20} />
-          <TextInput
-            placeholder="City"
-            placeholderTextColor="#666666"
-            autoCorrect={false}
-            value={userData ? userData.city : ''}
-            onChangeText={(txt) => setUserData({...userData, city: txt})}
-            style={[
-              styles.textInput,
-              {
-                color: colors.text,
-              },
-            ]}
-          />
-        </View>
-        <View style={styles.action}>
-          <Icon name="information-variant" color={colors.text} size={20} />
-          <TextInput
-            placeholder="About Me"
-            placeholderTextColor="#666666"
-            autoCorrect={false}
-            value={userData ? userData.aboutMe : ''}
-            onChangeText={(txt) => setUserData({...userData, aboutMe: txt})}
-            style={[
-              styles.textInput,
-              {
-                color: colors.text,
-              },
-            ]}
-          />
-        </View>
-        <DropDown />
-        <TouchableOpacity style={styles.commandButton} onPress={handleUpdate}>
-          <Text style={styles.panelButtonTitle}>Update</Text>
-        </TouchableOpacity>
+        <TextInput
+          placeholder="Email"
+          placeholderTextColor="#666666"
+          keyboardType="email-address"
+          autoCorrect={false}
+          style={[
+            styles.textInput,
+            {
+              color: colors.text,
+            },
+          ]}
+        />
+      </View>
+      <View style={styles.action}>
+        <Icon name="map-marker-outline" color={colors.text} size={20} />
+        <TextInput
+          placeholder="City"
+          placeholderTextColor="#666666"
+          autoCorrect={false}
+          value={userData ? userData.city : ""}
+          onChangeText={(txt) => setUserData({ ...userData, city: txt })}
+          style={[
+            styles.textInput,
+            {
+              color: colors.text,
+            },
+          ]}
+        />
+      </View>
+      <View style={styles.action}>
+        <Icon name="information-variant" color={colors.text} size={20} />
+        <TextInput
+          placeholder="About Me"
+          placeholderTextColor="#666666"
+          autoCorrect={false}
+          value={userData ? userData.aboutMe : ""}
+          onChangeText={(txt) => setUserData({ ...userData, aboutMe: txt })}
+          style={[
+            styles.textInput,
+            {
+              color: colors.text,
+            },
+          ]}
+        />
+      </View>
+      <DropDown />
+      <TouchableOpacity style={styles.commandButton} onPress={handleUpdate}>
+        <Text style={styles.panelButtonTitle}>Update</Text>
+      </TouchableOpacity>
     </View>
   );
 };
