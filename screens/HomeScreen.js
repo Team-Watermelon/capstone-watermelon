@@ -79,7 +79,7 @@ useEffect(() => {
     <View style={styles.container}>
       <ScrollView>
       <StatusBar style='dark-content' />
-      <View style={styles.row}>
+      {/* <View style={styles.row}>
         <Text style={styles.title}>open.{"\n"}{"\n"}{"\n"}</Text>
         <IconButton
           name='logout'
@@ -89,7 +89,7 @@ useEffect(() => {
         />
         <Text style={styles.text}>Your UID is: {user.uid}{"\n"}{"\n"}{"\n"}</Text>
         
-      </View>
+      </View> */}
       <Text style={styles.stories}>
         Stories
       </Text>

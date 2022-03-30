@@ -1,7 +1,8 @@
 import React, {useContext, useEffect, useState} from 'react'
 import Card from "react-native-card-component";
-import { SafeAreaView, StyleSheet} from 'react-native';
+import { SafeAreaView, StyleSheet, View} from 'react-native';
 import { Button, Text } from 'react-native-paper';
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import firebase from "firebase/app";
 import "firebase/firestore";
 import { AuthenticatedUserContext } from '../navigation/AuthenticatedUserProvider';
@@ -48,26 +49,50 @@ const UserCard = ({item, onPress}) => {
         // imageProps={{resizeMode: 'contain'}}
         containerStyle={{ justifyContent: 'center', alignItems: 'center' }}
     />
-    <Card.Content>
         {/* <Card.Title> */}
+        <View style={{marginLeft: 16}}>
         
-          <Text>
+        
+            <Text
+              style={{
+                fontSize: 18,
+                color: '#AC9292',
+                fontWeight: 'bold',
+                fontFamily: 'Sen',
+                textTransform: 'capitalize',
+                paddingLeft: 15,
+                paddingTop: 0
+              }}>
           {item ? item.firstName || 'Test' : 'Test'}{' '}
           </Text>
          
-        {/* text={'Ex Lorem magna sint labore ex commodo dolor minim ad.'}
-        /> */}
-        {/* </Card.Title> */}
-        <Card.Row>
-        <Card.Col>
+          <Text
+                style={{
+                  color: '#AC9292',
+                  fontSize: 14,
+                }}>
+                Listen to {item ? item.firstName || 'Test' : 'Test'}{' '}'s Story
+              </Text>     
             {/* <Button mode={'outlined'}>Listen to their story</Button> */}
-            <NewAudioPlayer url ={item.audio}/>
-        </Card.Col>
-        <Card.Col>
-            <Button mode={'contained'}>Connect with {userData ? userData.firstName || 'Test' : 'Test'}{' '}</Button>
-        </Card.Col>
-        </Card.Row>
-    </Card.Content>
+            <NewAudioPlayer url ={item.audio} />
+            <View
+              style={{
+                marginTop: 4,
+                borderWidth: 0,
+                paddingLeft: 15,
+                flexDirection: 'row'
+                // width: '85%',
+              }}>
+               <Icon name="message" color='#AC9292' size={20} /> 
+              <Text
+                style={{
+                  color: '#AC9292',
+                  fontSize: 14,
+                }}>
+                Connect with {item ? item.firstName || 'Test' : 'Test'}{' '}
+              </Text>              
+            </View>
+            </View>
 </Card>
 </TouchableOpacity>
 </SafeAreaView>
