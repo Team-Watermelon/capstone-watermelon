@@ -21,11 +21,13 @@ const PersonalPage = ({ navigation, route }) => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
 
+
+
   const getUser = async () => {
     await firebase
       .firestore()
       .collection("users")
-      .doc(route.params ? route.params.userId : user.uid)
+      .doc(route.params ? route.params.currentUser.id : user.uid)
       .get()
       .then((documentSnapshot) => {
         if (documentSnapshot.exists) {
@@ -77,7 +79,7 @@ const PersonalPage = ({ navigation, route }) => {
                 <Text style={styles.userCategoryBtnTxtIvf}>{userData ? userData.category || 'Category' : 'Category'}</Text>
               </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.userBtn} onPress={() => {
+        {/* <TouchableOpacity style={styles.userBtn} onPress={() => {
           //we need to check whether the two users (route.params.uid and user.uid) already have a chat
           //YES: get the existing chat and direct to message room
           //NO: create a new room
@@ -95,7 +97,7 @@ const PersonalPage = ({ navigation, route }) => {
           
         }}>
                 <Text style={styles.userBtnTxt}>Message</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
         <View style={styles.userBtnWrapper}>
           {route.params ? (
             <>
@@ -110,13 +112,12 @@ const PersonalPage = ({ navigation, route }) => {
                  .add({
                    id: userData.data.id,
                    users: [userData.data.id, user.uid],
-                   name: userData.data.firstName
+                   name: `${userData.data.firstName} and ${user.email}` 
                  }
                  )
                  .then(() => {
                    navigation.navigate('Message', { thread: userData.data.id });
-                 });
-                     
+                 });   
                    }
               }>
                 <Text style={styles.userBtnTxt}>Message</Text>

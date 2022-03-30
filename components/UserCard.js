@@ -32,6 +32,7 @@ const UserCard = ({item, onPress}) => {
 
     return (
 <SafeAreaView >
+<TouchableOpacity onPress={onPress}>
     <Card key={item.id}>
         <Card.Thumbnail
         source={{
@@ -49,11 +50,11 @@ const UserCard = ({item, onPress}) => {
     />
     <Card.Content>
         {/* <Card.Title> */}
-        <TouchableOpacity onPress={onPress}>
+        
           <Text>
           {item ? item.firstName || 'Test' : 'Test'}{' '}
           </Text>
-          </TouchableOpacity>
+         
         {/* text={'Ex Lorem magna sint labore ex commodo dolor minim ad.'}
         /> */}
         {/* </Card.Title> */}
@@ -68,6 +69,7 @@ const UserCard = ({item, onPress}) => {
         </Card.Row>
     </Card.Content>
 </Card>
+</TouchableOpacity>
 </SafeAreaView>
     )
 }
