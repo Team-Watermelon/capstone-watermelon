@@ -20,6 +20,7 @@ const PersonalPage = ({ navigation, route }) => {
   const { user } = useContext(AuthenticatedUserContext);
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
+  let userFullData= {};
 
 
 
@@ -32,13 +33,14 @@ const PersonalPage = ({ navigation, route }) => {
       .then((documentSnapshot) => {
         if (documentSnapshot.exists) {
           console.log("User Data in Profile", documentSnapshot.data());
-          let userFullData = {};
+          // let userFullData = {};
           userFullData.data = documentSnapshot.data()
           userFullData.data.id = documentSnapshot.id;
           console.log('this is userFullData', userFullData)
-          setUserData(userFullData);
+          setUserData(userFullData.data);
         }
       });
+      console.log('this is userFullData', userFullData)
       console.log('this is userData', userData)
    
   };
@@ -56,9 +58,12 @@ const PersonalPage = ({ navigation, route }) => {
         contentContainerStyle={{
           justifyContent: "center",
           alignItems: "center",
+          paddingTop: 180
         }}
         showsVerticalScrollIndicator={false}
       >
+        {/* <Text style={styles.userName}>{userData ? userData.firstName || 'Test' : 'Test'}</Text>
+        <Text style={styles.userLocation}>{userData ? userData.city || 'City' : 'City'}</Text> */}
         <Text style={styles.userName}>{userData ? userData.firstName || 'Test' : 'Test'}</Text>
         <Text style={styles.userLocation}>{userData ? userData.city || 'City' : 'City'}</Text>
         <Image
