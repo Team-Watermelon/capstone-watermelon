@@ -102,7 +102,7 @@ useEffect(() => {
                 item={item}
                 // onDelete={handleDelete}
                 onPress={() =>
-                  navigation.navigate('HomeProfile',{userId:item.id})
+                  navigation.navigate('HomeProfile',{currentUser:item})
                 }
               />
             )}

@@ -19,6 +19,7 @@ const PersonalPage = ({ navigation, route, userId }) => {
   const { user } = useContext(AuthenticatedUserContext);
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
+ const { currentUser} = route.params;
 
   const getUser = async () => {
     await firebase
@@ -26,7 +27,7 @@ const PersonalPage = ({ navigation, route, userId }) => {
       .collection("users")
       // .where('userId', '==', route.params ? route.params.userId : user.uid)
       // .doc(route.params ? route.params.userId : user.uid)
-      .doc(userId? userId:user.uid)
+      .doc(currentUser.id)
       .get()
       .then((documentSnapshot) => {
         if (documentSnapshot.exists) {

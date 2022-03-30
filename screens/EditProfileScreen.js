@@ -105,7 +105,6 @@ const EditProfileScreen = () => {
       })
       .then(() => {
         console.log("User Updated!", userData.userImage);
-        
       });
   };
 
