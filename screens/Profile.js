@@ -133,6 +133,19 @@ const PersonalPage = ({ navigation, route }) => {
               >
                 <Text style={styles.userBtnTxt}>Edit Profile</Text>
               </TouchableOpacity>
+              <RNActionButton buttonColor="blue">
+            <RNActionButton.Item
+              buttonColor="#9b59b6"
+              title="Add Audio"
+              onPress={() => navigation.navigate("AudioRecord")}
+            >
+              <Icon name="md-create" style={styles.actionButtonIcon} />
+            </RNActionButton.Item>
+            {/* add video story from here? */}
+            {/* <RNActionButton.Item buttonColor='#3498db' title="Add Video" onPress={() => navigation.navigate('upload video story?')}>
+            <Icon name="md-create" style={styles.actionButtonIcon} />
+          </RNActionButton.Item> */}
+          </RNActionButton>
             </>
           )}
         </View>
@@ -147,19 +160,7 @@ const PersonalPage = ({ navigation, route }) => {
           </View> */}
           <View>
           <NewAudioPlayer url={userData ? userData.audio:null } />
-          <RNActionButton buttonColor="blue">
-            <RNActionButton.Item
-              buttonColor="#9b59b6"
-              title="Add Audio"
-              onPress={() => navigation.navigate("AudioRecord")}
-            >
-              <Icon name="md-create" style={styles.actionButtonIcon} />
-            </RNActionButton.Item>
-            {/* add video story from here? */}
-            {/* <RNActionButton.Item buttonColor='#3498db' title="Add Video" onPress={() => navigation.navigate('upload video story?')}>
-            <Icon name="md-create" style={styles.actionButtonIcon} />
-          </RNActionButton.Item> */}
-          </RNActionButton>
+         
         </View>
       </ScrollView>
     </SafeAreaView>

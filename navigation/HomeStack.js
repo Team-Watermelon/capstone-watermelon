@@ -109,6 +109,11 @@ const HomeStackScreen = ({navigation}) => (
         headerShown: false,
       }}
     />
+     <Stack.Screen
+      name="Message"
+      component={Message}
+      options={{
+        headerTitle: 'Messages'}}/>
   </Stack.Navigator>
 );
 
