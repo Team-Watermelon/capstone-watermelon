@@ -7,15 +7,18 @@ import { Entypo } from '@expo/vector-icons';
 import Slider from '@react-native-community/slider';
 
 
-export default function App({url}) {
+export default function AudioPlayer({url}) {
   const [Loaded, SetLoaded] = React.useState(false);
   const [Loading, SetLoading] = React.useState(false);
   const [Playing, SetPlaying] = React.useState(false);
   const [Duration, SetDuration] = React.useState(0);
   const [Value, SetValue] = React.useState(0);
+ // const [audioULR,setAudioURL] = React.useState(url)
+
   const sound = React.useRef(new Audio.Sound());
 
   const source = {uri: url}
+  console.log('source',source)
   const UpdateStatus = async (data) => {
     try {
       if (data.didJustFinish) {
@@ -49,11 +52,12 @@ export default function App({url}) {
       const result = await sound.current.getStatusAsync();
       if (result.isLoaded) {
         if (result.isPlaying === false) {
-          
           sound.current.playAsync();
           SetPlaying(true);
-          SetLoaded(false)
-          sound.current.unloadAsync()
+          //result.isPlaying === true;
+          console.log('result in play',result)
+          // SetLoaded(false)
+          // sound.current.unloadAsync()
         }
       }
     } catch (error) {
@@ -90,13 +94,16 @@ export default function App({url}) {
   const LoadAudio = async () => {
     SetLoading(true);
     const checkLoading = await sound.current.getStatusAsync();
+    console.log('checkingLoading',checkLoading)
     if (checkLoading.isLoaded === false) {
       try {
+        console.log('url in loading',url)
         const result = await sound.current.loadAsync(
           source,
           {},
           true
         );
+        console.log('result',result)
         if (result.isLoaded === false) {
           SetLoading(false);
           SetLoaded(false);

@@ -31,7 +31,7 @@ const PersonalPage = ({ navigation, route, userId }) => {
       .get()
       .then((documentSnapshot) => {
         if (documentSnapshot.exists) {
-          console.log("User Data in Profile", documentSnapshot.data().userImage);
+          console.log("User Data in Profile", documentSnapshot.data());
           setUserData(documentSnapshot.data());
         }
       });
