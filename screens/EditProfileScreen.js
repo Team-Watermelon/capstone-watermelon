@@ -179,20 +179,6 @@ const EditProfileScreen = () => {
         />
       </View>
       <View style={styles.action}>
-        <TextInput
-          placeholder="Email"
-          placeholderTextColor="#666666"
-          keyboardType="email-address"
-          autoCorrect={false}
-          style={[
-            styles.textInput,
-            {
-              color: colors.text,
-            },
-          ]}
-        />
-      </View>
-      <View style={styles.action}>
         <Icon name="map-marker-outline" color={colors.text} size={20} />
         <TextInput
           placeholder="City"
