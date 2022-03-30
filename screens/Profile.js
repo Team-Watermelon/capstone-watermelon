@@ -41,6 +41,7 @@ const PersonalPage = ({ navigation, route }) => {
         }
       });
       console.log('this is userFullData', userFullData)
+     
       console.log('this is userData', userData)
    
   };
@@ -115,13 +116,13 @@ const PersonalPage = ({ navigation, route }) => {
                  firebase.firestore()
                  .collection('THREADS')
                  .add({
-                   id: userData.data.id,
-                   users: [userData.data.id, user.uid],
-                   name: `${userData.data.firstName} and ${user.email}` 
+                   id: userData.id,
+                   users: [userData.id, user.uid],
+                   name: `${userData.firstName} and ${user.email}` 
                  }
                  )
                  .then(() => {
-                   navigation.navigate('Message', { thread: userData.data.id });
+                   navigation.navigate('Message', { thread: userData.id });
                  });   
                    }
               }>
