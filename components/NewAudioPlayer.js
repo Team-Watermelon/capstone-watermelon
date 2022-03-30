@@ -83,12 +83,12 @@ export default function NewAudioPlayer({url}) {
 
   return (
     <View style={styles.container}>
-      <Text style={{ fontWeight: "bold", fontSize: 18, marginBottom: 15 }}>
+      {/* <Text style={{ fontWeight: "bold", fontSize: 10, marginBottom: 2 }}>
         My story
-      </Text>
+      </Text> */}
       <TouchableOpacity
         style={styles.control}
-        size={24}
+        size={12}
         color="white"
         onPress={() => {handleAudioPlayPause (url)}}
       >
@@ -98,7 +98,7 @@ export default function NewAudioPlayer({url}) {
         //   padding: 10,
         //   borderRadius: 50,
         // }} */}
-        <Feather name={isPlaying? "pause":"play"} size={35} color="#3D425C"></Feather>
+        <Feather name={isPlaying? "play":"pause"} color='#AC9292' size={20}></Feather>
         {/* {isPlaying ? (
           <Ionicons name='ios-pause' size={48} color='#444' />
         ) : (
@@ -112,17 +112,17 @@ export default function NewAudioPlayer({url}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 24,
+    // padding: 24,
     backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    // alignItems: "center",
+    // justifyContent: "center",
   },
   trackInfoText: {
     textAlign: "center",
     flexWrap: "wrap",
     color: "#550088",
   },
-  control: {
-    margin: 20,
-  },
+  // control: {
+  //   margin: 20,
+  // },
 });
