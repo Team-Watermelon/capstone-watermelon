@@ -93,20 +93,20 @@ const ProfileStackScreen = ({navigation}) => (
           name="EditProfile"
           component={EditProfileScreen}
           options={{
-            // headerTitle: 'Edit Profile',
-            // headerBackTitleVisible: false,
-            // headerTitleAlign: 'center',
-            // headerStyle: {
-            //   backgroundColor: '#fff',
-            //   shadowColor: '#fff',
-            //   elevation: 0,
-            // },
-            headerLeft: () => (
-              <Image
-                style={{ width: 80, height: 40, margin: 20 }}
-                source={require("../assets/logo.png")}
-              />
-            ),
+            headerTitle: 'Edit Profile',
+            headerBackTitleVisible: false,
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: '#fff',
+              shadowColor: '#fff',
+              elevation: 0,
+            },
+            // headerLeft: () => (
+            //   <Image
+            //     style={{ width: 80, height: 40, margin: 20 }}
+            //     source={require("../assets/logo.png")}
+            //   />
+            // ),
           }}
         />
       </Stack.Navigator>
@@ -142,12 +142,14 @@ const HomeStackScreen = ({navigation}) => (
       name="Message"
       component={Message}
       options={{
-        headerLeft: () => (
-          <Image
-            style={{ width: 80, height: 40, margin: 20 }}
-            source={require("../assets/logo.png")}
-          />
-        ),}}/>
+        headerTitle: 'Messages',
+        headerBackTitleVisible: false,
+        headerTitleAlign: 'center',
+        headerStyle: {
+          backgroundColor: '#fff',
+          shadowColor: '#fff',
+          elevation: 0,
+      }}}/>
   </Stack.Navigator>
 );
 
@@ -188,12 +190,14 @@ style={{ flex: 1 }}
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name='message' color={color} size={26} />
           ),
-          headerLeft: () => (
-            <Image
-              style={{ width: 80, height: 40, margin: 20 }}
-              source={require("../assets/logo.png")}
-            />
-          ),
+          headerTitle: 'Edit Profile',
+          headerBackTitleVisible: false,
+          headerTitleAlign: 'center',
+          headerStyle: {
+              backgroundColor: '#fff',
+              shadowColor: '#fff',
+              elevation: 0,
+          }
         }}
       />
       <Tab.Screen

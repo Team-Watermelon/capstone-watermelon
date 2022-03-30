@@ -53,7 +53,10 @@ const PersonalPage = ({ navigation, route }) => {
   }, [navigation, loading]);
 
   return (
+
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+
+     
       <ScrollView
         style={styles.container}
         contentContainerStyle={{
