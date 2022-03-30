@@ -43,6 +43,20 @@ const MessagesStack = ({navigation}) => (
         },
       }}
     />
+    <Stack.Screen
+      name="Profile"
+      component={Profile}
+      options={{
+        headerTitle: 'Profile',
+        headerBackTitleVisible: false,
+        headerTitleAlign: 'center',
+        headerStyle: {
+          backgroundColor: '#fff',
+          shadowColor: '#fff',
+          elevation: 0,
+        },
+      }}
+    />
   </Stack.Navigator>
 );
 

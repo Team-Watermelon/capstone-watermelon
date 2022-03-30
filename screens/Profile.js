@@ -15,27 +15,32 @@ import "firebase/firestore";
 // import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { AuthenticatedUserContext } from "../navigation/AuthenticatedUserProvider";
 
-const PersonalPage = ({ navigation, route, userId }) => {
+
+const PersonalPage = ({ navigation, route }) => {
   const { user } = useContext(AuthenticatedUserContext);
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
-//  const { currentUser} = route.params;
 
   const getUser = async () => {
     await firebase
       .firestore()
       .collection("users")
-      // .where('userId', '==', route.params ? route.params.userId : user.uid)
-      // .doc(route.params ? route.params.userId : user.uid)
-      .doc(user.uid)
+      .doc(route.params ? route.params.userId : user.uid)
       .get()
       .then((documentSnapshot) => {
         if (documentSnapshot.exists) {
-          console.log("User Data in Profile", documentSnapshot.data().userImage);
-          setUserData(documentSnapshot.data());
+          console.log("User Data in Profile", documentSnapshot.data());
+          let userFullData = {};
+          userFullData.data = documentSnapshot.data()
+          userFullData.data.id = documentSnapshot.id;
+          console.log('this is userFullData', userFullData)
+          setUserData(userFullData);
         }
       });
+      console.log('this is userData', userData)
+   
   };
+  
 
   useEffect(() => {
     getUser();
@@ -72,6 +77,25 @@ const PersonalPage = ({ navigation, route, userId }) => {
                 <Text style={styles.userCategoryBtnTxtIvf}>{userData ? userData.category || 'Category' : 'Category'}</Text>
               </TouchableOpacity>
         </View>
+        <TouchableOpacity style={styles.userBtn} onPress={() => {
+          //we need to check whether the two users (route.params.uid and user.uid) already have a chat
+          //YES: get the existing chat and direct to message room
+          //NO: create a new room
+          firebase.firestore()
+      .collection('THREADS')
+      .add({
+        id: userData.data.id,
+        users: [userData.data.id, user.uid],
+        name: userData.data.firstName
+      }
+      )
+      .then(() => {
+        navigation.navigate('Message', { thread: userData.data.id });
+      });
+          
+        }}>
+                <Text style={styles.userBtnTxt}>Message</Text>
+              </TouchableOpacity>
         <View style={styles.userBtnWrapper}>
           {route.params ? (
             <>
@@ -80,7 +104,21 @@ const PersonalPage = ({ navigation, route, userId }) => {
                   {userData ? userData.firstName || "Test" : "Test"}'s Story
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.userBtn} onPress={() => {}}>
+              <TouchableOpacity style={styles.userBtn} onPress={() => {
+                 firebase.firestore()
+                 .collection('THREADS')
+                 .add({
+                   id: userData.data.id,
+                   users: [userData.data.id, user.uid],
+                   name: userData.data.firstName
+                 }
+                 )
+                 .then(() => {
+                   navigation.navigate('Message', { thread: userData.data.id });
+                 });
+                     
+                   }
+              }>
                 <Text style={styles.userBtnTxt}>Message</Text>
               </TouchableOpacity>
             </>
