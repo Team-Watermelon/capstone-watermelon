@@ -43,11 +43,11 @@ export default function HomeScreen({navigation}) {
         
         querySnapshot.forEach((doc) => {
           const {
+            id,
             firstName,
             userImage,
             audio,
             aboutMe,
-            id
           } = doc.data();
           list.push({
             id: doc.id,

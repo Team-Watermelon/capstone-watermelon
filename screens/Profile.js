@@ -15,7 +15,7 @@ import "firebase/firestore";
 // import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { AuthenticatedUserContext } from "../navigation/AuthenticatedUserProvider";
 
-const PersonalPage = ({ navigation, route }) => {
+const PersonalPage = ({ navigation, route, userId }) => {
   const { user } = useContext(AuthenticatedUserContext);
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -24,8 +24,9 @@ const PersonalPage = ({ navigation, route }) => {
     await firebase
       .firestore()
       .collection("users")
-      .where('userId', '==', route.params ? route.params.userId : user.uid)
-      // .doc(userId ? userId : user.uid)
+      // .where('userId', '==', route.params ? route.params.userId : user.uid)
+      // .doc(route.params ? route.params.userId : user.uid)
+      .doc(userId? userId:user.uid)
       .get()
       .then((documentSnapshot) => {
         if (documentSnapshot.exists) {
