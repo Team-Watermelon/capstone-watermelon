@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, TouchableOpacity, Text} from 'react-native';
+import {View, TouchableOpacity, Text, Image} from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -26,35 +26,36 @@ const MessagesStack = ({navigation}) => (
       name="MessagesList"
       component={MessageList}
       options={{
-        headerShown: false,
+        headerLeft: () => (
+          <Image
+            style={{ width: 80, height: 40, margin: 20 }}
+            source={require("../assets/logo.png")}
+          />
+        ),
       }}
     />
     <Stack.Screen
       name="Message"
       component={Message}
       options={{
-        headerTitle: 'Messages',
-        headerBackTitleVisible: false,
-        headerTitleAlign: 'center',
-        headerStyle: {
-          backgroundColor: '#fff',
-          shadowColor: '#fff',
-          elevation: 0,
-        },
+        headerLeft: () => (
+          <Image
+            style={{ width: 80, height: 40, margin: 20 }}
+            source={require("../assets/logo.png")}
+          />
+        ),
       }}
     />
     <Stack.Screen
       name="Profile"
       component={Profile}
       options={{
-        headerTitle: 'Profile',
-        headerBackTitleVisible: false,
-        headerTitleAlign: 'center',
-        headerStyle: {
-          backgroundColor: '#fff',
-          shadowColor: '#fff',
-          elevation: 0,
-        },
+        headerLeft: () => (
+          <Image
+            style={{ width: 80, height: 40, margin: 20 }}
+            source={require("../assets/logo.png")}
+          />
+        ),
       }}
     />
   </Stack.Navigator>
@@ -66,28 +67,44 @@ const ProfileStackScreen = ({navigation}) => (
       name="Profile"
       component={Profile}
       options={{
-        headerShown: false,
+        headerLeft: () => (
+          <Image
+            style={{ width: 80, height: 40, margin: 20 }}
+            source={require("../assets/logo.png")}
+          />
+        ),
       }}
     />
     <Stack.Screen
       name="Message"
       component={Message}
       options={{
-        headerTitle: 'Messages'}}/>
+        headerLeft: () => (
+          <Image
+            style={{ width: 80, height: 40, margin: 20 }}
+            source={require("../assets/logo.png")}
+          />
+        ),}}/>
                
         <Stack.Screen name = 'AudioRecord'component={AudioRecord} />
         <Stack.Screen
           name="EditProfile"
           component={EditProfileScreen}
           options={{
-            headerTitle: 'Edit Profile',
-            headerBackTitleVisible: false,
-            headerTitleAlign: 'center',
-            headerStyle: {
-              backgroundColor: '#fff',
-              shadowColor: '#fff',
-              elevation: 0,
-            },
+            // headerTitle: 'Edit Profile',
+            // headerBackTitleVisible: false,
+            // headerTitleAlign: 'center',
+            // headerStyle: {
+            //   backgroundColor: '#fff',
+            //   shadowColor: '#fff',
+            //   elevation: 0,
+            // },
+            headerLeft: () => (
+              <Image
+                style={{ width: 80, height: 40, margin: 20 }}
+                source={require("../assets/logo.png")}
+              />
+            ),
           }}
         />
       </Stack.Navigator>
@@ -99,21 +116,36 @@ const HomeStackScreen = ({navigation}) => (
       name="Home"
       component={HomeScreen}
       options={{
-        headerShown: false,
+        headerLeft: () => (
+          <Image
+            style={{ width: 80, height: 40, margin: 20 }}
+            source={require("../assets/logo.png")}
+          />
+        ),
       }}
     />
     <Stack.Screen
       name="HomeProfile"
       component={Profile}
       options={{
-        headerShown: false,
+        headerLeft: () => (
+          <Image
+            style={{ width: 80, height: 40, margin: 20 }}
+            source={require("../assets/logo.png")}
+          />
+        ),
       }}
     />
      <Stack.Screen
       name="Message"
       component={Message}
       options={{
-        headerTitle: 'Messages'}}/>
+        headerLeft: () => (
+          <Image
+            style={{ width: 80, height: 40, margin: 20 }}
+            source={require("../assets/logo.png")}
+          />
+        ),}}/>
   </Stack.Navigator>
 );
 
@@ -138,6 +170,12 @@ style={{ flex: 1 }}
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name='home' color={color} size={26} />
           ),
+          headerLeft: () => (
+            <Image
+              style={{ width: 80, height: 40, margin: 20 }}
+              source={require("../assets/logo.png")}
+            />
+          ),
         }}
       />
       <Tab.Screen
@@ -147,6 +185,12 @@ style={{ flex: 1 }}
           tabBarLabel: 'Messages',
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name='message' color={color} size={26} />
+          ),
+          headerLeft: () => (
+            <Image
+              style={{ width: 80, height: 40, margin: 20 }}
+              source={require("../assets/logo.png")}
+            />
           ),
         }}
       />
@@ -158,6 +202,12 @@ style={{ flex: 1 }}
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name='map' color={color} size={26} />
           ),
+          headerLeft: () => (
+            <Image
+              style={{ width: 80, height: 40, margin: 20 }}
+              source={require("../assets/logo.png")}
+            />
+          ),
         }}
       />
       <Tab.Screen
@@ -167,6 +217,12 @@ style={{ flex: 1 }}
           tabBarLabel: 'Profile',
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name='account' color={color} size={26} />
+          ),
+          headerLeft: () => (
+            <Image
+              style={{ width: 80, height: 40, margin: 20 }}
+              source={require("../assets/logo.png")}
+            />
           ),
         }}
       />
