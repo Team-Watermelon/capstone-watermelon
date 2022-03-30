@@ -24,7 +24,8 @@ const PersonalPage = ({ navigation, route }) => {
     await firebase
       .firestore()
       .collection("users")
-      .doc(route.params ? route.params.userId : user.uid)
+      .where('userId', '==', route.params ? route.params.userId : user.uid)
+      // .doc(userId ? userId : user.uid)
       .get()
       .then((documentSnapshot) => {
         if (documentSnapshot.exists) {

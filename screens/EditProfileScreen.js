@@ -10,11 +10,13 @@ import {
   Button,
   Image,
   Platform,
+  ActivityIndicator
 } from "react-native";
 import { useTheme } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import DropDown from "../components/DropDown";
+import { StatusWrapper } from '../styles/FeedStyle';
 
 // import Feather from 'react-native-vector-icons/Feather';
 import firebase from "firebase/app";
@@ -28,7 +30,7 @@ const EditProfileScreen = () => {
   const { colors } = useTheme();
   const { user } = useContext(AuthenticatedUserContext);
   const [imageURI, setImageURI] = useState(null);
-  // const [uploading, setUploading] = useState(false);
+  const [uploading, setUploading] = useState(false);
   // const [transferred, setTransferred] = useState(0);
   const [userData, setUserData] = useState(null);
   const [imageURL, setImageURL] = useState(null);
@@ -63,7 +65,7 @@ const EditProfileScreen = () => {
     return setImageURI(pickerResult.uri);
   };
   //uploud image uri to cloudinary after converting to base64
-  const uploadImage = () => {
+  const uploadImage = async () => {
     //convert image uri to base64 for cloudinary uplaoding
     toDataURL(imageURI, function (dataUrl) {
       const formData = new FormData();
@@ -76,39 +78,35 @@ const EditProfileScreen = () => {
       })
         .then((resp) => resp.json())
         .then((data) => {
-          //const url = data.url;
-          //saveProfileImage(url);
-          setImageURL(data.url);
+          const url = data.url;
+           saveProfileImage(url);
+          setUploading(false)
           console.log("data.url in uploadImage", data.url);
-          //setUserData({ ...userData, userImage: data.url });
-        });
-    });
-  };
-
-  const handleUpdate = async () => {
-    uploadImage();
-    if (imageURL !== null) {
-      await firebase
-        .firestore()
-        .collection("users")
-        .doc(user.uid)
-        .update({
-          firstName: userData.firstName,
-          // lname: userData.lname,
-          aboutMe: userData.aboutMe,
-          // phone: userData.phone,
-          // country: userData.country,
-          city: userData.city,
-          userImage: imageURL,
-        })
-        .then(() => {
-          console.log("User Updated!", userData.userImage);
           Alert.alert(
             "Profile Updated!",
             "Your profile has been updated successfully."
           );
         });
-    }
+    });
+  };
+
+  const handleUpdate = async () => {
+    setUploading(true)
+    uploadImage();
+    await firebase
+      .firestore()
+      .collection("users")
+      .doc(user.uid)
+      .update({
+        firstName: userData.firstName,
+        aboutMe: userData.aboutMe,
+        city: userData.city,
+        userImage: userData.userImage,
+      })
+      .then(() => {
+        console.log("User Updated!", userData.userImage);
+        
+      });
   };
 
   useEffect(() => {
@@ -228,9 +226,17 @@ const EditProfileScreen = () => {
         />
       </View>
       <DropDown />
-      <TouchableOpacity style={styles.commandButton} onPress={handleUpdate}>
+      {uploading ? (
+          <StatusWrapper>
+             <Text>Updating your profile!</Text>
+            <ActivityIndicator size="large" color="#0000ff" />
+          </StatusWrapper>
+        ) : (
+          <TouchableOpacity style={styles.commandButton} onPress={handleUpdate}>
         <Text style={styles.panelButtonTitle}>Update</Text>
       </TouchableOpacity>
+        )}
+     
     </View>
   );
 };

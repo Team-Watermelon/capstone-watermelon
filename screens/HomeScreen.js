@@ -15,7 +15,7 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import { AuthenticatedUserContext } from '../navigation/AuthenticatedUserProvider';
 
-const auth = Firebase.auth();
+const auth = firebase.auth();
 
 export default function HomeScreen({navigation}) {
   const [users, setUsers] = useState(null);
@@ -46,7 +46,8 @@ export default function HomeScreen({navigation}) {
             firstName,
             userImage,
             audio,
-            aboutMe
+            aboutMe,
+            id
           } = doc.data();
           list.push({
             id: doc.id,
@@ -63,6 +64,7 @@ export default function HomeScreen({navigation}) {
     // if (loading) {
     //   setLoading(false);
     // }
+    console.log('list',list)
     console.log('Users: ', users);
   } catch (e) {
     console.log(e);
@@ -100,7 +102,7 @@ useEffect(() => {
                 item={item}
                 // onDelete={handleDelete}
                 onPress={() =>
-                  navigation.navigate('HomeProfile',{id:item.id})
+                  navigation.navigate('HomeProfile',{userId:item.id})
                 }
               />
             )}

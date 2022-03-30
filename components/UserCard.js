@@ -6,6 +6,7 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import { AuthenticatedUserContext } from '../navigation/AuthenticatedUserProvider';
 import NewAudioPlayer from './NewAudioPlayer';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const UserCard = ({item, onPress}) => {
     const {user, logout} = useContext(AuthenticatedUserContext);
@@ -48,9 +49,11 @@ const UserCard = ({item, onPress}) => {
     />
     <Card.Content>
         {/* <Card.Title> */}
+        <TouchableOpacity onPress={onPress}>
           <Text>
           {item ? item.firstName || 'Test' : 'Test'}{' '}
           </Text>
+          </TouchableOpacity>
         {/* text={'Ex Lorem magna sint labore ex commodo dolor minim ad.'}
         /> */}
         {/* </Card.Title> */}
