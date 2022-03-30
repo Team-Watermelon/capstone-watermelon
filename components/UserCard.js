@@ -88,7 +88,7 @@ const UserCard = ({item, onPress}) => {
                   color: '#AC9292',
                   fontSize: 14,
                 }}>
-                Connect with Sara
+                Connect with {item ? item.firstName || 'Test' : 'Test'}{' '}
               </Text>              
             </View>
             </View>

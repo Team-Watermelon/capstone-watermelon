@@ -49,6 +49,7 @@ const PersonalPage = ({ navigation, route, userId }) => {
         contentContainerStyle={{
           justifyContent: "center",
           alignItems: "center",
+          paddingTop: 180
         }}
         showsVerticalScrollIndicator={false}
       >
@@ -102,10 +103,6 @@ const PersonalPage = ({ navigation, route, userId }) => {
             {userData ? userData.aboutMe || "About Me" : "About Me"}
           </Text>
         </View>
-        {/* <View style={styles.userInfoItem}>
-            <Text style={styles.userInfoTitle}>10</Text>
-            <Text style={styles.userInfoSubTitle}>Posts</Text>
-          </View> */}
           <View>
           <NewAudioPlayer url={userData ? userData.audio:null } />
           <RNActionButton buttonColor="blue">
