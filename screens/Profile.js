@@ -27,7 +27,6 @@ const PersonalPage = ({ navigation, route }) => {
 
 
   const getUser = async () => {
-    console.log('this is ROUTEPARAMS================>', route.params)
     await firebase
       .firestore()
       .collection("users")
@@ -162,7 +161,7 @@ const PersonalPage = ({ navigation, route }) => {
                 //  }
                 //  )
                 //  .then(() => {
-                   navigation.navigate('Message', { thread: userData.id });
+                   navigation.navigate('Message', { thread: userData });
                 //  });   
                    }
               }>

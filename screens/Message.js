@@ -8,83 +8,49 @@ export default function RoomScreen({ route }) {
   const { user } = useContext(AuthenticatedUserContext);
   const currentUser = user.toJSON();
   const { thread } = route.params;
-  const [receiver, setReceiver] = useState(null);
+  const [receiver, setReceiver] = useState({});
+  let receiverFullData= {};
 
   const getReceiver = async () => {
     console.log('this is ROUTEPARAMS================>', route.params)
     await firebase
       .firestore()
       .collection("users")
-      .doc(route.params.thread)
+      .doc(route.params.thread.id)
       .get()
       .then((documentSnapshot) => {
         if (documentSnapshot.exists) {
-          console.log("User Data in Profile", documentSnapshot.data());
-          let receiverData = {};
-          receiverData.data = documentSnapshot.data()
-          receiverData.data.id = documentSnapshot.id;
-          console.log('this is receiverData', receiverData)
-          setReceiver(receiverData.data);
+          console.log("exists");
+          console.log("receiver data", documentSnapshot.data());
+          receiverFullData = documentSnapshot.data()
+          receiverFullData.id = documentSnapshot.id;
+          console.log('this is receiverDataSnap', receiverFullData )
+          setReceiver(receiverFullData);
+          console.log('this is receiver', receiver)
           
         }
       });
-      console.log('this is receiverDAta', receiverData)
      
-      
-   
   };
 
-  // useEffect(() => {
-  //   console.log('this is thread', { thread })
-  //   console.log('this is user',{ user });
-  // }, []);
-
   const [messages, setMessages] = useState([
-    /**
-     * Mock message data
-     */
-    // example of system message
+
     {
       _id: 0,
       text: "New room created.",
       createdAt: new Date().getTime(),
       system: true,
     },
-    // example of chat message
-    // {
-    //   _id: 1,
-    //   text: "Henlo!",
-    //   createdAt: new Date().getTime(),
-    //   user: {
-    //     _id: 2,
-    //     name: "Test User",
-    //   },
-    // },
+    
   ]);
 
-  // const getThreads = async () => {
-  //   await firebase
-  //     .firestore()
-  //     .collection('THREADS')
-  //     .where('user1', '==', "19nD7SIhT6aXCBFohpWEtlyJuPp2")
-  //     .get()
-  //     .then((querySnapshot) => {
-  //       const data = querySnapshot.docs.map((doc) => ({
-  //         id: doc.id,
-  //         ...doc.data(),
-  //       }));
-  //       console.log('Users with id 19nD7SIhT6aXCBFohpWEtlyJuPp2', data);
-  //     });
-  // };
-
-  // helper method that is sends a message
   async function handleSend(messages) {
     const text = messages[0].text;
 
     firebase
       .firestore()
       .collection("THREADS")
-      .doc("TEST NAME")
+      .doc(user.uid)
       .collection("MESSAGES")
       .add({
         text,
@@ -99,7 +65,7 @@ export default function RoomScreen({ route }) {
     await firebase
       .firestore()
       .collection("THREADS")
-      .doc("TEST NAME")
+      .doc(user.uid)
       .set(
         
         {
@@ -107,10 +73,10 @@ export default function RoomScreen({ route }) {
             text,
             createdAt: new Date().getTime(),
           },
-          users: [currentUser.uid, receiver.id],
+          users: [currentUser.uid, ],
           receiverID: receiver.id,
           senderID: currentUser.uid,
-          receiverName: receiver.firstName,
+          receiverName: receiver.id,
           senderName: currentUser.email
         },
         { merge: true }
@@ -119,9 +85,10 @@ export default function RoomScreen({ route }) {
 
   useEffect(() => {
     getReceiver();
+    console.log('THIS is receiver>>>>>>>>>>>>>>>>>', receiver)
     const messagesListener = firebase.firestore()
       .collection("THREADS")
-      .doc("TEST NAME")
+      .doc(user.uid)
       .collection("MESSAGES")
       .orderBy("createdAt", "desc")
       .onSnapshot((querySnapshot) => {
