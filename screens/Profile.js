@@ -20,7 +20,9 @@ const PersonalPage = ({ navigation, route }) => {
   const { user } = useContext(AuthenticatedUserContext);
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [loggedInUserData, setloggedInUserData] = useState(null);
   let userFullData= {};
+  let loggedInUserFullData={};
 
 
 
@@ -46,11 +48,36 @@ const PersonalPage = ({ navigation, route }) => {
       
    
   };
+  const getLoggedInUser = async () => {
+    await firebase
+      .firestore()
+      .collection("users")
+      .doc(user.uid)
+      .get()
+      .then((documentSnapshot) => {
+        if (documentSnapshot.exists) {
+          console.log("Logged in User Data in Profile", documentSnapshot.data());
+          // let userFullData = {};
+          loggedInUserFullData.data = documentSnapshot.data()
+          loggedInUserFullData.data.id = documentSnapshot.id;
+          console.log('this is LOGGED IN userFullData', loggedInUserFullData)
+          setloggedInUserData(loggedInUserFullData.data);
+          
+        }
+      });
+      console.log('this is loggedin userFullData.name', loggedInUserFullData)
+     
+      
+   
+  };
   
 
   useEffect(() => {
     getUser();
+    getLoggedInUser()
     console.log('THIS IS USERDATA___________________________',userData)
+    console.log('THIS IS LOGGEDIN USERDATA==========================>>>>>>>>>>>>',loggedInUserData)
+    
     navigation.addListener("focus", () => setLoading(!loading));
   }, [navigation, loading]);
 
@@ -126,7 +153,7 @@ const PersonalPage = ({ navigation, route }) => {
                    receiverID: userData.id,
                    senderID: user.uid,
                    receiverName: userData.firstName,
-                   senderEmail: user.email
+                   senderName: loggedInUserData.firstName
                    
               
                  }

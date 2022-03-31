@@ -124,7 +124,7 @@ export default function HomeScreen( {navigation}) {
             onPress={() => navigation.navigate('Message', { thread: item })}
           >
             <List.Item
-              title={item.senderID === user.uid ? item.receiverName : item.senderEmail}
+              title={item.senderID === user.uid ? item.receiverName : item.senderName}
               description={item.latestMessage.text}
               titleNumberOfLines={1}
               titleStyle={styles.listTitle}
