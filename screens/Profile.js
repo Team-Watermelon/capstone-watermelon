@@ -27,6 +27,7 @@ const PersonalPage = ({ navigation, route }) => {
 
 
   const getUser = async () => {
+    console.log('this is ROUTEPARAMS================>', route.params)
     await firebase
       .firestore()
       .collection("users")
@@ -71,6 +72,7 @@ const PersonalPage = ({ navigation, route }) => {
       
    
   };
+  
   
 
   useEffect(() => {
@@ -146,22 +148,22 @@ const PersonalPage = ({ navigation, route }) => {
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.userBtn} onPress={() => {
-                 firebase.firestore()
-                 .collection('THREADS')
-                 .add({
-                   id: userData.id,
-                   users: [userData.id, user.uid],
-                   receiverID: userData.id,
-                   senderID: user.uid,
-                   receiverName: userData.firstName,
-                   senderName: loggedInUserData.firstName
-                   
-              
-                 }
-                 )
-                 .then(() => {
+                
+                //  firebase.firestore()
+                //  .collection('THREADS')
+                //  .add({
+                //    id: "TEST NAME",
+                //    //this is setting the thread id to the userid
+                //    users: [userData.id, user.uid],
+                //    receiverID: userData.id,
+                //    senderID: user.uid,
+                //    receiverName: userData.firstName,
+                //    senderName: loggedInUserData.firstName
+                //  }
+                //  )
+                //  .then(() => {
                    navigation.navigate('Message', { thread: userData.id });
-                 });   
+                //  });   
                    }
               }>
                 <Text style={styles.userBtnTxt}>Message</Text>

@@ -8,6 +8,7 @@ import { List, Divider } from "react-native-paper";
 import "firebase/firestore";
 import firebase from "firebase/app";
 
+
 import Loading from '../components/Loading';
 
 
@@ -18,20 +19,20 @@ export default function HomeScreen( {navigation}) {
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState(null);
 
-  const getThreads = async () => {
-    await firebase
-      .firestore()
-      .collection('THREADS')
-      .where('user1', '==', "19nD7SIhT6aXCBFohpWEtlyJuPp2")
-      .get()
-      .then((querySnapshot) => {
-        const data = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        console.log('Users with id 19nD7SIhT6aXCBFohpWEtlyJuPp2', data);
-      });
-  };
+  // const getThreads = async () => {
+  //   await firebase
+  //     .firestore()
+  //     .collection('THREADS')
+  //     .where('users', 'array-contains', user.uid)
+  //     .get()
+  //     .then((querySnapshot) => {
+  //       const data = querySnapshot.docs.map((doc) => ({
+  //         id: doc.id,
+  //         ...doc.data(),
+  //       }));
+  //       console.log('Users with id 19nD7SIhT6aXCBFohpWEtlyJuPp2', data);
+  //     });
+  // };
 
   const getUser = async () => {
     await firebase
@@ -62,7 +63,7 @@ export default function HomeScreen( {navigation}) {
     getUser();
     console.log('This is the USER OBJ name____________________', userData)
     console.log('This is the AUTH OBJID____________________', user.uid)
-    getThreads()
+    // getThreads()
     const unsubscribe = firebase.firestore()
       .collection("THREADS")
       .where("users", "array-contains", user.uid)
@@ -95,7 +96,7 @@ export default function HomeScreen( {navigation}) {
         });
 
         setThreads(threads);
-        //console.log('this is threads', threads)
+        console.log('this is threads', threads)
 
         if (loading) {
           setLoading(false);

@@ -8,6 +8,31 @@ export default function RoomScreen({ route }) {
   const { user } = useContext(AuthenticatedUserContext);
   const currentUser = user.toJSON();
   const { thread } = route.params;
+  const [receiver, setReceiver] = useState(null);
+
+  const getReceiver = async () => {
+    console.log('this is ROUTEPARAMS================>', route.params)
+    await firebase
+      .firestore()
+      .collection("users")
+      .doc(route.params.thread)
+      .get()
+      .then((documentSnapshot) => {
+        if (documentSnapshot.exists) {
+          console.log("User Data in Profile", documentSnapshot.data());
+          let receiverData = {};
+          receiverData.data = documentSnapshot.data()
+          receiverData.data.id = documentSnapshot.id;
+          console.log('this is receiverData', receiverData)
+          setReceiver(receiverData.data);
+          
+        }
+      });
+      console.log('this is receiverDAta', receiverData)
+     
+      
+   
+  };
 
   // useEffect(() => {
   //   console.log('this is thread', { thread })
@@ -37,20 +62,20 @@ export default function RoomScreen({ route }) {
     // },
   ]);
 
-  const getThreads = async () => {
-    await firebase
-      .firestore()
-      .collection('THREADS')
-      .where('user1', '==', "19nD7SIhT6aXCBFohpWEtlyJuPp2")
-      .get()
-      .then((querySnapshot) => {
-        const data = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        console.log('Users with id 19nD7SIhT6aXCBFohpWEtlyJuPp2', data);
-      });
-  };
+  // const getThreads = async () => {
+  //   await firebase
+  //     .firestore()
+  //     .collection('THREADS')
+  //     .where('user1', '==', "19nD7SIhT6aXCBFohpWEtlyJuPp2")
+  //     .get()
+  //     .then((querySnapshot) => {
+  //       const data = querySnapshot.docs.map((doc) => ({
+  //         id: doc.id,
+  //         ...doc.data(),
+  //       }));
+  //       console.log('Users with id 19nD7SIhT6aXCBFohpWEtlyJuPp2', data);
+  //     });
+  // };
 
   // helper method that is sends a message
   async function handleSend(messages) {
@@ -59,7 +84,7 @@ export default function RoomScreen({ route }) {
     firebase
       .firestore()
       .collection("THREADS")
-      .doc(thread._id)
+      .doc("TEST NAME")
       .collection("MESSAGES")
       .add({
         text,
@@ -68,27 +93,35 @@ export default function RoomScreen({ route }) {
           _id: currentUser.uid,
           email: currentUser.email,
         },
+       
       });
 
     await firebase
       .firestore()
       .collection("THREADS")
-      .doc(thread._id)
+      .doc("TEST NAME")
       .set(
+        
         {
           latestMessage: {
             text,
             createdAt: new Date().getTime(),
           },
+          users: [currentUser.uid, receiver.id],
+          receiverID: receiver.id,
+          senderID: currentUser.uid,
+          receiverName: receiver.firstName,
+          senderName: currentUser.email
         },
         { merge: true }
       );
   }
 
   useEffect(() => {
+    getReceiver();
     const messagesListener = firebase.firestore()
       .collection("THREADS")
-      .doc(thread._id)
+      .doc("TEST NAME")
       .collection("MESSAGES")
       .orderBy("createdAt", "desc")
       .onSnapshot((querySnapshot) => {
