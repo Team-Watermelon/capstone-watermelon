@@ -15,43 +15,90 @@ import "firebase/firestore";
 // import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { AuthenticatedUserContext } from "../navigation/AuthenticatedUserProvider";
 
-const PersonalPage = ({ navigation, route, userId }) => {
+
+const PersonalPage = ({ navigation, route }) => {
   const { user } = useContext(AuthenticatedUserContext);
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
-//  const { currentUser} = route.params;
+  const [loggedInUserData, setloggedInUserData] = useState(null);
+  let userFullData= {};
+  let loggedInUserFullData={};
+
+
 
   const getUser = async () => {
     await firebase
       .firestore()
       .collection("users")
-      // .where('userId', '==', route.params ? route.params.userId : user.uid)
-      // .doc(route.params ? route.params.userId : user.uid)
+      .doc(route.params ? route.params.currentUser.id : user.uid)
+      .get()
+      .then((documentSnapshot) => {
+        if (documentSnapshot.exists) {
+          console.log("User Data in Profile", documentSnapshot.data());
+          // let userFullData = {};
+          userFullData.data = documentSnapshot.data()
+          userFullData.data.id = documentSnapshot.id;
+          console.log('this is userFullData', userFullData)
+          setUserData(userFullData.data);
+          
+        }
+      });
+      console.log('this is userFullData', userFullData)
+     
+      
+   
+  };
+  const getLoggedInUser = async () => {
+    await firebase
+      .firestore()
+      .collection("users")
       .doc(user.uid)
       .get()
       .then((documentSnapshot) => {
         if (documentSnapshot.exists) {
           console.log("User Data in Profile", documentSnapshot.data());
           setUserData(documentSnapshot.data());
+          console.log("Logged in User Data in Profile", documentSnapshot.data());
+          // let userFullData = {};
+          loggedInUserFullData.data = documentSnapshot.data()
+          loggedInUserFullData.data.id = documentSnapshot.id;
+          console.log('this is LOGGED IN userFullData', loggedInUserFullData)
+          setloggedInUserData(loggedInUserFullData.data);
+          
         }
       });
+      console.log('this is loggedin userFullData.name', loggedInUserFullData)
+     
+      
+   
   };
+  
 
   useEffect(() => {
     getUser();
+    getLoggedInUser()
+    console.log('THIS IS USERDATA___________________________',userData)
+    console.log('THIS IS LOGGEDIN USERDATA==========================>>>>>>>>>>>>',loggedInUserData)
+    
     navigation.addListener("focus", () => setLoading(!loading));
   }, [navigation, loading]);
 
   return (
+
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+
+     
       <ScrollView
         style={styles.container}
         contentContainerStyle={{
           justifyContent: "center",
           alignItems: "center",
+          paddingTop: 180
         }}
         showsVerticalScrollIndicator={false}
       >
+        {/* <Text style={styles.userName}>{userData ? userData.firstName || 'Test' : 'Test'}</Text>
+        <Text style={styles.userLocation}>{userData ? userData.city || 'City' : 'City'}</Text> */}
         <Text style={styles.userName}>{userData ? userData.firstName || 'Test' : 'Test'}</Text>
         <Text style={styles.userLocation}>{userData ? userData.city || 'City' : 'City'}</Text>
         <Image
@@ -72,6 +119,25 @@ const PersonalPage = ({ navigation, route, userId }) => {
                 <Text style={styles.userCategoryBtnTxtIvf}>{userData ? userData.category || 'Category' : 'Category'}</Text>
               </TouchableOpacity>
         </View>
+        {/* <TouchableOpacity style={styles.userBtn} onPress={() => {
+          //we need to check whether the two users (route.params.uid and user.uid) already have a chat
+          //YES: get the existing chat and direct to message room
+          //NO: create a new room
+          firebase.firestore()
+      .collection('THREADS')
+      .add({
+        id: userData.data.id,
+        users: [userData.data.id, user.uid],
+        name: userData.data.firstName
+      }
+      )
+      .then(() => {
+        navigation.navigate('Message', { thread: userData.data.id });
+      });
+          
+        }}>
+                <Text style={styles.userBtnTxt}>Message</Text>
+              </TouchableOpacity> */}
         <View style={styles.userBtnWrapper}>
           {route.params ? (
             <>
@@ -80,7 +146,25 @@ const PersonalPage = ({ navigation, route, userId }) => {
                   {userData ? userData.firstName || "Test" : "Test"}'s Story
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.userBtn} onPress={() => {}}>
+              <TouchableOpacity style={styles.userBtn} onPress={() => {
+                 firebase.firestore()
+                 .collection('THREADS')
+                 .add({
+                   id: userData.id,
+                   users: [userData.id, user.uid],
+                   receiverID: userData.id,
+                   senderID: user.uid,
+                   receiverName: userData.firstName,
+                   senderName: loggedInUserData.firstName
+                   
+              
+                 }
+                 )
+                 .then(() => {
+                   navigation.navigate('Message', { thread: userData.id });
+                 });   
+                   }
+              }>
                 <Text style={styles.userBtnTxt}>Message</Text>
               </TouchableOpacity>
             </>
@@ -94,6 +178,19 @@ const PersonalPage = ({ navigation, route, userId }) => {
               >
                 <Text style={styles.userBtnTxt}>Edit Profile</Text>
               </TouchableOpacity>
+              <RNActionButton buttonColor="blue">
+            <RNActionButton.Item
+              buttonColor="#9b59b6"
+              title="Add Audio"
+              onPress={() => navigation.navigate("AudioRecord")}
+            >
+              <Icon name="md-create" style={styles.actionButtonIcon} />
+            </RNActionButton.Item>
+            {/* add video story from here? */}
+            {/* <RNActionButton.Item buttonColor='#3498db' title="Add Video" onPress={() => navigation.navigate('upload video story?')}>
+            <Icon name="md-create" style={styles.actionButtonIcon} />
+          </RNActionButton.Item> */}
+          </RNActionButton>
             </>
           )}
         </View>

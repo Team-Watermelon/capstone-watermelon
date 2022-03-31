@@ -178,7 +178,7 @@ const EditProfileScreen = () => {
           ]}
         />
       </View>
-      <View style={styles.action}>
+      {/* <View style={styles.action}>
         <TextInput
           placeholder="Email"
           placeholderTextColor="#666666"
@@ -191,7 +191,7 @@ const EditProfileScreen = () => {
             },
           ]}
         />
-      </View>
+      </View> */}
       <View style={styles.action}>
         <Icon name="map-marker-outline" color={colors.text} size={20} />
         <TextInput

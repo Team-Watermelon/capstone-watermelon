@@ -1,10 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground } from 'react-native';
 
 export default function Map() {
   return (
     <View style={styles.container}>
-      <Text>Map Page</Text>
+      <ImageBackground source={require('../assets/Map_planned.png')} resizeMode="cover" style={styles.image}>
+      </ImageBackground>
     </View>
   );
 }
@@ -12,8 +13,27 @@ export default function Map() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#e93b81',
-    paddingTop: 50,
-    paddingHorizontal: 12,
+    paddingTop: 0,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "600",
+    color: "#AF8EC9",
+    alignSelf: "center",
+    paddingBottom: 24,
+  },
+  image: {
+    flex: 1,
+    justifyContent: "center"
+  },
+  logo:{
+    position: "absolute",
+    top: 0,
+    width: 300,
+    height: 400,
+    resizeMode: 'contain',
+    alignSelf: 'center',
+    padding:0
   },
 });
+

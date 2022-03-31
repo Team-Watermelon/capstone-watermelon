@@ -26,16 +26,31 @@ export default function RoomScreen({ route }) {
       system: true,
     },
     // example of chat message
-    {
-      _id: 1,
-      text: "Henlo!",
-      createdAt: new Date().getTime(),
-      user: {
-        _id: 2,
-        name: "Test User",
-      },
-    },
+    // {
+    //   _id: 1,
+    //   text: "Henlo!",
+    //   createdAt: new Date().getTime(),
+    //   user: {
+    //     _id: 2,
+    //     name: "Test User",
+    //   },
+    // },
   ]);
+
+  const getThreads = async () => {
+    await firebase
+      .firestore()
+      .collection('THREADS')
+      .where('user1', '==', "19nD7SIhT6aXCBFohpWEtlyJuPp2")
+      .get()
+      .then((querySnapshot) => {
+        const data = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        console.log('Users with id 19nD7SIhT6aXCBFohpWEtlyJuPp2', data);
+      });
+  };
 
   // helper method that is sends a message
   async function handleSend(messages) {
