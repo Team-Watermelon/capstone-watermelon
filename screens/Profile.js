@@ -7,7 +7,6 @@ import {
   StyleSheet,
   ScrollView,
   SafeAreaView,
-
 } from "react-native";
 import { NewestAudioPlayer, RNActionButton } from "../components";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -21,8 +20,8 @@ const PersonalPage = ({ navigation, route }) => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [loggedInUserData, setloggedInUserData] = useState(null);
-  let userFullData= {};
-  let loggedInUserFullData={};
+  let userFullData = {};
+  let loggedInUserFullData = {};
 
   const getUser = async () => {
     await firebase
@@ -34,14 +33,13 @@ const PersonalPage = ({ navigation, route }) => {
         if (documentSnapshot.exists) {
           console.log("User Data in Profile", documentSnapshot.data());
           // let userFullData = {};
-          userFullData.data = documentSnapshot.data()
+          userFullData.data = documentSnapshot.data();
           userFullData.data.id = documentSnapshot.id;
-          console.log('this is userFullData', userFullData)
+          console.log("this is userFullData", userFullData);
           setUserData(userFullData.data);
-          
         }
       });
-      console.log('this is userFullData', userFullData)
+    console.log("this is userFullData", userFullData);
   };
   const getLoggedInUser = async () => {
     await firebase
@@ -52,22 +50,28 @@ const PersonalPage = ({ navigation, route }) => {
       .then((documentSnapshot) => {
         if (documentSnapshot.exists) {
           console.log("User Data in Profile", documentSnapshot.data());
-          console.log("Logged in User Data in Profile", documentSnapshot.data());
+          console.log(
+            "Logged in User Data in Profile",
+            documentSnapshot.data()
+          );
           // let userFullData = {};
-          loggedInUserFullData.data = documentSnapshot.data()
+          loggedInUserFullData.data = documentSnapshot.data();
           loggedInUserFullData.data.id = documentSnapshot.id;
-          console.log('this is LOGGED IN userFullData', loggedInUserFullData)
+          console.log("this is LOGGED IN userFullData", loggedInUserFullData);
           setloggedInUserData(loggedInUserFullData.data);
         }
       });
-      console.log('this is loggedin userFullData.name', loggedInUserFullData)
+    console.log("this is loggedin userFullData.name", loggedInUserFullData);
   };
-  
+
   useEffect(() => {
     getUser();
-    getLoggedInUser()
-    console.log('THIS IS USERDATA___________________________',userData)
-    console.log('THIS IS LOGGEDIN USERDATA==========================>>>>>>>>>>>>',loggedInUserData)
+    getLoggedInUser();
+    console.log("THIS IS USERDATA___________________________", userData);
+    console.log(
+      "THIS IS LOGGEDIN USERDATA==========================>>>>>>>>>>>>",
+      loggedInUserData
+    );
     navigation.addListener("focus", () => setLoading(!loading));
   }, [navigation, loading]);
 
@@ -78,14 +82,18 @@ const PersonalPage = ({ navigation, route }) => {
         contentContainerStyle={{
           justifyContent: "center",
           alignItems: "center",
-          paddingTop: 180
+          paddingTop: 30,
         }}
         showsVerticalScrollIndicator={false}
       >
         {/* <Text style={styles.userName}>{userData ? userData.firstName || 'Test' : 'Test'}</Text>
         <Text style={styles.userLocation}>{userData ? userData.city || 'City' : 'City'}</Text> */}
-        <Text style={styles.userName}>{userData ? userData.firstName || 'Test' : 'Test'}</Text>
-        <Text style={styles.userLocation}>{userData ? userData.city || 'City' : 'City'}</Text>
+        <Text style={styles.userName}>
+          {userData ? userData.firstName || "Test" : "Test"}
+        </Text>
+        <Text style={styles.userLocation}>
+          {userData ? userData.city || "City" : "City"}
+        </Text>
         <Image
           style={styles.userImage}
           source={{
@@ -94,15 +102,15 @@ const PersonalPage = ({ navigation, route }) => {
                 "https://i.pinimg.com/custom_covers/222x/85498161615209203_1636332751.jpg"
               : "https://i.pinimg.com/custom_covers/222x/85498161615209203_1636332751.jpg",
           }}
-        />        
-        
+        />
+
         {/* <Icon name="map-marker-outline" color="#777777" size={15}/> */}
         <View>
-          <TouchableOpacity
-                style={styles.userCategoryIvf}
-                >
-                <Text style={styles.userCategoryBtnTxtIvf}>{userData ? userData.category || 'Category' : 'Category'}</Text>
-              </TouchableOpacity>
+          <TouchableOpacity style={styles.userCategoryIvf}>
+            <Text style={styles.userCategoryBtnTxtIvf}>
+              {userData ? userData.category || "Category" : "Category"}
+            </Text>
+          </TouchableOpacity>
         </View>
         {/* <TouchableOpacity style={styles.userBtn} onPress={() => {
           //we need to check whether the two users (route.params.uid and user.uid) already have a chat
@@ -119,7 +127,6 @@ const PersonalPage = ({ navigation, route }) => {
       .then(() => {
         navigation.navigate('Message', { thread: userData.data.id });
       });
-          
         }}>
                 <Text style={styles.userBtnTxt}>Message</Text>
               </TouchableOpacity> */}
@@ -131,25 +138,25 @@ const PersonalPage = ({ navigation, route }) => {
                   {userData ? userData.firstName || "Test" : "Test"}'s Story
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.userBtn} onPress={() => {
-                 firebase.firestore()
-                 .collection('THREADS')
-                 .add({
-                   id: userData.id,
-                   users: [userData.id, user.uid],
-                   receiverID: userData.id,
-                   senderID: user.uid,
-                   receiverName: userData.firstName,
-                   senderName: loggedInUserData.firstName
-                   
-              
-                 }
-                 )
-                 .then(() => {
-                   navigation.navigate('Message', { thread: userData.id });
-                 });   
-                   }
-              }>
+              <TouchableOpacity
+                style={styles.userBtn}
+                onPress={() => {
+                  firebase
+                    .firestore()
+                    .collection("THREADS")
+                    .add({
+                      id: userData.id,
+                      users: [userData.id, user.uid],
+                      receiverID: userData.id,
+                      senderID: user.uid,
+                      receiverName: userData.firstName,
+                      senderName: loggedInUserData.firstName,
+                    })
+                    .then(() => {
+                      navigation.navigate("Message", { thread: userData.id });
+                    });
+                }}
+              >
                 <Text style={styles.userBtnTxt}>Message</Text>
               </TouchableOpacity>
             </>
@@ -163,19 +170,12 @@ const PersonalPage = ({ navigation, route }) => {
               >
                 <Text style={styles.userBtnTxt}>Edit Profile</Text>
               </TouchableOpacity>
-              <RNActionButton buttonColor="blue">
-            <RNActionButton.Item
-              buttonColor="#9b59b6"
-              title="Add Audio"
-              onPress={() => navigation.navigate("AudioRecord")}
-            >
-              <Icon name="md-create" style={styles.actionButtonIcon} />
-            </RNActionButton.Item>
-            {/* add video story from here? */}
-            {/* <RNActionButton.Item buttonColor='#3498db' title="Add Video" onPress={() => navigation.navigate('upload video story?')}>
-            <Icon name="md-create" style={styles.actionButtonIcon} />
-          </RNActionButton.Item> */}
-          </RNActionButton>
+              <TouchableOpacity
+                style={styles.userBtn}
+                onPress={() => navigation.navigate("AudioRecord")}
+              >
+                <Text style={styles.userBtnTxt}>Record Story</Text>
+              </TouchableOpacity>
             </>
           )}
         </View>
@@ -188,8 +188,8 @@ const PersonalPage = ({ navigation, route }) => {
             <Text style={styles.userInfoTitle}>10</Text>
             <Text style={styles.userInfoSubTitle}>Posts</Text>
           </View> */}
-          <View>
-          <NewestAudioPlayer url={userData ? userData.audio:null } />      
+        <View>
+          <NewestAudioPlayer url={userData ? userData.audio : null} />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -205,24 +205,18 @@ const styles = StyleSheet.create({
     paddingTop: 50,
     paddingHorizontal: 12,
   },
-  actionButtonIcon: {
-    fontSize: 20,
-    height: 22,
-    color: "white",
-    backgroundColor: "#fff",
-    paddingTop: 140,
-    paddingHorizontal: 12,
-  },
   userImage: {
-    height: 150,
-    width: 150,
+    height: 170,
+    width: 170,
     borderRadius: 75,
+    paddingVertical: 40,
   },
   userName: {
-    fontSize: 18,
+    fontSize: 40,
     fontWeight: "bold",
     marginTop: 10,
     marginBottom: 10,
+    color: "#AF8EC9",
   },
   aboutMe: {
     fontSize: 14,
@@ -230,9 +224,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   userLocation: {
-    fontSize: 12,
+    fontSize: 18,
     fontWeight: "600",
-    color: "#666",
+    color: "#AF8EC9",
     textAlign: "center",
     marginBottom: 10,
   },
@@ -249,22 +243,25 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 12,
     marginHorizontal: 5,
+    margin: 10,
   },
   userBtnTxt: {
     color: "#AF8EC9",
   },
   userCategoryIvf: {
-    borderColor: '#E8A196',
+    borderColor: "#E8A196",
     borderWidth: 2,
     borderRadius: 10,
     paddingVertical: 4,
     paddingHorizontal: 6,
     marginHorizontal: 15,
-    backgroundColor: '#E8A196'
+    backgroundColor: "#E8A196",
+    padding: 10,
+    margin: 10,
   },
   userCategoryBtnTxtIvf: {
-    color: '#fff',
-    backgroundColor: '#E8A196'
+    color: "#fff",
+    backgroundColor: "#E8A196",
   },
   userInfoItem: {
     justifyContent: "center",
