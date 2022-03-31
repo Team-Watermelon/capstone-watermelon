@@ -57,7 +57,6 @@ const PersonalPage = ({ navigation, route }) => {
       .then((documentSnapshot) => {
         if (documentSnapshot.exists) {
           console.log("User Data in Profile", documentSnapshot.data());
-          setUserData(documentSnapshot.data());
           console.log("Logged in User Data in Profile", documentSnapshot.data());
           // let userFullData = {};
           loggedInUserFullData.data = documentSnapshot.data()
