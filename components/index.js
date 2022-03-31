@@ -6,5 +6,6 @@ import AudioPlayer from './AudioPlayer';
 import RNActionButton from './ActionButton';
 import NewAudioPlayer from './NewAudioPlayer';
 import NewestAudioPlayer from './NewestAudioPlayer';
+import HomePageAudio from './HomePageAudio';
 
-export {NewestAudioPlayer, IconButton, Button, ErrorMessage, InputField, AudioPlayer, NewAudioPlayer,RNActionButton};
+export {NewestAudioPlayer, IconButton, Button, ErrorMessage, InputField, AudioPlayer, NewAudioPlayer,HomePageAudio,RNActionButton};

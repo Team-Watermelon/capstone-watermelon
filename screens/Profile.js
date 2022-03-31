@@ -7,6 +7,7 @@ import {
   StyleSheet,
   ScrollView,
   SafeAreaView,
+
 } from "react-native";
 import { NewestAudioPlayer, RNActionButton } from "../components";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -14,7 +15,6 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 // import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { AuthenticatedUserContext } from "../navigation/AuthenticatedUserProvider";
-
 
 const PersonalPage = ({ navigation, route }) => {
   const { user } = useContext(AuthenticatedUserContext);

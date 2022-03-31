@@ -6,7 +6,8 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import firebase from "firebase/app";
 import "firebase/firestore";
 import { AuthenticatedUserContext } from "../navigation/AuthenticatedUserProvider";
-import NewestAudioPlayer from "./NewestAudioPlayer";
+//import NewestAudioPlayer from "./NewestAudioPlayer";
+import HomePageAudio from "./HomePageAudio"
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 
@@ -79,7 +80,7 @@ const UserCard = ({ item, onPress }) => {
               >
                 Listen to {item ? item.firstName || "Test" : "Test"} 's Story
               </Text>
-              <NewestAudioPlayer url={item.audio} />
+              <HomePageAudio url={item.audio} />
             </View>
           ) : null}
 
