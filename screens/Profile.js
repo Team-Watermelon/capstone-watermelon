@@ -24,8 +24,6 @@ const PersonalPage = ({ navigation, route }) => {
   let userFullData= {};
   let loggedInUserFullData={};
 
-
-
   const getUser = async () => {
     await firebase
       .firestore()
@@ -44,9 +42,6 @@ const PersonalPage = ({ navigation, route }) => {
         }
       });
       console.log('this is userFullData', userFullData)
-     
-      
-   
   };
   const getLoggedInUser = async () => {
     await firebase
@@ -63,30 +58,21 @@ const PersonalPage = ({ navigation, route }) => {
           loggedInUserFullData.data.id = documentSnapshot.id;
           console.log('this is LOGGED IN userFullData', loggedInUserFullData)
           setloggedInUserData(loggedInUserFullData.data);
-          
         }
       });
       console.log('this is loggedin userFullData.name', loggedInUserFullData)
-     
-      
-   
   };
   
-
   useEffect(() => {
     getUser();
     getLoggedInUser()
     console.log('THIS IS USERDATA___________________________',userData)
     console.log('THIS IS LOGGEDIN USERDATA==========================>>>>>>>>>>>>',loggedInUserData)
-    
     navigation.addListener("focus", () => setLoading(!loading));
   }, [navigation, loading]);
 
   return (
-
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
-
-     
       <ScrollView
         style={styles.container}
         contentContainerStyle={{
