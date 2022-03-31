@@ -203,20 +203,7 @@ const PersonalPage = ({ navigation, route }) => {
             <Text style={styles.userInfoSubTitle}>Posts</Text>
           </View> */}
           <View>
-          <NewestAudioPlayer url={userData ? userData.audio:null } />
-          <RNActionButton buttonColor="blue">
-            <RNActionButton.Item
-              buttonColor="#9b59b6"
-              title="Add Audio"
-              onPress={() => navigation.navigate("AudioRecord")}
-            >
-              <Icon name="md-create" style={styles.actionButtonIcon} />
-            </RNActionButton.Item>
-            {/* add video story from here? */}
-            {/* <RNActionButton.Item buttonColor='#3498db' title="Add Video" onPress={() => navigation.navigate('upload video story?')}>
-            <Icon name="md-create" style={styles.actionButtonIcon} />
-          </RNActionButton.Item> */}
-          </RNActionButton>
+          <NewestAudioPlayer url={userData ? userData.audio:null } />      
         </View>
       </ScrollView>
     </SafeAreaView>
