@@ -6,7 +6,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import firebase from "firebase/app";
 import "firebase/firestore";
 import { AuthenticatedUserContext } from "../navigation/AuthenticatedUserProvider";
-import NewAudioPlayer from "./NewAudioPlayer";
+import NewestAudioPlayer from "./NewestAudioPlayer";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 
@@ -68,16 +68,21 @@ const UserCard = ({ item, onPress }) => {
             {item ? item.firstName || "Test" : "Test"}{" "}
           </Text>
 
-          <Text
-            style={{
-              color: "#AC9292",
-              fontSize: 14,
-            }}
-          >
-            Listen to {item ? item.firstName || "Test" : "Test"} 's Story
-          </Text>
           {/* <Button mode={'outlined'}>Listen to their story</Button> */}
-          <NewAudioPlayer url={item.audio} />
+          {item.audio ? (
+            <View>
+              <Text
+                style={{
+                  color: "#AC9292",
+                  fontSize: 14,
+                }}
+              >
+                Listen to {item ? item.firstName || "Test" : "Test"} 's Story
+              </Text>
+              <NewestAudioPlayer url={item.audio} />
+            </View>
+          ) : null}
+
           <View
             style={{
               marginTop: 4,
@@ -87,24 +92,27 @@ const UserCard = ({ item, onPress }) => {
               // width: '85%',
             }}
           >
-            <Icon name="message" color='#AC9292' size={20} onPress={()=>
-                 firebase.firestore()
-                 .collection('THREADS')
-                 .add({
-                   id: item.id,
-                   users: [item.id, user.uid],
-                   receiverID: item.id,
-                   senderID: user.uid,
-                   receiverName: item.firstName,
-                  //  senderName: loggedInUserData.firstName
-                   
-              
-                 }
-                 )
-                 .then(() => {
-                   navigation.navigate('Message', { thread: item.id });
-                 })   
-                   } /> 
+            <Icon
+              name="message"
+              color="#AC9292"
+              size={20}
+              onPress={() =>
+                firebase
+                  .firestore()
+                  .collection("THREADS")
+                  .add({
+                    id: item.id,
+                    users: [item.id, user.uid],
+                    receiverID: item.id,
+                    senderID: user.uid,
+                    receiverName: item.firstName,
+                    //  senderName: loggedInUserData.firstName
+                  })
+                  .then(() => {
+                    navigation.navigate("Message", { thread: item.id });
+                  })
+              }
+            />
 
             <Text
               style={{

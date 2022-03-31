@@ -37,9 +37,9 @@ const EditProfileScreen = () => {
    const [open, setOpen] = useState(false);
    const [value, setValue] = useState(null);
   const [items, setItems] = useState([
-    { label: "IVF", value: "ivf" },
-    { label: "Miscarriage", value: "miscarriage" },
-    { label: "Support", value: "support" },
+    { label: "IVF", value: "IVF" },
+    { label: "Miscarriage", value: "Miscarriage" },
+    { label: "Support", value: "Support" },
   ]);
 
   const getUser = async () => {
@@ -219,18 +219,14 @@ const EditProfileScreen = () => {
         />
       </View>
       <DropDownPicker
-        open={open}
-        value={value}
-        placeholder="What best describes your story?"
-        items={[
-          { label: "IVF", value: "ivf" },
-          { label: "Miscarriage", value: "miscarriage" },
-          { label: "Support", value: "support" },
-        ]}
-         setOpen={setOpen}
-         setValue={setValue}
-        setItems={setItems}
-      />
+      open={open}
+      value={value}
+      placeholder="What best describes your story?"
+      items={items}
+      setOpen={setOpen}
+      setValue={setValue}
+      setItems={setItems}
+    />
       {uploading ? (
         <StatusWrapper>
           <Text>Updating your profile!</Text>
