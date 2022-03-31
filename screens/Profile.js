@@ -92,7 +92,7 @@ const PersonalPage = ({ navigation, route }) => {
         contentContainerStyle={{
           justifyContent: "center",
           alignItems: "center",
-          paddingTop: 180
+          paddingTop: 30
         }}
         showsVerticalScrollIndicator={false}
       >
@@ -177,19 +177,25 @@ const PersonalPage = ({ navigation, route }) => {
               >
                 <Text style={styles.userBtnTxt}>Edit Profile</Text>
               </TouchableOpacity>
-              <RNActionButton buttonColor="blue">
+              <TouchableOpacity
+                style={styles.userBtn}
+                onPress={() => navigation.navigate("AudioRecord")}
+              >
+                <Text style={styles.userBtnTxt}>Record Your Story</Text>
+              </TouchableOpacity>
+              {/* <RNActionButton buttonColor="#E8A196">
             <RNActionButton.Item
               buttonColor="#9b59b6"
               title="Add Audio"
               onPress={() => navigation.navigate("AudioRecord")}
             >
               <Icon name="md-create" style={styles.actionButtonIcon} />
-            </RNActionButton.Item>
+            </RNActionButton.Item> */}
             {/* add video story from here? */}
             {/* <RNActionButton.Item buttonColor='#3498db' title="Add Video" onPress={() => navigation.navigate('upload video story?')}>
             <Icon name="md-create" style={styles.actionButtonIcon} />
           </RNActionButton.Item> */}
-          </RNActionButton>
+          {/* </RNActionButton> */}
             </>
           )}
         </View>
@@ -203,7 +209,10 @@ const PersonalPage = ({ navigation, route }) => {
             <Text style={styles.userInfoSubTitle}>Posts</Text>
           </View> */}
           <View>
-          <NewestAudioPlayer url={userData ? userData.audio:null } />      
+          <NewestAudioPlayer url={userData ? userData.audio:null } 
+          style={{
+            margin: 10
+          }}/>     
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -219,24 +228,18 @@ const styles = StyleSheet.create({
     paddingTop: 50,
     paddingHorizontal: 12,
   },
-  actionButtonIcon: {
-    fontSize: 20,
-    height: 22,
-    color: "white",
-    backgroundColor: "#fff",
-    paddingTop: 140,
-    paddingHorizontal: 12,
-  },
   userImage: {
-    height: 150,
-    width: 150,
+    height: 170,
+    width: 170,
     borderRadius: 75,
+    paddingVertical: 40
   },
   userName: {
-    fontSize: 18,
+    fontSize: 40,
     fontWeight: "bold",
     marginTop: 10,
     marginBottom: 10,
+    color: '#AF8EC9'
   },
   aboutMe: {
     fontSize: 14,
@@ -244,11 +247,12 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   userLocation: {
-    fontSize: 12,
+    fontSize: 18,
     fontWeight: "600",
-    color: "#666",
+    color: '#AF8EC9',
     textAlign: "center",
     marginBottom: 10,
+
   },
   userBtnWrapper: {
     flexDirection: "row",
@@ -263,6 +267,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 12,
     marginHorizontal: 5,
+    margin: 10
   },
   userBtnTxt: {
     color: "#AF8EC9",
@@ -274,7 +279,9 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     paddingHorizontal: 6,
     marginHorizontal: 15,
-    backgroundColor: '#E8A196'
+    backgroundColor: '#E8A196',
+    padding: 10,
+    margin: 10
   },
   userCategoryBtnTxtIvf: {
     color: '#fff',
