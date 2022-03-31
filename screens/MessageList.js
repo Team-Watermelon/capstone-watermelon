@@ -16,6 +16,7 @@ export default function HomeScreen( {navigation}) {
   const { user } = useContext(AuthenticatedUserContext);
   const [threads, setThreads] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [userData, setUserData] = useState(null);
 
   const getThreads = async () => {
     await firebase
@@ -32,7 +33,35 @@ export default function HomeScreen( {navigation}) {
       });
   };
 
+  const getUser = async () => {
+    await firebase
+      .firestore()
+      .collection("users")
+      .doc(route.params ? route.params.currentUser.id : user.uid)
+      .get()
+      .then((documentSnapshot) => {
+        if (documentSnapshot.exists) {
+          console.log("User Data in Profile", documentSnapshot.data());
+          // let userFullData = {};
+          userFullData.data = documentSnapshot.data()
+          userFullData.data.id = documentSnapshot.id;
+          console.log('this is userFullData', userFullData)
+          setUserData(userFullData.data);
+          
+        }
+      });
+      console.log('this is userFullData', userFullData)
+     
+      
+   
+  };
+
+  
+
   useEffect(() => {
+    getUser();
+    console.log('This is the USER OBJ name____________________', userData)
+    console.log('This is the AUTH OBJID____________________', user.uid)
     getThreads()
     const unsubscribe = firebase.firestore()
       .collection("THREADS")
@@ -41,12 +70,23 @@ export default function HomeScreen( {navigation}) {
         const threads = querySnapshot.docs.map((documentSnapshot) => {
           // console.log('this is querysnapshot', querySnapshot)
           // console.log('this is threads', threads)
-          //console.log('this is document snapshot.data', documentSnapshot.data())
-          //console.log('this is document snapshot.id', documentSnapshot.id)
+          console.log('this is document snapshot.data', documentSnapshot.data())
+          console.log('this is document snapshot.data().user[0]', documentSnapshot.data())
+          // console.log('this is document snapshot.id', documentSnapshot.id)
+          // const receiver = () => {
+          //   let recipient = '';
+          //   if (documentSnapshot.data().users[0].id === user.id) {
+          //     recipient = documentSnapshot.data().users[1].id
+          //   } else {
+          //     recipient = documentSnapshot.data().users[0].id
+          //   }
+          //   return "test infomation"
+          // }
+          // console.log('this is receiver',receiver())
           return {
             _id: documentSnapshot.id,
             // give defaults
-            name: documentSnapshot.name,
+            name: "test information",
             latestMessage: {
               text: '',
             },
@@ -84,7 +124,7 @@ export default function HomeScreen( {navigation}) {
             onPress={() => navigation.navigate('Message', { thread: item })}
           >
             <List.Item
-              title={item.name}
+              title={item.senderID === user.uid ? item.receiverName : item.senderEmail}
               description={item.latestMessage.text}
               titleNumberOfLines={1}
               titleStyle={styles.listTitle}

@@ -58,7 +58,7 @@ const UserCard = ({item, onPress}) => {
                 fontSize: 18,
                 color: '#AC9292',
                 fontWeight: 'bold',
-                fontFamily: 'Sen',
+                fontFamily: 'Arial',
                 textTransform: 'capitalize',
                 paddingLeft: 15,
                 paddingTop: 0

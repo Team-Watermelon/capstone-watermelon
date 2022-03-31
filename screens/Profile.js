@@ -38,17 +38,19 @@ const PersonalPage = ({ navigation, route }) => {
           userFullData.data.id = documentSnapshot.id;
           console.log('this is userFullData', userFullData)
           setUserData(userFullData.data);
+          
         }
       });
       console.log('this is userFullData', userFullData)
      
-      console.log('this is userData', userData)
+      
    
   };
   
 
   useEffect(() => {
     getUser();
+    console.log('THIS IS USERDATA___________________________',userData)
     navigation.addListener("focus", () => setLoading(!loading));
   }, [navigation, loading]);
 
@@ -121,7 +123,12 @@ const PersonalPage = ({ navigation, route }) => {
                  .add({
                    id: userData.id,
                    users: [userData.id, user.uid],
-                   name: `${userData.firstName} and ${user.email}` 
+                   receiverID: userData.id,
+                   senderID: user.uid,
+                   receiverName: userData.firstName,
+                   senderEmail: user.email
+                   
+              
                  }
                  )
                  .then(() => {

@@ -93,21 +93,20 @@ const ProfileStackScreen = ({navigation}) => (
           name="EditProfile"
           component={EditProfileScreen}
           options={{
-            headerTitle: 'Edit Profile',
-            headerBackTitleVisible: false,
-            headerTitleAlign: 'center',
-            headerStyle: {
-              backgroundColor: '#fff',
-              shadowColor: '#fff',
-              elevation: 0,
-            },
+            headerLeft: () => (
+              <Image
+                style={{ width: 80, height: 40, margin: 20 }}
+                source={require("../assets/logo.png")}
+              />
+            )
+            }
             // headerLeft: () => (
             //   <Image
             //     style={{ width: 80, height: 40, margin: 20 }}
             //     source={require("../assets/logo.png")}
             //   />
             // ),
-          }}
+          }
         />
       </Stack.Navigator>
     );
