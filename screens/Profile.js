@@ -8,7 +8,7 @@ import {
   ScrollView,
   SafeAreaView,
 } from "react-native";
-import { NewAudioPlayer, RNActionButton } from "../components";
+import { NewestAudioPlayer, RNActionButton } from "../components";
 import Icon from "react-native-vector-icons/Ionicons";
 import firebase from "firebase/app";
 import "firebase/firestore";
@@ -56,6 +56,8 @@ const PersonalPage = ({ navigation, route }) => {
       .get()
       .then((documentSnapshot) => {
         if (documentSnapshot.exists) {
+          console.log("User Data in Profile", documentSnapshot.data());
+          setUserData(documentSnapshot.data());
           console.log("Logged in User Data in Profile", documentSnapshot.data());
           // let userFullData = {};
           loggedInUserFullData.data = documentSnapshot.data()
@@ -202,8 +204,20 @@ const PersonalPage = ({ navigation, route }) => {
             <Text style={styles.userInfoSubTitle}>Posts</Text>
           </View> */}
           <View>
-          <NewAudioPlayer url={userData ? userData.audio:null } />
-         
+          <NewestAudioPlayer url={userData ? userData.audio:null } />
+          <RNActionButton buttonColor="blue">
+            <RNActionButton.Item
+              buttonColor="#9b59b6"
+              title="Add Audio"
+              onPress={() => navigation.navigate("AudioRecord")}
+            >
+              <Icon name="md-create" style={styles.actionButtonIcon} />
+            </RNActionButton.Item>
+            {/* add video story from here? */}
+            {/* <RNActionButton.Item buttonColor='#3498db' title="Add Video" onPress={() => navigation.navigate('upload video story?')}>
+            <Icon name="md-create" style={styles.actionButtonIcon} />
+          </RNActionButton.Item> */}
+          </RNActionButton>
         </View>
       </ScrollView>
     </SafeAreaView>

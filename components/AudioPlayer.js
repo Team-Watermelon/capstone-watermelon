@@ -1,141 +1,172 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { Audio } from "expo-av";
-import { Feather } from "@expo/vector-icons";
-import firebase from "firebase/app";
-import "firebase/firestore";
+import * as React from 'react';
+import { Text, View, StyleSheet, ActivityIndicator } from 'react-native';
+import Constants from 'expo-constants';
+import { Audio } from 'expo-av';
+import { MaterialIcons } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
+import Slider from '@react-native-community/slider';
 
-export default function AudioPlayer() {
-  const [isPlaying, setIsPlaying] = useState(true);
-  const [playbackObj, setPlaybackObj] = useState(null);
-  const [playbackStatus, setplaybackStatus] = useState(null);
-  const [audioURL, setAudioURL] = useState(0);
-  // const [soundPlaying, setSoundPlaying] = useState(false);
 
-  const getAudio = async () => {
-    const currentUser = firebase.auth().currentUser;
-    firebase
-      .firestore()
-      .collection("users")
-      .doc(currentUser.uid)
-      .get()
-      .then((documentSnapshot) => {
-        if (documentSnapshot.exists) {
-          console.log("getAudio url ", documentSnapshot.data().audio);
-          const url = documentSnapshot.data().audio;
-          // console.log("getAudio audioURL be4 set", audioURL);
-          //setAudioURL(url);
-          handleAudioPlayPause(url)
-          console.log("getAudio audioURL after set", audioURL);
-        }
-      });
-  };
- 
-    // useEffect(() => {
-    //   if (playbackObj === null) {
-    //     setPlaybackObj(sound);
-    //   }
-    // }, []);
+export default function AudioPlayer({url}) {
+  const [Loaded, SetLoaded] = React.useState(false);
+  const [Loading, SetLoading] = React.useState(false);
+  const [Playing, SetPlaying] = React.useState(false);
+  const [Duration, SetDuration] = React.useState(0);
+  const [Value, SetValue] = React.useState(0);
+ // const [audioULR,setAudioURL] = React.useState(url)
 
-  const handleAudioPlayPause = async (url) => {
-    //await getAudio();
-    console.log("HandlePlayer audioURL", audioURL);
-    // console.log("HandlePlayer playbackObj", playbackObj);
-    console.log("HandlePlayer playStatus", playbackStatus);
+  const sound = React.useRef(new Audio.Sound());
+
+  const source = {uri: url}
+  console.log('source',source)
+  const UpdateStatus = async (data) => {
     try {
-      //playing audio for the first time: if playbackObj is null or new audio url is set
-      //then create new playbackObj and load it with new audio url
-      if (playbackObj === null || url !==audioURL ) {
-        const playbackObj = new Audio.Sound();
-        const status = await playbackObj.loadAsync(
-          {
-            uri: url,
-          },
-          { shouldPlay: true }
-        );
-        setPlaybackObj(playbackObj)
-        setAudioURL(url)
-        //await playbackObj.playAsync();
-        setIsPlaying(false);
-        //playbackStatus.isPlaying=true;
-        console.log('PLAY isPlaying',isPlaying)
-        // console.log("PLAY playbackObj after set", playbackObj);
-        console.log("PLAY status", status);
-        console.log("PLAY playbackStatus before set", playbackStatus);
-        return setplaybackStatus(status)
-      } 
-   //pasue; if playbackStatus.isPlaying is true, pauseAsync, reset the status (.isPlaying should change to false)
-      if (playbackStatus.isPlaying===true) {
-        //const status = await playbackObj.setStatusAsync({isBuffering: false, isPlaying:false , shouldPlay: false })
-        const status = await playbackObj.pauseAsync();
-        setIsPlaying(false);
-        console.log('PAUSE isPlaying',isPlaying)
-        // console.log('PAUSE playbackObj',playbackObj)
-        console.log('PAUSE playbackStatus before set',playbackStatus)
-        return setplaybackStatus(status);
-      } 
-      //resume 
-     if (playbackStatus.isPlaying===false) {
-        //const status = await playbackObj.setStatusAsync({ isBuffering: true, isPlaying:false, shouldPlay: true})
-        const status = await playbackObj.playAsync();
-        setIsPlaying(true);
-        console.log('RESUME isPlaying',isPlaying)
-        // console.log('RESUME playbackObj',playbackObj)
-        console.log('RESUME playbackStatus before set',playbackStatus)
-         return setplaybackStatus(status);
+      if (data.didJustFinish) {
+        ResetPlayer();
+      } else if (data.positionMillis) {
+        if (data.durationMillis) {
+          SetValue((data.positionMillis / data.durationMillis) * 100);
+        }
       }
-
     } catch (error) {
-      console.log(error);
+      console.log('Error');
     }
-    // if (playbackObject !== null && playbackStatus === null) {
-    //   const status = await playbackObject.loadAsync(
-    //     { url: audioURL },
-    //     { shouldPlay: true }
-    //   );
-    //   setIsPlaying(true);
-    //   return setPlaybackStatus(status);
-    // }
-    // It will pause our audio
-    // if (playbackStatus.isPlaying) {
-    //   const status = await playbackObject.pauseAsync();
-    //   setIsPlaying(false);
-    //   return setPlaybackStatus(status);
-    // }
+  };
 
-    // // It will resume our audio
-    // if (!playbackStatus.isPlaying) {
-    //   const status = await playbackObject.playAsync();
-    //   setIsPlaying(true);
-    //   return setPlaybackStatus(status);
-    // }
+  const ResetPlayer = async () => {
+    try {
+      const checkLoading = await sound.current.getStatusAsync();
+      if (checkLoading.isLoaded === true) {
+        SetValue(0);
+        SetPlaying(false);
+        await sound.current.setPositionAsync(0);
+        await sound.current.stopAsync();
+      }
+    } catch (error) {
+      console.log('Error');
+    }
+  };
+
+  const PlayAudio = async () => {
+    try {
+      const result = await sound.current.getStatusAsync();
+      if (result.isLoaded) {
+        if (result.isPlaying === false) {
+          sound.current.playAsync();
+          SetPlaying(true);
+          //result.isPlaying === true;
+          console.log('result in play',result)
+          // SetLoaded(false)
+          // sound.current.unloadAsync()
+        }
+      }
+    } catch (error) {
+      SetPlaying(false);
+    }
+  };
+
+  const PauseAudio = async () => {
+    try {
+      const result = await sound.current.getStatusAsync();
+      if (result.isLoaded) {
+        if (result.isPlaying === true) {
+          sound.current.pauseAsync();
+          SetPlaying(false);
+        }
+      }
+    } catch (error) {
+      SetPlaying(true);
+    }
+  };
+
+  const SeekUpdate = async (data) => {
+    try {
+      const checkLoading = await sound.current.getStatusAsync();
+      if (checkLoading.isLoaded === true) {
+        const result = (data / 100) * Duration;
+        await sound.current.setPositionAsync(Math.round(result));
+      }
+    } catch (error) {
+      console.log('Error');
+    }
+  };
+
+  const LoadAudio = async () => {
+    SetLoading(true);
+    const checkLoading = await sound.current.getStatusAsync();
+    console.log('checkingLoading',checkLoading)
+    if (checkLoading.isLoaded === false) {
+      try {
+        console.log('url in loading',url)
+        const result = await sound.current.loadAsync(
+          source,
+          {},
+          true
+        );
+        console.log('result',result)
+        if (result.isLoaded === false) {
+          SetLoading(false);
+          SetLoaded(false);
+          console.log('Error in Loading Audio');
+        } else {
+          sound.current.setOnPlaybackStatusUpdate(UpdateStatus);
+          SetLoading(false);
+          SetLoaded(true);
+          SetDuration(result.durationMillis);
+        }
+      } catch (error) {
+        SetLoading(false);
+        SetLoaded(false);
+      }
+    } else {
+      SetLoading(false);
+      SetLoaded(true);
+    }
+  };
+
+  const GetDurationFormat = (duration) => {
+    let time = duration / 1000;
+    let minutes = Math.floor(time / 60);
+    let timeForSeconds = time - minutes * 60;
+    let seconds = Math.floor(timeForSeconds);
+    let secondsReadable = seconds > 9 ? seconds : `0${seconds}`;
+    return `${minutes}:${secondsReadable}`;
   };
 
   return (
     <View style={styles.container}>
-      <Text style={{ fontWeight: "bold", fontSize: 18, marginBottom: 15 }}>
-        My story
-      </Text>
-      <TouchableOpacity
-        style={styles.control}
-        size={24}
-        color="white"
-        onPress={() => {getAudio ()}}
-      >
-        {/* style={{
-        //   alignSelf: "center",
-        //   backgroundColor: "gray",
-        //   padding: 10,
-        //   borderRadius: 50,
-        // }} */}
-        <Feather name={isPlaying? "pause":"play"} size={35} color="#3D425C"></Feather>
-        {/* {isPlaying ? (
-          <Ionicons name='ios-pause' size={48} color='#444' />
+      <View style={styles.AudioPLayer}>
+        {Loading ? (
+          <ActivityIndicator size={'small'} color={'red'} />
+        ) : Loaded === false ? (
+          <MaterialIcons
+            name="replay"
+            size={24}
+            color="black"
+            onPress={() => LoadAudio()}
+          />
         ) : (
-          <Ionicons name='ios-play-circle' size={48} color='#444' />
-        )} */}
-      </TouchableOpacity>
+          <Entypo
+            name={Playing ? 'controller-paus' : 'controller-play'}
+            size={24}
+            color="black"
+            onPress={Playing ? () => PauseAudio() : () => PlayAudio()}
+          />
+        )}
+        <Slider
+          style={{ width: '100%' }}
+          minimumValue={0}
+          maximumValue={100}
+          value={Value}
+          onSlidingComplete={(data) => SeekUpdate(data)}
+          minimumTrackTintColor={'dodgerblue'}
+        />
+        <Text>
+          {Playing
+            ? GetDurationFormat((Value * Duration) / 100)
+            : GetDurationFormat(Duration)}
+        </Text>
+      </View>
     </View>
   );
 }
@@ -143,17 +174,14 @@ export default function AudioPlayer() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 24,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    justifyContent: 'center',
+    paddingTop: Constants.statusBarHeight,
+    backgroundColor: '#ecf0f1',
+    padding: 8,
   },
-  trackInfoText: {
-    textAlign: "center",
-    flexWrap: "wrap",
-    color: "#550088",
-  },
-  control: {
-    margin: 20,
+  AudioPLayer: {
+    width: '100%',
+    height: 50,
+    alignItems: 'center',
   },
 });
