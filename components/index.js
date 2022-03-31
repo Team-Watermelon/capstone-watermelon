@@ -5,5 +5,6 @@ import InputField from './InputField';
 import AudioPlayer from './AudioPlayer';
 import RNActionButton from './ActionButton';
 import NewAudioPlayer from './NewAudioPlayer';
+import NewestAudioPlayer from './NewestAudioPlayer';
 
-export { IconButton, Button, ErrorMessage, InputField, AudioPlayer, NewAudioPlayer,RNActionButton};
+export {NewestAudioPlayer, IconButton, Button, ErrorMessage, InputField, AudioPlayer, NewAudioPlayer,RNActionButton};
