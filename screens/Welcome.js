@@ -29,7 +29,6 @@ const Welcome = ({navigation}) => {
   const { colors } = useTheme();
   const { user } = useContext(AuthenticatedUserContext);
   const [isModalVisible, setModalVisible] = useState(true);
-  const [uploading, setUploading] = useState(false);
   const [userData, setUserData] = useState(null);
    const [open, setOpen] = useState(false);
    const [value, setValue] = useState(null);
@@ -49,14 +48,12 @@ const Welcome = ({navigation}) => {
         if (documentSnapshot.exists) {
           console.log("User Data in EditProfile", documentSnapshot.data());
           setUserData(documentSnapshot.data());
-          setImageURI(documentSnapshot.data().userImage);
         }
       });
   };
 
   const handleUpdate = async () => {
-    setUploading(true);
-    await firebase
+     await firebase
       .firestore()
       .collection("users")
       .doc(user.uid)
@@ -149,22 +146,15 @@ const Welcome = ({navigation}) => {
       setValue={setValue}
       setItems={setItems}
     />
-      {uploading ? (
-        <StatusWrapper>
-          <Text>Updating your profile!</Text>
-          <ActivityIndicator size="large" color="#0000ff" />
-        </StatusWrapper>
-      ) : (
         <TouchableOpacity style={styles.commandButton} onPress={handleUpdate}>
           <Text style={styles.panelButtonTitle}>Update</Text>
         </TouchableOpacity>
-      )}
     </View>
     </Modal>
   );
 };
 
-export default EditProfileScreen;
+export default Welcome;
 
 const styles = StyleSheet.create({
   container: {
