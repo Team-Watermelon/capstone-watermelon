@@ -88,21 +88,13 @@ const UserCard = ({ item, onPress }) => {
             }}
           >
             <Icon name="message" color='#AC9292' size={20} onPress={()=>
-                 firebase.firestore()
-                 .collection('THREADS')
-                 .add({
-                   id: item.id,
-                   users: [item.id, user.uid],
-                   receiverID: item.id,
-                   senderID: user.uid,
-                   receiverName: item.firstName,
-                  //  senderName: loggedInUserData.firstName
-                   
-              
-                 }
-                 )
-                 .then(() => {
-                   navigation.navigate('Message', { thread: item.id });
+                 firebase
+                 .firestore()
+                 .collection("users")
+                 .doc(item.id)
+                 .get()
+                .then(() => {
+                  navigation.navigate('Message', { userData: item });
                  })   
                    } /> 
 

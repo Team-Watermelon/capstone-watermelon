@@ -10,15 +10,50 @@ import Profile from '../screens/Profile'
 import AddRoomScreen from '../screens/AddRoomScreen';
 import Message from '../screens/Message';
 import Map from '../screens/Map'
+import MapModal from'../screens/Mapmodal'
 import AudioRecord from '../screens/AudioRecord'
 import EditProfileScreen from '../screens/EditProfileScreen';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useNavigation } from "@react-navigation/native";
 
 const ChatAppStack = createStackNavigator();
 const ModalStack = createStackNavigator();
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
+
+const MapStack = ({navigation}) => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name="Map"
+      component={Map}
+      options={{
+        headerLeft: () => (
+          <TouchableOpacity onPress={()=>navigation.navigate('Home')}>
+          <Image
+            style={{ width: 80, height: 40, margin: 20 }}
+            source={require("../assets/logo.png")}
+          />
+          </TouchableOpacity>
+        ),
+      }}
+    />
+    <Stack.Screen
+      name="MapModal"
+      component={MapModal}
+      options={{
+        headerTitle: 'Messages',
+        headerBackTitleVisible: false,
+        headerTitleAlign: 'center',
+        headerStyle: {
+          backgroundColor: '#fff',
+          shadowColor: '#fff',
+          elevation: 0,
+        },
+      }}
+    />
+  </Stack.Navigator>
+);
 
 const MessagesStack = ({navigation}) => (
   <Stack.Navigator>
@@ -27,10 +62,12 @@ const MessagesStack = ({navigation}) => (
       component={MessageList}
       options={{
         headerLeft: () => (
+          <TouchableOpacity onPress={()=>navigation.navigate('Home')}>
           <Image
             style={{ width: 80, height: 40, margin: 20 }}
             source={require("../assets/logo.png")}
           />
+          </TouchableOpacity>
         ),
       }}
     />
@@ -53,10 +90,12 @@ const MessagesStack = ({navigation}) => (
       component={Profile}
       options={{
         headerLeft: () => (
+          <TouchableOpacity onPress={()=>navigation.navigate('Home')}>
           <Image
             style={{ width: 80, height: 40, margin: 20 }}
             source={require("../assets/logo.png")}
           />
+          </TouchableOpacity>
         ),
       }}
     />
@@ -70,10 +109,12 @@ const ProfileStackScreen = ({navigation}) => (
       component={Profile}
       options={{
         headerLeft: () => (
+          <TouchableOpacity onPress={()=>navigation.navigate('Home')}>
           <Image
             style={{ width: 80, height: 40, margin: 20 }}
             source={require("../assets/logo.png")}
           />
+          </TouchableOpacity>
         ),
       }}
     />
@@ -82,10 +123,12 @@ const ProfileStackScreen = ({navigation}) => (
       component={Message}
       options={{
         headerLeft: () => (
+          <TouchableOpacity onPress={()=>navigation.navigate('Home')}>
           <Image
             style={{ width: 80, height: 40, margin: 20 }}
             source={require("../assets/logo.png")}
           />
+          </TouchableOpacity>
         ),}}/>
                
         <Stack.Screen name = 'AudioRecord'component={AudioRecord} />
@@ -94,11 +137,13 @@ const ProfileStackScreen = ({navigation}) => (
           component={EditProfileScreen}
           options={{
             headerLeft: () => (
+              <TouchableOpacity onPress={()=>navigation.navigate('Home')}>
               <Image
                 style={{ width: 80, height: 40, margin: 20 }}
                 source={require("../assets/logo.png")}
               />
-            )
+              </TouchableOpacity>
+            ),
             }
             // headerLeft: () => (
             //   <Image
@@ -118,10 +163,12 @@ const HomeStackScreen = ({navigation}) => (
       component={HomeScreen}
       options={{
         headerLeft: () => (
+          <TouchableOpacity onPress={()=>navigation.navigate('Home')}>
           <Image
             style={{ width: 80, height: 40, margin: 20 }}
             source={require("../assets/logo.png")}
           />
+          </TouchableOpacity>
         ),
       }}
     />
@@ -130,10 +177,12 @@ const HomeStackScreen = ({navigation}) => (
       component={Profile}
       options={{
         headerLeft: () => (
+          <TouchableOpacity onPress={()=>navigation.navigate('Home')}>
           <Image
             style={{ width: 80, height: 40, margin: 20 }}
             source={require("../assets/logo.png")}
           />
+          </TouchableOpacity>
         ),
       }}
     />
@@ -174,10 +223,12 @@ style={{ flex: 1 }}
             <MaterialCommunityIcons name='home' color={color} size={26} />
           ),
           headerLeft: () => (
+            <TouchableOpacity onPress={()=>navigation.navigate('Home')}>
             <Image
               style={{ width: 80, height: 40, margin: 20 }}
               source={require("../assets/logo.png")}
             />
+            </TouchableOpacity>
           ),
         }}
       />
@@ -201,17 +252,19 @@ style={{ flex: 1 }}
       />
       <Tab.Screen
         name='Map'
-        component={Map}
+        component={MapStack}
         options={{
           tabBarLabel: 'Map',
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name='map' color={color} size={26} />
           ),
           headerLeft: () => (
+            <TouchableOpacity onPress={()=>navigation.navigate('Home')}>
             <Image
               style={{ width: 80, height: 40, margin: 20 }}
               source={require("../assets/logo.png")}
             />
+            </TouchableOpacity>
           ),
         }}
       />
@@ -224,10 +277,12 @@ style={{ flex: 1 }}
             <MaterialCommunityIcons name='account' color={color} size={26} />
           ),
           headerLeft: () => (
+            <TouchableOpacity onPress={()=>navigation.navigate('Home')}>
             <Image
               style={{ width: 80, height: 40, margin: 20 }}
               source={require("../assets/logo.png")}
             />
+            </TouchableOpacity>
           ),
         }}
       />

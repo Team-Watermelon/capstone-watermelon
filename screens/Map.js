@@ -1,11 +1,24 @@
 import React from 'react';
-import { StyleSheet, Text, View, ImageBackground } from 'react-native';
+import { Platform, StyleSheet, Text, View, ImageBackground, TouchableOpacity } from 'react-native';
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import { useNavigation } from "@react-navigation/native";
 
 export default function Map() {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
-      <ImageBackground source={require('../assets/Map_planned.png')} resizeMode="cover" style={styles.image}>
-      </ImageBackground>
+   
+      <MapView
+         style={{ flex: 1 }}
+         provider={PROVIDER_GOOGLE}
+         showsUserLocation
+         initialRegion={{
+         latitude: 37.78825,
+         longitude: -122.4324,
+         latitudeDelta: 0.0922,
+         longitudeDelta: 0.0421}}
+         onPress={()=> navigation.navigate("MapModal")}
+      />
     </View>
   );
 }

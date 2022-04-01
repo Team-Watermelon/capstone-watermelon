@@ -17,6 +17,7 @@ export default function RoomScreen({ route }) {
   //         console.log('this is receiver', receiver)
    
   // };
+  console.log('this is route.params', route.params)
   const receiver = route.params.userData;
   //messages hook with initial state
   const [messages, setMessages] = useState([

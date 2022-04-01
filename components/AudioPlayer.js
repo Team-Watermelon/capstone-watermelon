@@ -4,7 +4,7 @@ import Constants from 'expo-constants';
 import { Audio } from 'expo-av';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
-import Slider from '@react-native-community/slider';
+// import Slider from '@react-native-community/slider';
 
 
 export default function AudioPlayer({url}) {
@@ -153,14 +153,14 @@ export default function AudioPlayer({url}) {
             onPress={Playing ? () => PauseAudio() : () => PlayAudio()}
           />
         )}
-        <Slider
+        {/* <Slider
           style={{ width: '100%' }}
           minimumValue={0}
           maximumValue={100}
           value={Value}
           onSlidingComplete={(data) => SeekUpdate(data)}
           minimumTrackTintColor={'dodgerblue'}
-        />
+        /> */}
         <Text>
           {Playing
             ? GetDurationFormat((Value * Duration) / 100)
