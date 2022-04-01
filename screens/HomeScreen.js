@@ -14,7 +14,6 @@ import Firebase from '../config/firebase';
 import firebase from "firebase/app";
 import "firebase/firestore";
 import { AuthenticatedUserContext } from '../navigation/AuthenticatedUserProvider';
-import AppIntro from './AppIntro'
 
 const auth = firebase.auth();
 

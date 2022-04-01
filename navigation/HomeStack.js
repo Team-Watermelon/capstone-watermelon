@@ -119,10 +119,10 @@ const HomeStackScreen = ({ navigation }) => (
       name="CheckLoad"
       component={CheckLoad}
     /> */}
-      <Stack.Screen
+      {/* <Stack.Screen
       name="Intro"
       component={AppIntro}
-    />
+    /> */}
         
     <Stack.Screen
       name="Home"
