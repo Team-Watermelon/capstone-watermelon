@@ -37,7 +37,6 @@ export default function SignupScreen({ navigation }) {
         email,
         password
       );
-      navigate('Welcome')
     }
   }
 

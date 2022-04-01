@@ -25,6 +25,7 @@
 // const AppIntro = ({navigation}) => {
 //    [showRealApp, setShowRealApp] = useState(false);
 //    [isLoading, setIsLoading] = useState(false)
+
 // useEffect (()=>{
 //   AsyncStorage.getItem('first_time').then((value) => {
 //     setShowRealApp(!!value)
@@ -32,7 +33,7 @@
 // })})
 //   const onDone = () => {
 //     AsyncStorage.setItem('first_time', 'true').then(() => {
-//       //navigation.navigate('Home');
+//       navigation.navigate('Home');
 //       setShowRealApp(true)
 //     });
 //     //const items = [['intro', 'intro']];
