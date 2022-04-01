@@ -115,10 +115,10 @@ const ProfileStackScreen = ({ navigation }) => (
 
 const HomeStackScreen = ({ navigation }) => (
   <Stack.Navigator>
-       <Stack.Screen
+       {/* <Stack.Screen
       name="CheckLoad"
       component={CheckLoad}
-    />
+    /> */}
       <Stack.Screen
       name="Intro"
       component={AppIntro}

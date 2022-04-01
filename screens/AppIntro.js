@@ -4,7 +4,7 @@
 
 // import React in our code
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 // import all the components we are going to use
 import {
   SafeAreaView,
@@ -13,17 +13,28 @@ import {
   Text,
   Image,
   Button,
+  ActivityIndicator
 } from 'react-native';
 
 //import AppIntroSlider to use it
 import AppIntroSlider from 'react-native-app-intro-slider';
 //import AppIntroSlider to use it
 import Icon from 'react-native-ionicons';
+import HomeScreen from './HomeScreen'
 
 const AppIntro = ({navigation}) => {
-  const [showRealApp, setShowRealApp] = useState(false);
-
+   [showRealApp, setShowRealApp] = useState(false);
+   [isLoading, setIsLoading] = useState(false)
+useEffect (()=>{
+  AsyncStorage.getItem('first_time').then((value) => {
+    setShowRealApp(!!value)
+    setIsLoading (false )
+})})
   const onDone = () => {
+    AsyncStorage.setItem('first_time', 'true').then(() => {
+    setShowRealApp(true)
+      navigation.navigate('Home');
+    });
     //const items = [['intro', 'intro']];
      AsyncStorage.setItem('FirstTime');
     navigation.navigate('Home');
@@ -84,8 +95,8 @@ const AppIntro = ({navigation}) => {
       {showRealApp ? (
         <SafeAreaView style={styles.container}>
           <View style={styles.container}>
-              
-            <Text style={styles.titleStyle}>
+              <HomeScreen/>
+            {/* <Text style={styles.titleStyle}>
               React Native App Intro Slider using AppIntroSlider
             </Text>
             <Text style={styles.paragraphStyle}>
@@ -95,7 +106,7 @@ const AppIntro = ({navigation}) => {
             <Button
               title="Show Intro Slider again"
               onPress={() => setShowRealApp(false)}
-            />
+            /> */}
           </View>
         </SafeAreaView>
       ) : (
