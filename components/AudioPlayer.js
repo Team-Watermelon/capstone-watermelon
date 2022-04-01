@@ -4,7 +4,7 @@ import Constants from 'expo-constants';
 import { Audio } from 'expo-av';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
-import Slider from '@react-native-community/slider';
+// import Slider from '@react-native-community/slider';
 
 
 export default function AudioPlayer({url}) {

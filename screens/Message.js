@@ -8,31 +8,48 @@ export default function RoomScreen({ route }) {
   const { user } = useContext(AuthenticatedUserContext);
   const currentUser = user.toJSON();
   const { thread } = route.params;
-  const [receiver, setReceiver] = useState(null);
+  // const [receiver, setReceiver] = useState(null);
+  const receiver = route.params.data;
+  // const getReceiver = async () => {
+  //   const myPromise = new Promise( async (resolve, reject) => {
+  //     let newReceiverFromZach = await firebase
+  //     .firestore()
+  //     .collection("users")
+  //     .doc(route.params.thread)
+  //     .get()
 
-  const getReceiver = async () => {
-    console.log('this is ROUTEPARAMS================>', route.params)
-    await firebase
-      .firestore()
-      .collection("users")
-      .doc(route.params.thread)
-      .get()
-      .then((documentSnapshot) => {
-        if (documentSnapshot.exists) {
-          console.log("User Data in Profile", documentSnapshot.data());
-          let receiverData = {};
-          receiverData.data = documentSnapshot.data()
-          receiverData.data.id = documentSnapshot.id;
-          console.log('this is receiverData', receiverData)
-          setReceiver(receiverData.data);
-          
-        }
-      });
-      console.log('this is receiverDAta', receiverData)
-     
-      
+  //     if (newReceiverFromZach.exists) {
+  //       console.log("User Data in Profile", newReceiverFromZach.data());
+  //         let receiverData = {};
+  //         receiverData.data = newReceiverFromZach.data()
+  //         receiverData.data.id = newReceiverFromZach.id;
+  //         console.log('this is receiverData!!!!!!!!!!!!!', receiverData)
+  //         resolve(receiverData.data) 
+  //     } else {
+  //       reject()
+  //     }
+  //   });
+
+  //   return myPromise
+  // }
+    // console.log('this is ROUTEPARAMS================>', route.params)
+    // let newReceiverFromZach = await firebase
+    //   .firestore()
+    //   .collection("users")
+    //   .doc(route.params.thread)
+    //   .get()
+
+    //   if (newReceiverFromZach.exists) {
+    //     console.log("User Data in Profile", newReceiverFromZach.data());
+    //       let receiverData = {};
+    //       receiverData.data = newReceiverFromZach.data()
+    //       receiverData.data.id = newReceiverFromZach.id;
+    //       console.log('this is receiverData!!!!!!!!!!!!!', receiverData)
+    //       setReceiver(receiverData.data)
+    //   }
+    //   console.log('this is receiverDAta', receiverData)
+    // };
    
-  };
 
   // useEffect(() => {
   //   console.log('this is thread', { thread })
@@ -117,8 +134,15 @@ export default function RoomScreen({ route }) {
       );
   }
 
+  // useEffect(()=>{},[receiver])
+
   useEffect(() => {
-    getReceiver();
+  //   getReceiver().then((receiverPromiseObj)=> {
+  //     setReceiver(receiverPromiseObj)
+  //   });
+    
+ 
+    console.log('this is receiver++++++++++++@@@@@@@@@@>>>>>>>>>>>>>>>>>>>', receiver)
     const messagesListener = firebase.firestore()
       .collection("THREADS")
       .doc("TEST NAME")
