@@ -79,7 +79,7 @@ export default function HomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <FlatList
-        LisHeaderComponent={
+        ListHeaderComponent={
           <>
             <StatusBar style="dark-content" />
             <View style={styles.row}>
