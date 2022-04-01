@@ -88,7 +88,6 @@ useEffect(() => {
           onPress={handleSignOut}
         />
         <Text style={styles.text}>Your UID is: {user.uid}{"\n"}{"\n"}{"\n"}</Text>
-        
       </View>
       <Text style={styles.stories}>
         Stories
@@ -121,14 +120,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingTop: 50,
+    paddingTop: 0,
     paddingHorizontal: 12,
   },
   row: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 24,
+    marginBottom: 0,
   },
   title: {
     fontSize: 24,
@@ -144,7 +143,7 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: 'normal',
     color: '#AC9292',
-    padding: 10,
+    padding: 0,
   }
 });
 
