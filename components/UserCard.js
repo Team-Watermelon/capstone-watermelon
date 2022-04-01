@@ -102,7 +102,7 @@ const UserCard = ({ item, onPress }) => {
                  }
                  )
                  .then(() => {
-                   navigation.navigate('Message', { thread: item });
+                   navigation.navigate('Message', { thread: item.id });
                  })   
                    } /> 
 

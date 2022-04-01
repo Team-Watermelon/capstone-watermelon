@@ -8,30 +8,30 @@ export default function RoomScreen({ route }) {
   const { user } = useContext(AuthenticatedUserContext);
   const currentUser = user.toJSON();
   const { thread } = route.params;
-  // const [receiver, setReceiver] = useState(null);
-  const receiver = route.params.data;
-  // const getReceiver = async () => {
-  //   const myPromise = new Promise( async (resolve, reject) => {
-  //     let newReceiverFromZach = await firebase
-  //     .firestore()
-  //     .collection("users")
-  //     .doc(route.params.thread)
-  //     .get()
+  const [receiver, setReceiver] = useState(null);
+  // const receiver = route.params.data;
+  const getReceiver = async () => {
+    const myPromise = new Promise( async (resolve, reject) => {
+      let newReceiverFromZach = await firebase
+      .firestore()
+      .collection("users")
+      .doc(route.params.thread)
+      .get()
 
-  //     if (newReceiverFromZach.exists) {
-  //       console.log("User Data in Profile", newReceiverFromZach.data());
-  //         let receiverData = {};
-  //         receiverData.data = newReceiverFromZach.data()
-  //         receiverData.data.id = newReceiverFromZach.id;
-  //         console.log('this is receiverData!!!!!!!!!!!!!', receiverData)
-  //         resolve(receiverData.data) 
-  //     } else {
-  //       reject()
-  //     }
-  //   });
+      if (newReceiverFromZach.exists) {
+        console.log("User Data in Profile", newReceiverFromZach.data());
+          let receiverData = {};
+          receiverData.data = newReceiverFromZach.data()
+          receiverData.data.id = newReceiverFromZach.id;
+          console.log('this is receiverData!!!!!!!!!!!!!', receiverData)
+          resolve(receiverData.data) 
+      } else {
+        reject()
+      }
+    });
 
-  //   return myPromise
-  // }
+    return myPromise
+  }
     // console.log('this is ROUTEPARAMS================>', route.params)
     // let newReceiverFromZach = await firebase
     //   .firestore()
@@ -137,12 +137,15 @@ export default function RoomScreen({ route }) {
   // useEffect(()=>{},[receiver])
 
   useEffect(() => {
-  //   getReceiver().then((receiverPromiseObj)=> {
-  //     setReceiver(receiverPromiseObj)
-  //   });
+    getReceiver().then((receiverPromiseObj)=> {
+      setReceiver(receiverPromiseObj)
+      return receiverPromiseObj
+    }).then((again)=>{
+      
+    })
     
  
-    console.log('this is receiver++++++++++++@@@@@@@@@@>>>>>>>>>>>>>>>>>>>', receiver)
+    console.log('this is receiver++++++++++++@@@@@@@@@@QQ>>>>>>>>>>>>>>>>>>>', receiver)
     const messagesListener = firebase.firestore()
       .collection("THREADS")
       .doc("TEST NAME")

@@ -162,7 +162,7 @@ const PersonalPage = ({ navigation, route }) => {
                 //  }
                 //  )
                 //  .then(() => {
-                   navigation.navigate('Message', { thread: userData });
+                   navigation.navigate('Message', { thread: userData.id });
                 //  });   
                    }
               }>
