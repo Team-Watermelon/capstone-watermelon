@@ -7,32 +7,18 @@ import firebase from "firebase/app";
 export default function RoomScreen({ route }) {
   const { user } = useContext(AuthenticatedUserContext);
   const currentUser = user.toJSON();
-  const { thread } = route.params;
-  const [receiver, setReceiver] = useState({});
-  let receiverFullData= {};
-
-  const getReceiver = async () => {
-    console.log('this is ROUTEPARAMS================>', route.params)
-    await firebase
-      .firestore()
-      .collection("users")
-      .doc(route.params.thread.id)
-      .get()
-      .then((documentSnapshot) => {
-        if (documentSnapshot.exists) {
-          console.log("exists");
-          console.log("receiver data", documentSnapshot.data());
-          receiverFullData = documentSnapshot.data()
-          receiverFullData.id = documentSnapshot.id;
-          console.log('this is receiverDataSnap', receiverFullData )
-          setReceiver(receiverFullData);
-          console.log('this is receiver', receiver)
-          
-        }
-      });
-     
-  };
-
+  // const { thread } = route.params;
+  // const [receiver, setReceiver] = useState(route.params);
+  
+  //setReciever sets the person who will receive the message based on route params
+  // const getReceiver = () => {
+  //   console.log('this is ROUTEPARAMS================>', route.params)
+  //         setReceiver(route.params);
+  //         console.log('this is receiver', receiver)
+   
+  // };
+  const receiver = route.params.userData;
+  //messages hook with initial state
   const [messages, setMessages] = useState([
 
     {
@@ -50,7 +36,7 @@ export default function RoomScreen({ route }) {
     firebase
       .firestore()
       .collection("THREADS")
-      .doc(user.uid)
+      .doc(user.uid+receiver.id)
       .collection("MESSAGES")
       .add({
         text,
@@ -65,7 +51,7 @@ export default function RoomScreen({ route }) {
     await firebase
       .firestore()
       .collection("THREADS")
-      .doc(user.uid)
+      .doc(user.uid+receiver.id)
       .set(
         
         {
@@ -73,22 +59,24 @@ export default function RoomScreen({ route }) {
             text,
             createdAt: new Date().getTime(),
           },
-          users: [currentUser.uid, ],
+          users: [currentUser.uid, receiver.id],
           receiverID: receiver.id,
           senderID: currentUser.uid,
-          receiverName: receiver.id,
+          receiverName: receiver.firstName,
           senderName: currentUser.email
         },
         { merge: true }
       );
   }
 
+
+
   useEffect(() => {
-    getReceiver();
+    // getReceiver()
     console.log('THIS is receiver>>>>>>>>>>>>>>>>>', receiver)
     const messagesListener = firebase.firestore()
       .collection("THREADS")
-      .doc(user.uid)
+      .doc(user.uid+receiver.id)
       .collection("MESSAGES")
       .orderBy("createdAt", "desc")
       .onSnapshot((querySnapshot) => {
@@ -117,6 +105,8 @@ export default function RoomScreen({ route }) {
 
     return () => messagesListener();
   }, []);
+
+  
 
   return (
     <GiftedChat

@@ -45,7 +45,7 @@ export default function HomeScreen({ navigation }) {
     try {
       await auth.signOut();
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -58,7 +58,7 @@ export default function HomeScreen({ navigation }) {
         .collection("users")
         .get()
         .then((querySnapshot) => {
-          console.log("Total Users: ", querySnapshot.size);
+          // console.log("Total Users: ", querySnapshot.size);
 
           querySnapshot.forEach((doc) => {
             const { id, firstName, userImage, audio, aboutMe } = doc.data();
@@ -77,10 +77,10 @@ export default function HomeScreen({ navigation }) {
       // if (loading) {
       //   setLoading(false);
       // }
-      console.log("list", list);
-      console.log("Users: ", users);
+      // console.log("list", list);
+      // console.log("Users: ", users);
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
 

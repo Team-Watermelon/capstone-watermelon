@@ -34,16 +34,16 @@ const PersonalPage = ({ navigation, route }) => {
       .get()
       .then((documentSnapshot) => {
         if (documentSnapshot.exists) {
-          console.log("User Data in Profile", documentSnapshot.data());
+          // console.log("User Data in Profile", documentSnapshot.data());
           // let userFullData = {};
           userFullData.data = documentSnapshot.data()
           userFullData.data.id = documentSnapshot.id;
-          console.log('this is userFullData', userFullData)
+          // console.log('this is userFullData', userFullData)
           setUserData(userFullData.data);
           
         }
       });
-      console.log('this is userFullData', userFullData)
+      // console.log('this is userFullData', userFullData)
      
       
    
@@ -56,17 +56,17 @@ const PersonalPage = ({ navigation, route }) => {
       .get()
       .then((documentSnapshot) => {
         if (documentSnapshot.exists) {
-          console.log("User Data in Profile", documentSnapshot.data());
-          console.log("Logged in User Data in Profile", documentSnapshot.data());
+          // console.log("User Data in Profile", documentSnapshot.data());
+          // console.log("Logged in User Data in Profile", documentSnapshot.data());
           // let userFullData = {};
           loggedInUserFullData.data = documentSnapshot.data()
           loggedInUserFullData.data.id = documentSnapshot.id;
-          console.log('this is LOGGED IN userFullData', loggedInUserFullData)
+          // console.log('this is LOGGED IN userFullData', loggedInUserFullData)
           setloggedInUserData(loggedInUserFullData.data);
           
         }
       });
-      console.log('this is loggedin userFullData.name', loggedInUserFullData)
+      // console.log('this is loggedin userFullData.name', loggedInUserFullData)
      
       
    
@@ -77,8 +77,8 @@ const PersonalPage = ({ navigation, route }) => {
   useEffect(() => {
     getUser();
     getLoggedInUser()
-    console.log('THIS IS USERDATA___________________________',userData)
-    console.log('THIS IS LOGGEDIN USERDATA==========================>>>>>>>>>>>>',loggedInUserData)
+    // console.log('THIS IS USERDATA___________________________',userData)
+    // console.log('THIS IS LOGGEDIN USERDATA==========================>>>>>>>>>>>>',loggedInUserData)
     
     navigation.addListener("focus", () => setLoading(!loading));
   }, [navigation, loading]);
@@ -147,22 +147,14 @@ const PersonalPage = ({ navigation, route }) => {
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.userBtn} onPress={() => {
-                
-                //  firebase.firestore()
-                //  .collection('THREADS')
-                //  .add({
-                //    id: "TEST NAME",
-                //    //this is setting the thread id to the userid
-                //    users: [userData.id, user.uid],
-                //    receiverID: userData.id,
-                //    senderID: user.uid,
-                //    receiverName: userData.firstName,
-                //    senderName: loggedInUserData.firstName
-                //  }
-                //  )
-                //  .then(() => {
-                   navigation.navigate('Message', { thread: userData });
-                //  });   
+                  firebase
+                  .firestore()
+                  .collection("users")
+                  .doc(userData.id)
+                  .get()
+                 .then(() => {
+                   navigation.navigate('Message', { userData: userData });
+                 });   
                    }
               }>
                 <Text style={styles.userBtnTxt}>Message</Text>
