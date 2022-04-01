@@ -74,15 +74,15 @@ const Welcome = ({navigation}) => {
   }, []);
 
   return (
-    <Modal
-    visible={isModalVisible}
-    animationType="slide"
-    presentationStyle="fullScreen"
-    onRequestClose={() => {
-      Alert.alert("Modal has been closed.");
-      setModalVisible(false);
-    }}
-  >
+//     <Modal
+//     visible={isModalVisible}
+//     animationType="slide"
+//     presentationStyle="fullScreen"
+//     onRequestClose={() => {
+//       Alert.alert("Modal has been closed.");
+//       setModalVisible(false);
+//     }}
+//   >
     <View style={styles.container}>
       <View style={{ alignItems: "center" }}>
         <Text style={{ marginTop: 10, fontSize: 18, fontWeight: "bold" }}>
@@ -150,7 +150,7 @@ const Welcome = ({navigation}) => {
           <Text style={styles.panelButtonTitle}>Update</Text>
         </TouchableOpacity>
     </View>
-    </Modal>
+    // </Modal>
   );
 };
 

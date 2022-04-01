@@ -1,4 +1,4 @@
-import React from "react";
+import React, {userEffect, useState} from "react";
 import { View, TouchableOpacity, Text, Image } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
@@ -13,10 +13,8 @@ import Map from "../screens/Map";
 import AudioRecord from "../screens/AudioRecord";
 import EditProfileScreen from "../screens/EditProfileScreen";
 import { LinearGradient } from "expo-linear-gradient";
-import Welcome from "../screens/Welcome";
-
-const ChatAppStack = createStackNavigator();
-const ModalStack = createStackNavigator();
+import AppIntro from "../screens/AppIntro";
+import CheckLoad from "../screens/CheckLoad";
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -117,6 +115,15 @@ const ProfileStackScreen = ({ navigation }) => (
 
 const HomeStackScreen = ({ navigation }) => (
   <Stack.Navigator>
+       <Stack.Screen
+      name="CheckLoad"
+      component={CheckLoad}
+    />
+      <Stack.Screen
+      name="Intro"
+      component={AppIntro}
+    />
+        
     <Stack.Screen
       name="Home"
       component={HomeScreen}
@@ -155,7 +162,7 @@ const HomeStackScreen = ({ navigation }) => (
         },
       }}
     />
-    <Stack.Screen name="Welcome" component={Welcome} />
+   
   </Stack.Navigator>
 );
 
