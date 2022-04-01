@@ -18,3 +18,4 @@ export async function registration(email, password) {
     Alert.alert("There is something wrong!!!!", err.message);
   }
 }
+
