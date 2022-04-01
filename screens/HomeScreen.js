@@ -1,27 +1,29 @@
-import { StatusBar } from 'expo-status-bar';
-import React, { useContext, useEffect, useState } from 'react';
-import { View,
-  ScrollView,
+import { StatusBar } from "expo-status-bar";
+import React, { useContext, useEffect, useState } from "react";
+import {
+  View,
   Text,
   StyleSheet,
   FlatList,
   SafeAreaView,
-  Alert, } from 'react-native';
-import UserCard from '../components/UserCard';
-import { IconButton } from '../components';
+  Alert,
+} from "react-native";
+import UserCard from "../components/UserCard";
+import { IconButton } from "../components";
 
-import Firebase from '../config/firebase';
+import Firebase from "../config/firebase";
 import firebase from "firebase/app";
 import "firebase/firestore";
-import { AuthenticatedUserContext } from '../navigation/AuthenticatedUserProvider';
+import { AuthenticatedUserContext } from "../navigation/AuthenticatedUserProvider";
 
 const auth = firebase.auth();
 
-export default function HomeScreen({navigation}) {
+export default function HomeScreen({ navigation }) {
   const [users, setUsers] = useState(null);
   const [loading, setLoading] = useState(true);
-  
+
   const { user } = useContext(AuthenticatedUserContext);
+
   const handleSignOut = async () => {
     try {
       await auth.signOut();
@@ -33,69 +35,88 @@ export default function HomeScreen({navigation}) {
   const fetchUsers = async () => {
     try {
       const list = [];
-
       await firebase
         .firestore()
-        .collection('users')
+        .collection("users")
         .get()
         .then((querySnapshot) => {
-          console.log('Total Users: ', querySnapshot.size);
-        
-        querySnapshot.forEach((doc) => {
-          const {
-            id,
-            firstName,
-            userImage,
-            audio,
-            aboutMe,
-          } = doc.data();
-          list.push({
-            id: doc.id,
-            firstName,
-            userImage,
-            audio,
-            aboutMe
+          console.log("Total Users: ", querySnapshot.size);
+          querySnapshot.forEach((doc) => {
+            const { id, firstName, userImage, audio, aboutMe } = doc.data();
+            list.push({
+              id: doc.id,
+              firstName,
+              userImage,
+              audio,
+              aboutMe,
+            });
           });
         });
-      });
+      setUsers(list);
+      console.log("list", list);
+      console.log("Users: ", users);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
-    setUsers(list);
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
-    // if (loading) {
-    //   setLoading(false);
-    // }
-    console.log('list',list)
-    console.log('Users: ', users);
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-useEffect(() => {
-  fetchUsers();
-}, []);
-
+  const renderItem = ({ item }) => {
+    return (
+      <UserCard
+        data={users}
+        key={item.id}
+        item={item}
+        onPress={() =>
+          navigation.navigate("HomeProfile", { currentUser: item })
+        }
+      />
+    );
+  };
   return (
     <View style={styles.container}>
-      <ScrollView>
-      <StatusBar style='dark-content' />
-      <View style={styles.row}>
-        <Text style={styles.title}>open.{"\n"}{"\n"}{"\n"}</Text>
-        <IconButton
-          name='logout'
-          size={24}
-          color='black'
-          onPress={handleSignOut}
-        />
-        <Text style={styles.text}>Your UID is: {user.uid}{"\n"}{"\n"}{"\n"}</Text>
-        
-      </View>
-      <Text style={styles.stories}>
-        Stories
-      </Text>
-      {/* <UserCard /> */}
-      
-          <FlatList
+      <FlatList
+        LisHeaderComponent={
+          <>
+            <StatusBar style="dark-content" />
+            <View style={styles.row}>
+              <Text style={styles.title}>
+                open.{"\n"}
+                {"\n"}
+                {"\n"}
+              </Text>
+              <IconButton
+                name="logout"
+                size={24}
+                color="black"
+                onPress={handleSignOut}
+              />
+              <Text style={styles.text}>
+                Your UID is: {user.uid}
+                {"\n"}
+                {"\n"}
+                {"\n"}
+              </Text>
+            </View>
+            <Text style={styles.stories}>Stories</Text>
+          </>
+        }
+        data={users}
+        renderItem={renderItem}
+        // ListFooterComponent={
+        //   <Footer/>
+        // }
+        keyExtractor={(item) => item.id}
+        showsVerticalScrollIndicator={false}
+      />
+    </View>
+  );
+}
+{
+  /* <FlatList
             data={users}
             renderItem={({item}) => (
               <UserCard
@@ -110,41 +131,36 @@ useEffect(() => {
             // ListHeaderComponent={ListHeader}
             // ListFooterComponent={ListHeader}
             showsVerticalScrollIndicator={false}
-          />
-    
-      </ScrollView>
-    </View>
-  );
+          /> */
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     paddingTop: 50,
     paddingHorizontal: 12,
   },
   row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: 24,
   },
   title: {
     fontSize: 24,
-    fontWeight: '600',
-    color: '#AC9292',
+    fontWeight: "600",
+    color: "#AC9292",
   },
   text: {
     fontSize: 16,
-    fontWeight: 'normal',
-    color: '#AC9292',
+    fontWeight: "normal",
+    color: "#AC9292",
   },
   stories: {
     fontSize: 28,
-    fontWeight: 'normal',
-    color: '#AC9292',
+    fontWeight: "normal",
+    color: "#AC9292",
     padding: 10,
-  }
+  },
 });
-
