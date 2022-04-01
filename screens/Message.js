@@ -7,56 +7,27 @@ import firebase from "firebase/app";
 export default function RoomScreen({ route }) {
   const { user } = useContext(AuthenticatedUserContext);
   const currentUser = user.toJSON();
-  const [receiver, setReceiver] = useState(route.params.userData)
-
-  // const receiver = route.params.userData;
-
-  const getReceiver = async () => {
-    console.log('inside get receiver')
-    await firebase
-      .firestore()
-      .collection("users")
-      .doc(route.params.userData)
-      .get()
-      .then((documentSnapshot) => {
-        if (documentSnapshot.exists) {
-          console.log("this is getReceiver result", documentSnapshot.data());
-          setReceiver(documentSnapshot.data())
-        
-        }
-      });
-  };
   // const { thread } = route.params;
   // const [receiver, setReceiver] = useState(route.params);
-  
   //setReciever sets the person who will receive the message based on route params
   // const getReceiver = () => {
   //   console.log('this is ROUTEPARAMS================>', route.params)
   //         setReceiver(route.params);
   //         console.log('this is receiver', receiver)
-   
   // };
   console.log('this is route.params', route.params)
-  // const receiver = route.params.userData;
-  if (!receiver.id) {
-    setReceiver();
-  }
-  console.log('this is receiver>>>>>>>>>>>>>>>>>',receiver)
+  const receiver = route.params.userData;
   //messages hook with initial state
   const [messages, setMessages] = useState([
-
     {
       _id: 0,
       text: "New room created.",
       createdAt: new Date().getTime(),
       system: true,
     },
-    
   ]);
-
   async function handleSend(messages) {
     const text = messages[0].text;
-
     firebase
       .firestore()
       .collection("THREADS")
@@ -69,15 +40,12 @@ export default function RoomScreen({ route }) {
           _id: currentUser.uid,
           email: currentUser.email,
         },
-       
       });
-
     await firebase
       .firestore()
       .collection("THREADS")
       .doc(user.uid+receiver.id)
       .set(
-        
         {
           latestMessage: {
             text,
@@ -92,9 +60,8 @@ export default function RoomScreen({ route }) {
         { merge: true }
       );
   }
-
   useEffect(() => {
-    getReceiver()
+    // getReceiver()
     console.log('THIS is receiver>>>>>>>>>>>>>>>>>', receiver)
     const messagesListener = firebase.firestore()
       .collection("THREADS")
@@ -104,32 +71,24 @@ export default function RoomScreen({ route }) {
       .onSnapshot((querySnapshot) => {
         const messages = querySnapshot.docs.map((doc) => {
           const firebaseData = doc.data();
-
           const data = {
             _id: doc.id,
             text: "",
             createdAt: new Date().getTime(),
             ...firebaseData,
           };
-
           if (!firebaseData.system) {
             data.user = {
               ...firebaseData.user,
               name: firebaseData.user.email,
             };
           }
-
           return data;
         });
-
         setMessages(messages);
       });
-
     return () => messagesListener();
   }, []);
-
-  
-
   return (
     <GiftedChat
     messages={messages}
