@@ -27,7 +27,7 @@ export default function SignupScreen({ navigation }) {
     }
   };
 
-  const onHandleSignup = (navigate) => {
+  const onHandleSignup = ({navigation}) => {
     if (!email) {
       Alert.alert("Email field is required.");
     } else if (!password) {
@@ -37,6 +37,7 @@ export default function SignupScreen({ navigation }) {
         email,
         password
       );
+      navigation.navigate('EditProfile')
     }
   }
 
