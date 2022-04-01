@@ -36,21 +36,35 @@ const UserCard = ({ item, onPress }) => {
   return (
     <SafeAreaView>
       <Card key={item.id}>
+      <View style={{flexDirection: "row",marginTop:10}}>
         <TouchableOpacity onPress={onPress}>
-          <Card.Thumbnail
-            source={{
-              uri: item
-                ? item.userImage ||
-                  "https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg"
-                : "https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg",
-            }}
-            // uri: 'https://i.pinimg.com/custom_covers/222x/85498161615209203_1636332751.jpg' }}
-            style={{ height: 85, width: 97 }}
-            align={"left"}
-            // stretch
-            // imageProps={{resizeMode: 'contain'}}
-            containerStyle={{ justifyContent: "center", alignItems: "center" }}
-          />
+          
+          <View>
+            <Card.Thumbnail
+              source={{
+                uri: item
+                  ? item.userImage ||
+                    "https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg"
+                  : "https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg",
+              }}
+              // uri: 'https://i.pinimg.com/custom_covers/222x/85498161615209203_1636332751.jpg' }}
+              style={{
+                height: 85,
+                width: 97,
+                borderBottomLeftRadius: 10,
+                borderTopLeftRadius: 10,
+                paddingTop:10,
+                
+              }}
+              align={"left"}
+              // stretch
+              // imageProps={{resizeMode: 'contain'}}
+              containerStyle={{
+                justifyContent: "flex-start",
+                alignItems: "center",
+              }}
+            />
+          </View>
         </TouchableOpacity>
         {/* <Card.Title> */}
         <View style={{ marginLeft: 16 }}>
@@ -63,6 +77,7 @@ const UserCard = ({ item, onPress }) => {
               textTransform: "capitalize",
               paddingLeft: 15,
               paddingTop: 0,
+              alignContent: "flex-start"
             }}
           >
             {item ? item.firstName || "Test" : "Test"}{" "}
@@ -87,16 +102,21 @@ const UserCard = ({ item, onPress }) => {
               // width: '85%',
             }}
           >
-            <Icon name="message" color='#AC9292' size={20} onPress={()=>
-                 firebase
-                 .firestore()
-                 .collection("users")
-                 .doc(item.id)
-                 .get()
-                .then(() => {
-                  navigation.navigate('Message', { userData: item });
-                 })   
-                   } /> 
+            <Icon
+              name="message"
+              color="#AC9292"
+              size={20}
+              onPress={() =>
+                firebase
+                  .firestore()
+                  .collection("users")
+                  .doc(item.id)
+                  .get()
+                  .then(() => {
+                    navigation.navigate("Message", { userData: item });
+                  })
+              }
+            />
 
             <Text
               style={{
@@ -106,7 +126,9 @@ const UserCard = ({ item, onPress }) => {
             >
               Connect with {item ? item.firstName || "Test" : "Test"}{" "}
             </Text>
+            </View>
           </View>
+          
         </View>
       </Card>
     </SafeAreaView>
@@ -121,10 +143,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     // justifyContent: 'center',
     backgroundColor: "#f7f7f7",
+    margin: 10,
+    
   },
   box: {
     width: 60,
     height: 60,
     marginVertical: 20,
+    borderRadius: 40,
+    padding: 10,
+    margin: 10
   },
 });
