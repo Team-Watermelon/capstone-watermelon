@@ -1,19 +1,25 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useContext} from 'react';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { View,
+  ScrollView,
+  Text,
+  StyleSheet,
+  FlatList,
+  SafeAreaView,
+  Alert, } from 'react-native';
 import UserCard from '../components/UserCard';
 import { IconButton } from '../components';
+
 import Firebase from '../config/firebase';
+import firebase from "firebase/app";
+import "firebase/firestore";
 import { AuthenticatedUserContext } from '../navigation/AuthenticatedUserProvider';
 
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+const auth = firebase.auth();
 
-const Tab = createMaterialBottomTabNavigator();
-const auth = Firebase.auth();
-//const Tab = createMaterialBottomTabNavigator();
-
-export default function HomeScreen() {
+export default function HomeScreen({navigation}) {
+  const [users, setUsers] = useState(null);
+  const [loading, setLoading] = useState(true);
   
   const { user } = useContext(AuthenticatedUserContext);
   const handleSignOut = async () => {
@@ -23,6 +29,52 @@ export default function HomeScreen() {
       console.log(error);
     }
   };
+
+  const fetchUsers = async () => {
+    try {
+      const list = [];
+
+      await firebase
+        .firestore()
+        .collection('users')
+        .get()
+        .then((querySnapshot) => {
+          console.log('Total Users: ', querySnapshot.size);
+        
+        querySnapshot.forEach((doc) => {
+          const {
+            id,
+            firstName,
+            userImage,
+            audio,
+            aboutMe,
+          } = doc.data();
+          list.push({
+            id: doc.id,
+            firstName,
+            userImage,
+            audio,
+            aboutMe
+          });
+        });
+      });
+
+    setUsers(list);
+
+    // if (loading) {
+    //   setLoading(false);
+    // }
+    console.log('list',list)
+    console.log('Users: ', users);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+useEffect(() => {
+  fetchUsers();
+}, []);
+
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -41,7 +93,25 @@ export default function HomeScreen() {
       <Text style={styles.stories}>
         Stories
       </Text>
-      <UserCard />
+      {/* <UserCard /> */}
+      
+          <FlatList
+            data={users}
+            renderItem={({item}) => (
+              <UserCard
+                item={item}
+                // onDelete={handleDelete}
+                onPress={() =>
+                  navigation.navigate('HomeProfile',{currentUser:item})
+                }
+              />
+            )}
+            keyExtractor={(item) => item.id}
+            // ListHeaderComponent={ListHeader}
+            // ListFooterComponent={ListHeader}
+            showsVerticalScrollIndicator={false}
+          />
+    
       </ScrollView>
     </View>
   );

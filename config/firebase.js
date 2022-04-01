@@ -1,8 +1,9 @@
-import firebase from 'firebase/app';
-import 'firebase/auth';
+import { initializeApp } from 'firebase/app';
 import Constants from 'expo-constants';
+import * as firebase from 'firebase';
+import 'firebase/firestore';
 
-// Initialize Firebase
+// Firebase config
 const firebaseConfig = {
   apiKey: Constants.manifest.extra.apiKey,
   authDomain: Constants.manifest.extra.authDomain,
@@ -13,9 +14,20 @@ const firebaseConfig = {
 };
 
 let Firebase;
-
 if (firebase.apps.length === 0) {
   Firebase = firebase.initializeApp(firebaseConfig);
 }
 
+export const db = firebase.firestore();
+export const threadsRef = db.collection('THREADS')
+// leads to list of messages
+// each message is in a chat room
+
 export default Firebase;
+
+
+// another collection of chat groups
+  // document should have info of chat id
+    // id is associated with 2 id's
+    
+// users collection should have chat group id for each user  

@@ -10,12 +10,14 @@ import {
   Button,
   Image,
   Platform,
+  ActivityIndicator,
 } from "react-native";
 import { useTheme } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import DropDown from '../components/DropDown'
-
+import DropDown from "../components/DropDown";
+import { StatusWrapper } from "../styles/FeedStyle";
+import DropDownPicker from "react-native-dropdown-picker";
 // import Feather from 'react-native-vector-icons/Feather';
 import firebase from "firebase/app";
 import "firebase/firestore";
@@ -28,9 +30,17 @@ const EditProfileScreen = () => {
   const { colors } = useTheme();
   const { user } = useContext(AuthenticatedUserContext);
   const [imageURI, setImageURI] = useState(null);
-  // const [uploading, setUploading] = useState(false);
+  const [uploading, setUploading] = useState(false);
   // const [transferred, setTransferred] = useState(0);
   const [userData, setUserData] = useState(null);
+  const [imageURL, setImageURL] = useState(null);
+   const [open, setOpen] = useState(false);
+   const [value, setValue] = useState(null);
+  const [items, setItems] = useState([
+    { label: "IVF", value: "IVF" },
+    { label: "Miscarriage", value: "Miscarriage" },
+    { label: "Support", value: "Support" },
+  ]);
 
   const getUser = async () => {
     const currentUser = await firebase
@@ -62,7 +72,7 @@ const EditProfileScreen = () => {
     return setImageURI(pickerResult.uri);
   };
   //uploud image uri to cloudinary after converting to base64
-  const uploadImage = () => {
+  const uploadImage = async () => {
     //convert image uri to base64 for cloudinary uplaoding
     toDataURL(imageURI, function (dataUrl) {
       const formData = new FormData();
@@ -77,13 +87,18 @@ const EditProfileScreen = () => {
         .then((data) => {
           const url = data.url;
           saveProfileImage(url);
+          setUploading(false);
           console.log("data.url in uploadImage", data.url);
-          //setUserData({ ...userData, userImage: data.url });
+          Alert.alert(
+            "Profile Updated!",
+            "Your profile has been updated successfully."
+          );
         });
     });
   };
 
   const handleUpdate = async () => {
+    setUploading(true);
     uploadImage();
     await firebase
       .firestore()
@@ -91,19 +106,13 @@ const EditProfileScreen = () => {
       .doc(user.uid)
       .update({
         firstName: userData.firstName,
-        // lname: userData.lname,
         aboutMe: userData.aboutMe,
-        // phone: userData.phone,
-        // country: userData.country,
         city: userData.city,
         userImage: userData.userImage,
+        category: value,
       })
       .then(() => {
-        console.log("User Updated!", userData.userImage);
-        Alert.alert(
-          "Profile Updated!",
-          "Your profile has been updated successfully."
-        );
+        console.log("User Updated!", userData.category);
       });
   };
 
@@ -178,55 +187,56 @@ const EditProfileScreen = () => {
         />
       </View>
       <View style={styles.action}>
-          <TextInput
-            placeholder="Email"
-            placeholderTextColor="#666666"
-            keyboardType="email-address"
-            autoCorrect={false}
-            style={[
-              styles.textInput,
-              {
-                color: colors.text,
-              },
-            ]}
-          />
-        </View>
-        <View style={styles.action}>
-          <Icon name="map-marker-outline" color={colors.text} size={20} />
-          <TextInput
-            placeholder="City"
-            placeholderTextColor="#666666"
-            autoCorrect={false}
-            value={userData ? userData.city : ''}
-            onChangeText={(txt) => setUserData({...userData, city: txt})}
-            style={[
-              styles.textInput,
-              {
-                color: colors.text,
-              },
-            ]}
-          />
-        </View>
-        <View style={styles.action}>
-          <Icon name="information-variant" color={colors.text} size={20} />
-          <TextInput
-            placeholder="About Me"
-            placeholderTextColor="#666666"
-            autoCorrect={false}
-            value={userData ? userData.aboutMe : ''}
-            onChangeText={(txt) => setUserData({...userData, aboutMe: txt})}
-            style={[
-              styles.textInput,
-              {
-                color: colors.text,
-              },
-            ]}
-          />
-        </View>
-        <DropDown />
+        <Icon name="map-marker-outline" color={colors.text} size={20} />
+        <TextInput
+          placeholder="City"
+          placeholderTextColor="#666666"
+          autoCorrect={false}
+          value={userData ? userData.city : ""}
+          onChangeText={(txt) => setUserData({ ...userData, city: txt })}
+          style={[
+            styles.textInput,
+            {
+              color: colors.text,
+            },
+          ]}
+        />
+      </View>
+      <View style={styles.action}>
+        <Icon name="information-variant" color={colors.text} size={20} />
+        <TextInput
+          placeholder="About Me"
+          placeholderTextColor="#666666"
+          autoCorrect={false}
+          value={userData ? userData.aboutMe : ""}
+          onChangeText={(txt) => setUserData({ ...userData, aboutMe: txt })}
+          style={[
+            styles.textInput,
+            {
+              color: colors.text,
+            },
+          ]}
+        />
+      </View>
+      <DropDownPicker
+      open={open}
+      value={value}
+      placeholder="What best describes your story?"
+      items={items}
+      setOpen={setOpen}
+      setValue={setValue}
+      setItems={setItems}
+    />
+      {uploading ? (
+        <StatusWrapper>
+          <Text>Updating your profile!</Text>
+          <ActivityIndicator size="large" color="#0000ff" />
+        </StatusWrapper>
+      ) : (
         <TouchableOpacity style={styles.commandButton} onPress={handleUpdate}>
           <Text style={styles.panelButtonTitle}>Update</Text>
         </TouchableOpacity>
+      )}
     </View>
   );
 };
