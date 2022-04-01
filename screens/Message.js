@@ -7,6 +7,25 @@ import firebase from "firebase/app";
 export default function RoomScreen({ route }) {
   const { user } = useContext(AuthenticatedUserContext);
   const currentUser = user.toJSON();
+  const [receiver, setReceiver] = useState(route.params.userData)
+
+  // const receiver = route.params.userData;
+
+  const getReceiver = async () => {
+    console.log('inside get receiver')
+    await firebase
+      .firestore()
+      .collection("users")
+      .doc(route.params.userData)
+      .get()
+      .then((documentSnapshot) => {
+        if (documentSnapshot.exists) {
+          console.log("this is getReceiver result", documentSnapshot.data());
+          setReceiver(documentSnapshot.data())
+        
+        }
+      });
+  };
   // const { thread } = route.params;
   // const [receiver, setReceiver] = useState(route.params);
   
@@ -18,7 +37,11 @@ export default function RoomScreen({ route }) {
    
   // };
   console.log('this is route.params', route.params)
-  const receiver = route.params.userData;
+  // const receiver = route.params.userData;
+  if (!receiver.id) {
+    setReceiver();
+  }
+  console.log('this is receiver>>>>>>>>>>>>>>>>>',receiver)
   //messages hook with initial state
   const [messages, setMessages] = useState([
 
@@ -70,10 +93,8 @@ export default function RoomScreen({ route }) {
       );
   }
 
-
-
   useEffect(() => {
-    // getReceiver()
+    getReceiver()
     console.log('THIS is receiver>>>>>>>>>>>>>>>>>', receiver)
     const messagesListener = firebase.firestore()
       .collection("THREADS")

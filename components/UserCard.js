@@ -35,8 +35,8 @@ const UserCard = ({ item, onPress }) => {
 
   return (
     <SafeAreaView>
-      <Card key={item.id}>
-      <View style={{flexDirection: "row",marginTop:10}}>
+      <View key={item.id} style={styles.container}>
+      <View style={{flexDirection: "row"}}>
         <TouchableOpacity onPress={onPress}>
           
           <View>
@@ -53,7 +53,7 @@ const UserCard = ({ item, onPress }) => {
                 width: 97,
                 borderBottomLeftRadius: 10,
                 borderTopLeftRadius: 10,
-                paddingTop:10,
+                
                 
               }}
               align={"left"}
@@ -130,7 +130,7 @@ const UserCard = ({ item, onPress }) => {
           </View>
           
         </View>
-      </Card>
+      </View>
     </SafeAreaView>
   );
 };
@@ -140,11 +140,17 @@ export default UserCard;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
+    alignItems: "flex-start",
     // justifyContent: 'center',
-    backgroundColor: "#f7f7f7",
+    backgroundColor: "#fff",
+    borderColor: "#f7f7f7",
+    borderWidth: 1,
     margin: 10,
-    
+    elevation: 3,
+    shadowColor: "#333",
+    shadowRadius:3,
+    shadowOffset: {width:3, height:3},
+    borderRadius: 8
   },
   box: {
     width: 60,
