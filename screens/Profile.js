@@ -135,7 +135,8 @@ const PersonalPage = ({ navigation, route }) => {
             <>
               <TouchableOpacity style={styles.userBtn} onPress={() => {}}>
                 <Text style={styles.userBtnTxt}>
-                  {userData ? userData.firstName || "Test" : "Test"}'s Story
+                  Follow
+                  {/* {userData ? userData.firstName || "Test" : "Test"}'s Story */}
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity

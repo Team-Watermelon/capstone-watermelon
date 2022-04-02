@@ -37,12 +37,12 @@ const UserCard = ({ item, onPress }) => {
       <View
         key={item.id}
         style={{
-          borderWidth: 2,
+          borderWidth: .5,
           borderColor: "#CDCDCD",
           margin: 10,
           borderRadius: 10,
-          //   shadowOpacity: 0.30,
-          //     shadowRadius: 4.65,
+            // shadowOpacity: 0.30,
+            //   shadowRadius: 4.65,
               elevation: 20,
         }}
       >
@@ -136,7 +136,7 @@ const UserCard = ({ item, onPress }) => {
                   fontSize: 16,
                 }}
               >
-                Connect with {item ? item.firstName || "Test" : "Test"}{" "}
+                  Connect with {item ? item.firstName || "Test" : "Test"}{" "}
               </Text>
             </View>
           </View>
