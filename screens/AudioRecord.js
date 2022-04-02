@@ -154,18 +154,15 @@ export default function AudioRecord({ navigation }) {
                 X
               </Button>
             </View>
-            <Text style={{ marginBottom: 50, color: "#6666", fontSize: 20 }}>
+            <View style={{flex:1}}>  
+            <Text style={{ marginBottom: 50, color: "#6666", fontSize: 20}}>
               Tab to start recording
             </Text>
             <Feather
-              style={{ marginBottom: 30 }}
+              style={{ top: 420,position:"absolute" }}
               //  style={styles.playButtonContainer}
               name={
-                Object.keys(recording).length
-                  ? "stop-circle"
-                  : "mic" && sound
-                  ? "play"
-                  : "pause"
+                Object.keys(recording).length ?  "stop-circle" :"mic"
               }
               color="#AC9292"
               size={20}
@@ -173,22 +170,18 @@ export default function AudioRecord({ navigation }) {
                 Object.keys(recording).length ? stopRecording : startRecording
               }
             ></Feather>
-            {/* <Button
-          title={
-            Object.keys(recording).length ? "Stop Recording" : "Start Recording"
-          }
-          onPress={
-            Object.keys(recording).length ? stopRecording : startRecording
-          }
-        /> */}
+            </View>
+            <View style={{flex:1}}>  
             {sound ? (
               <Button
                 title="Listen to my story"
                 color="#AC9292"
                 size={20}
                 onPress={() => sound.replayAsync()}
+                // style={{ top:600,position:"relative" }}
               ></Button>
             ) : null}
+            </View>
 
             {/* <Button
           style={styles.button}
