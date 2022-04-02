@@ -3,6 +3,7 @@ import Card from "react-native-card-component";
 import { SafeAreaView, StyleSheet, View, Image } from "react-native";
 import { Button, Text } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 // import FontAwesomeIcon from "font-awesome";
 import firebase from "firebase/app";
 import "firebase/firestore";
@@ -99,10 +100,14 @@ const UserCard = ({ item, onPress }) => {
                     color: "#AC9292",
                 }} 
                 >
-                    {item ? item.pronouns || "pronos" : "pronouns"}{" "}
+                    {item ? item.pronouns || "pronouns" : "pronouns"}{" "}
                     </Text>
+                    <FontAwesome name="arrow-circle-o-right" style={{
+                  size: 25, color: "#AC9292"
+              }}/>
               </Text>
-              {/* <Icon name="arrow-right" color="#AC9292" size={20} /> */}
+              
+
             </TouchableOpacity>
             {/* <Text
                       style={{
