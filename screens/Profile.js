@@ -149,21 +149,22 @@ const PersonalPage = ({ navigation, route }) => {
               </TouchableOpacity>
               <TouchableOpacity style={styles.userBtn} onPress={() => {
                 
-                //  firebase.firestore()
-                //  .collection('THREADS')
-                //  .add({
-                //    id: "TEST NAME",
-                //    //this is setting the thread id to the userid
-                //    users: [userData.id, user.uid],
-                //    receiverID: userData.id,
-                //    senderID: user.uid,
-                //    receiverName: userData.firstName,
-                //    senderName: loggedInUserData.firstName
-                //  }
-                //  )
-                //  .then(() => {
-                   navigation.navigate('Message', { thread: userData.id });
-                //  });   
+                 firebase.firestore()
+                 .collection('THREADS')
+                 .doc(`${userData.id}_${user.uid}`)
+                 .set({
+                   id: `${userData.id}_${user.uid}`,
+                   //this is setting the thread id to the userid
+                   users: [userData.id, user.uid],
+                   receiverID: userData.id,
+                   senderID: user.uid,
+                   receiverName: userData.firstName,
+                   senderName: loggedInUserData.firstName
+                 }
+                 )
+                 .then(() => {
+                   navigation.navigate('Message', { thread: `${userData.id}_${user.uid}` });
+                 });   
                    }
               }>
                 <Text style={styles.userBtnTxt}>Message</Text>

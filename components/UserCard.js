@@ -87,23 +87,24 @@ const UserCard = ({ item, onPress }) => {
               // width: '85%',
             }}
           >
-            <Icon name="message" color='#AC9292' size={20} onPress={()=>
-                 firebase.firestore()
-                 .collection('THREADS')
-                 .add({
-                   id: item.id,
-                   users: [item.id, user.uid],
-                   receiverID: item.id,
-                   senderID: user.uid,
-                   receiverName: item.firstName,
-                  //  senderName: loggedInUserData.firstName
-                   
-              
-                 }
-                 )
-                 .then(() => {
-                   navigation.navigate('Message', { thread: item.id });
-                 })   
+            <Icon name="message" color='#AC9292' size={20} onPress={() => {
+                
+                firebase.firestore()
+                .collection('THREADS')
+                .add({
+                  id: `${userData.id}_${user.uid}`,
+                  //this is setting the thread id to the userid
+                  users: [userData.id, user.uid],
+                  receiverID: userData.id,
+                  senderID: user.uid,
+                  receiverName: userData.firstName,
+                  senderName: loggedInUserData.firstName
+                }
+                )
+                .then(() => {
+                  navigation.navigate('Message', { thread: `${userData.id}_${user.uid}` });
+                });   
+                  }  
                    } /> 
 
             <Text

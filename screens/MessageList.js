@@ -87,7 +87,7 @@ export default function HomeScreen( {navigation}) {
           return {
             _id: documentSnapshot.id,
             // give defaults
-            name: "test information",
+            // name: `${user.uid}`,
             latestMessage: {
               text: '',
             },
@@ -122,7 +122,7 @@ export default function HomeScreen( {navigation}) {
         ItemSeparatorComponent={() => <Divider />}
         renderItem={({ item }) => (
           <TouchableOpacity
-            onPress={() => navigation.navigate('Message', { thread: item })}
+            onPress={() => navigation.navigate('Message', { thread: item.id })}
           >
             <List.Item
               title={item.senderID === user.uid ? item.receiverName : item.senderName}

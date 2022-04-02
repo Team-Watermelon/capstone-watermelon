@@ -79,12 +79,14 @@ export default function RoomScreen({ route }) {
 
   // helper method that is sends a message
   async function handleSend(messages) {
+  
+    console.log('RECEEIVER!!!!!!!>>>>>>>>>>>>>>>>>>>>>', receiver)
     const text = messages[0].text;
 
     firebase
       .firestore()
       .collection("THREADS")
-      .doc("TEST NAME")
+      .doc(route.params.thread)
       .collection("MESSAGES")
       .add({
         text,
@@ -99,7 +101,7 @@ export default function RoomScreen({ route }) {
     await firebase
       .firestore()
       .collection("THREADS")
-      .doc("TEST NAME")
+      .doc(route.params.thread)
       .set(
         
         {
@@ -107,21 +109,16 @@ export default function RoomScreen({ route }) {
             text,
             createdAt: new Date().getTime(),
           },
-          users: [currentUser.uid, receiver.id],
-          receiverID: receiver.id,
-          senderID: currentUser.uid,
-          receiverName: receiver.firstName,
-          senderName: currentUser.email
         },
         { merge: true }
       );
   }
 
   useEffect(() => {
-    getReceiver();
+    getReceiver()
     const messagesListener = firebase.firestore()
       .collection("THREADS")
-      .doc("TEST NAME")
+      .doc(route.params.thread)
       .collection("MESSAGES")
       .orderBy("createdAt", "desc")
       .onSnapshot((querySnapshot) => {
@@ -158,7 +155,7 @@ export default function RoomScreen({ route }) {
     onSend={handleSend}
     user={{ _id: currentUser.uid }}
     // ...rest remains same
-      placeholder="Changed this message!!! Woohoo..."
+      placeholder="Changed this message!!! Woohooo..."
       showUserAvatar
       alwaysShowSend
       scrollToBottom
