@@ -19,7 +19,7 @@ const UserCard = ({ item, onPress }) => {
     await firebase
       .firestore()
       .collection("users")
-      .doc(item.uid)
+      .doc(item.id)
       .get()
       .then((documentSnapshot) => {
         if (documentSnapshot.exists) {
@@ -31,6 +31,7 @@ const UserCard = ({ item, onPress }) => {
 
   useEffect(() => {
     getUser();
+    console.log("USER (userData", userData)
   }, []);
 
   return (
@@ -91,20 +92,21 @@ const UserCard = ({ item, onPress }) => {
                 
                 firebase.firestore()
                 .collection('THREADS')
-                .add({
-                  id: `${userData.id}_${user.uid}`,
+                .doc(`${item.id}_${user.uid}`)
+                .set({
+                  id: `${item.id}_${user.uid}`,
                   //this is setting the thread id to the userid
-                  users: [userData.id, user.uid],
-                  receiverID: userData.id,
+                  users: [item.id, user.uid],
+                  receiverID: item.id,
                   senderID: user.uid,
-                  receiverName: userData.firstName,
-                  senderName: loggedInUserData.firstName
+                  receiverName: item.firstName,
+                  // senderName: user.firstName
                 }
                 )
                 .then(() => {
-                  navigation.navigate('Message', { thread: `${userData.id}_${user.uid}` });
+                  navigation.navigate('Message', { thread: `${item.id}_${user.uid}` });
                 });   
-                  }  
+                  }
                    } /> 
 
             <Text

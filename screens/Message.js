@@ -8,31 +8,31 @@ export default function RoomScreen({ route }) {
   const { user } = useContext(AuthenticatedUserContext);
   const currentUser = user.toJSON();
   const { thread } = route.params;
-  const [receiver, setReceiver] = useState(null);
+  // const [receiver, setReceiver] = useState(null);
 
-  const getReceiver = async () => {
-    console.log('this is ROUTEPARAMS================>', route.params)
-    await firebase
-      .firestore()
-      .collection("users")
-      .doc(route.params.thread)
-      .get()
-      .then((documentSnapshot) => {
-        if (documentSnapshot.exists) {
-          console.log("User Data in Profile", documentSnapshot.data());
-          let receiverData = {};
-          receiverData.data = documentSnapshot.data()
-          receiverData.data.id = documentSnapshot.id;
-          console.log('this is receiverData', receiverData)
-          setReceiver(receiverData.data);
+  // const getReceiver = async () => {
+  //   console.log('this is ROUTEPARAMS================>', route.params)
+  //   await firebase
+  //     .firestore()
+  //     .collection("users")
+  //     .doc(route.params.thread)
+  //     .get()
+  //     .then((documentSnapshot) => {
+  //       if (documentSnapshot.exists) {
+  //         console.log("User Data in Profile", documentSnapshot.data());
+  //         let receiverData = {};
+  //         receiverData.data = documentSnapshot.data()
+  //         receiverData.data.id = documentSnapshot.id;
+  //         console.log('this is receiverData', receiverData)
+  //         setReceiver(receiverData.data);
           
-        }
-      });
-      console.log('this is receiverDAta', receiverData)
+  //       }
+  //     });
+  //     console.log('this is receiverDAta', receiverData)
      
       
    
-  };
+  // };
 
   // useEffect(() => {
   //   console.log('this is thread', { thread })
@@ -80,7 +80,7 @@ export default function RoomScreen({ route }) {
   // helper method that is sends a message
   async function handleSend(messages) {
   
-    console.log('RECEEIVER!!!!!!!>>>>>>>>>>>>>>>>>>>>>', receiver)
+    // console.log('RECEEIVER!!!!!!!>>>>>>>>>>>>>>>>>>>>>', receiver)
     const text = messages[0].text;
 
     firebase
@@ -115,7 +115,7 @@ export default function RoomScreen({ route }) {
   }
 
   useEffect(() => {
-    getReceiver()
+    // getReceiver()
     const messagesListener = firebase.firestore()
       .collection("THREADS")
       .doc(route.params.thread)
