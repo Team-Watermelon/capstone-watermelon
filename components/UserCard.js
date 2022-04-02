@@ -22,7 +22,7 @@ const UserCard = ({ item, onPress }) => {
       .get()
       .then((documentSnapshot) => {
         if (documentSnapshot.exists) {
-          console.log("User Data", documentSnapshot.data());
+          console.log("User Data!!!", documentSnapshot.data());
           setUserData(documentSnapshot.data());
         }
       });
@@ -93,10 +93,16 @@ const UserCard = ({ item, onPress }) => {
                   paddingTop: 8,
                 }}
               >
-                {item ? item.firstName || "Test" : "Test"}{" "}
+                {item ? item.firstName || "Test" : "Test"}{" "} 
+                <Text style={{
+                    fontSize: 14,
+                    color: "#AC9292",
+                }} 
+                >
+                    {item ? item.pronouns || "pronos" : "pronouns"}{" "}
+                    </Text>
               </Text>
               {/* <Icon name="arrow-right" color="#AC9292" size={20} /> */}
-              
             </TouchableOpacity>
             {/* <Text
                       style={{

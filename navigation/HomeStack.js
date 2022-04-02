@@ -93,14 +93,14 @@ const ProfileStackScreen = ({ navigation }) => (
     <Stack.Screen
       name="EditProfile"
       component={EditProfileScreen}
-      options={
-        {
-          headerLeft: () => (
-            <Image
-              style={{ width: 80, height: 40, margin: 20 }}
-              source={require("../assets/logo.png")}
-            />
-          ),
+      options={{
+          headerTitle: "Edit Profile",
+          // headerLeft: () => (
+          //   <Image
+          //     style={{ width: 80, height: 40, margin: 20 }}
+          //     source={require("../assets/logo.png")}
+          //   />
+          // ),
         }
         // headerLeft: () => (
         //   <Image

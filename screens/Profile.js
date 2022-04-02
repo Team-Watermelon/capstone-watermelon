@@ -88,15 +88,12 @@ const PersonalPage = ({ navigation, route }) => {
       >
         {/* <Text style={styles.userName}>{userData ? userData.firstName || 'Test' : 'Test'}</Text>
         <Text style={styles.userLocation}>{userData ? userData.city || 'City' : 'City'}</Text> */}
-        <View style={{
-          textAlign: 'auto'
-        }}>
+        <View>
         <Text style={styles.userName}>
           {userData ? userData.firstName || "Test" : "Test"}
-        </Text>
         <Text style={styles.pronouns}>
-        ({userData ? userData.pronouns || "Pronouns" : "Pronouns"})
-        </Text>
+        ({userData ? userData.pronouns  || "Pronouns " : "Pronouns "})
+        </Text></Text>
           </View>
         <Text style={styles.userLocation}>
           {userData ? userData.city || "City" : "City"}
@@ -231,7 +228,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     color: "#AF8EC9",
-    marginBottom: 10,
+    marginBottom: 20,
   },
   aboutMe: {
     fontSize: 14,
