@@ -8,33 +8,34 @@ import {
   Alert,
   Platform,
   ActivityIndicator,
-  Modal
+  Modal,
+  ImageBackground,
 } from "react-native";
 import { useTheme } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import DropDown from "../components/DropDown";
 import { StatusWrapper } from "../styles/FeedStyle";
 import DropDownPicker from "react-native-dropdown-picker";
 // import Feather from 'react-native-vector-icons/Feather';
 import firebase from "firebase/app";
 import "firebase/firestore";
 import { AuthenticatedUserContext } from "../navigation/AuthenticatedUserProvider";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
 
 const Welcome = () => {
   const { colors } = useTheme();
   const { user } = useContext(AuthenticatedUserContext);
   const [isModalVisible, setModalVisible] = useState(true);
   const [userData, setUserData] = useState(null);
-   const [open, setOpen] = useState(false);
-   const [value, setValue] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
   const [items, setItems] = useState([
     { label: "IVF", value: "IVF" },
     { label: "Miscarriage", value: "Miscarriage" },
     { label: "Support", value: "Support" },
   ]);
-const navigation = useNavigation()
+  const navigation = useNavigation();
 
   const getUser = async () => {
     const currentUser = await firebase
@@ -51,19 +52,20 @@ const navigation = useNavigation()
   };
 
   const handleUpdate = async () => {
-      const currentUser = firebase.auth().currentUser;
-      const db = firebase.firestore();
-      await db.collection("users")
-        .doc(currentUser.uid)
-        .set({
+    const currentUser = firebase.auth().currentUser;
+    const db = firebase.firestore();
+    await db
+      .collection("users")
+      .doc(currentUser.uid)
+      .set({
         firstName: userData.firstName,
         aboutMe: userData.aboutMe,
         city: userData.city,
         category: value,
-        })
-        .then(() => {
-        navigation.navigate('Profile')
-        setModalVisible(false)
+      })
+      .then(() => {
+        navigation.navigate("Profile");
+        setModalVisible(false);
         //console.log('navigation',navigation)
         console.log("User Updated!", userData.category);
       });
@@ -75,95 +77,140 @@ const navigation = useNavigation()
 
   return (
     <Modal
-    visible={isModalVisible}
-    animationType="slide"
-    presentationStyle="fullScreen"
-    onRequestClose={() => {
-      Alert.alert("Modal has been closed.");
-      setModalVisible(false);
-    }}
-  >
-    <View style={styles.container}>
-      <View style={{ alignItems: "center" }}>
-        <Text style={{ marginTop: 10, fontSize: 18, fontWeight: "bold" }}>
-          {userData ? userData.firstName : ""}
-        </Text>
-      </View>
-      <View style={styles.action}>
-        <FontAwesome name="user-o" color={colors.text} size={20} />
-        <TextInput
-          placeholder="Full Name"
-          placeholderTextColor="#666666"
-          autoCorrect={false}
-          value={userData ? userData.firstName : ""}
-          onChangeText={(txt) => setUserData({ ...userData, firstName: txt })}
-          style={[
-            styles.textInput,
-            {
-              color: colors.text,
-            },
-          ]}
-        />
-      </View>
-      <View style={styles.action}>
-        <Icon name="map-marker-outline" color={colors.text} size={20} />
-        <TextInput
-          placeholder="City"
-          placeholderTextColor="#666666"
-          autoCorrect={false}
-          value={userData ? userData.city : ""}
-          onChangeText={(txt) => setUserData({ ...userData, city: txt })}
-          style={[
-            styles.textInput,
-            {
-              color: colors.text,
-            },
-          ]}
-        />
-      </View>
-      <View style={styles.action}>
-        <Icon name="information-variant" color={colors.text} size={20} />
-        <TextInput
-          placeholder="About Me"
-          placeholderTextColor="#666666"
-          autoCorrect={false}
-          value={userData ? userData.aboutMe : ""}
-          onChangeText={(txt) => setUserData({ ...userData, aboutMe: txt })}
-          style={[
-            styles.textInput,
-            {
-              color: colors.text,
-            },
-          ]}
-        />
-      </View>
-      <DropDownPicker
-      open={open}
-      value={value}
-      placeholder="What best describes your story?"
-      items={items}
-      setOpen={setOpen}
-      setValue={setValue}
-      setItems={setItems}
-    />
-        <TouchableOpacity style={styles.commandButton} onPress={handleUpdate}>
-          <Text style={styles.panelButtonTitle}>Update</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.commandButton} onPress={()=>navigation.navigate('Home')}>
+      visible={isModalVisible}
+      animationType="slide"
+      presentationStyle="fullScreen"
+      onRequestClose={() => {
+        Alert.alert("Modal has been closed.");
+        setModalVisible(false);
+      }}
+    >
+      <View style={styles.container}>
+        <ImageBackground
+          style={styles.image}
+          source={require("../assets/coverhands.png")}
+        >
+          <View style={styles.message}>
+
+            <Text style={styles.text}>Welcome to OpenArms! </Text>
+            <Text
+              style={{
+                marginTop: 20,
+                marginBottom: 30,
+                fontSize: 24,
+                fontWeight: "bold",
+                color: "#E8A196",
+              }}
+            >
+              We are here with you
+            </Text>
+          </View>
+          <Text style={{ marginTop: 10, fontSize: 18, fontWeight: "bold" }}>
+            {userData ? userData.firstName : ""}
+          </Text>
+
+          <View style={styles.action}>
+            <FontAwesome name="user-o" color={colors.text} size={20} />
+            <TextInput
+              placeholder="Full Name"
+              placeholderTextColor="#666666"
+              autoCorrect={false}
+              value={userData ? userData.firstName : ""}
+              onChangeText={(txt) =>
+                setUserData({ ...userData, firstName: txt })
+              }
+              style={[
+                styles.textInput,
+                {
+                  color: colors.text,
+                },
+              ]}
+            />
+          </View>
+          <View style={styles.action}>
+            <Icon name="map-marker-outline" color={colors.text} size={20} />
+            <TextInput
+              placeholder="City"
+              placeholderTextColor="#666666"
+              autoCorrect={false}
+              value={userData ? userData.city : ""}
+              onChangeText={(txt) => setUserData({ ...userData, city: txt })}
+              style={[
+                styles.textInput,
+                {
+                  color: colors.text,
+                },
+              ]}
+            />
+          </View>
+          <View style={styles.action}>
+            <Icon name="information-variant" color={colors.text} size={20} />
+            <TextInput
+              placeholder="About Me"
+              placeholderTextColor="#666666"
+              autoCorrect={false}
+              value={userData ? userData.aboutMe : ""}
+              onChangeText={(txt) => setUserData({ ...userData, aboutMe: txt })}
+              style={[
+                styles.textInput,
+                {
+                  color: colors.text,
+                },
+              ]}
+            />
+          </View>
+          <DropDownPicker
+            open={open}
+            value={value}
+            placeholder="What best describes your story?"
+            placeholderTextColor="#666666"
+            items={items}
+            setOpen={setOpen}
+            setValue={setValue}
+            setItems={setItems}
+          />
+          <TouchableOpacity style={styles.commandButton} onPress={handleUpdate}>
+            <Text style={styles.panelButtonTitle}>Save</Text>
+          </TouchableOpacity>
+          {/* <TouchableOpacity style={styles.commandButton} onPress={()=>navigation.navigate('Home')}>
           <Text style={styles.panelButtonTitle}>Find your people</Text>
-        </TouchableOpacity>
-    </View>
+        </TouchableOpacity> */}
+        </ImageBackground>
+      </View>
     </Modal>
   );
 };
 
-export default  Welcome;
+export default Welcome;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 50,
-    backgroundColor: "#fff",
+    padding: 30,
+    marginTop: 150,
+  },
+  modal: {
+    justifyContent: "center",
+    alignItems: "center",
+    height: 100,
+    marginTop: 80,
+    marginLeft: 40,
+  },
+  image: {
+    justifyContent: "center",
+  },
+  message: {
+    alignItems: "center",
+  },
+  text: {
+    fontSize: 28,
+    fontWeight: "bold",
+    color: "#F25037",
+    shadowRadius: 10,
+    shadowColor: "#AF8EC9",
+    shadowOffset: { width: -1, height: -3 },
+    shadowRadius: 2,
+    shadowOpacity: 0.4,
   },
   commandButton: {
     padding: 15,
@@ -171,6 +218,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#AF8EC9",
     alignItems: "center",
     marginTop: 10,
+    justifyContent: "center",
   },
   panel: {
     padding: 20,
