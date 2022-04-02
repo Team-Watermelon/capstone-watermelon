@@ -80,17 +80,24 @@ const PersonalPage = ({ navigation, route }) => {
       <ScrollView
         style={styles.container}
         contentContainerStyle={{
-          justifyContent: "center",
+          // justifyContent: "center",
           alignItems: "center",
-          paddingTop: 30,
+          paddingTop: 20,
         }}
         showsVerticalScrollIndicator={false}
       >
         {/* <Text style={styles.userName}>{userData ? userData.firstName || 'Test' : 'Test'}</Text>
         <Text style={styles.userLocation}>{userData ? userData.city || 'City' : 'City'}</Text> */}
+        <View style={{
+          textAlign: 'auto'
+        }}>
         <Text style={styles.userName}>
           {userData ? userData.firstName || "Test" : "Test"}
         </Text>
+        <Text style={styles.pronouns}>
+        ({userData ? userData.pronouns || "Pronouns" : "Pronouns"})
+        </Text>
+          </View>
         <Text style={styles.userLocation}>
           {userData ? userData.city || "City" : "City"}
         </Text>
@@ -215,9 +222,16 @@ const styles = StyleSheet.create({
   userName: {
     fontSize: 40,
     fontWeight: "bold",
+    marginTop: 5,
+    marginBottom: 0,
+    color: "#AF8EC9",
+  },
+  pronouns: {
+    fontSize: 16,
     marginTop: 10,
     marginBottom: 10,
     color: "#AF8EC9",
+    marginBottom: 10,
   },
   aboutMe: {
     fontSize: 14,

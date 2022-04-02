@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
-import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 export default
 class Map extends React.Component {
   render() {
@@ -14,7 +14,13 @@ class Map extends React.Component {
          longitude: -122.4324,
          latitudeDelta: 0.0922,
          longitudeDelta: 0.0421}}
-      />
+      >
+      <Marker 
+      coordinate={{
+        latitude: 37.47,
+        longitude: -122.26
+      }} />
+      </MapView>
     );
   }
 }

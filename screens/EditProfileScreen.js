@@ -110,6 +110,7 @@ const EditProfileScreen = () => {
         city: userData.city,
         userImage: userData.userImage,
         category: value,
+        pronouns: userData.pronouns
       })
       .then(() => {
         console.log("User Updated!", userData.category);
@@ -178,6 +179,22 @@ const EditProfileScreen = () => {
           autoCorrect={false}
           value={userData ? userData.firstName : ""}
           onChangeText={(txt) => setUserData({ ...userData, firstName: txt })}
+          style={[
+            styles.textInput,
+            {
+              color: colors.text,
+            },
+          ]}
+        />
+      </View>
+      <View style={styles.action}>
+        <FontAwesome name="user-o" color={colors.text} size={20} />
+        <TextInput
+          placeholder="Pronouns"
+          placeholderTextColor="#666666"
+          autoCorrect={false}
+          value={userData ? userData.pronouns : ""}
+          onChangeText={(txt) => setUserData({ ...userData, pronouns: txt })}
           style={[
             styles.textInput,
             {
