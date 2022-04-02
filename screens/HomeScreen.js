@@ -15,15 +15,38 @@ import Firebase from "../config/firebase";
 import firebase from "firebase/app";
 import "firebase/firestore";
 import { AuthenticatedUserContext } from "../navigation/AuthenticatedUserProvider";
-
+// import EditProfileScreen from "./EditProfileScreen";
+ import Welcome from "./Welcome"
 const auth = firebase.auth();
 
 export default function HomeScreen({ navigation }) {
   const [users, setUsers] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [newUser, setNewUser] =useState(null);
 
   const { user } = useContext(AuthenticatedUserContext);
+  let signedUp = {};
 
+  const getUser = async () => {
+    await firebase
+      .firestore()
+      .collection("users")
+      .doc(user.uid)
+      .get()
+      .then((documentSnapshot) => {
+        if (documentSnapshot.exists) {
+        console.log("User Data in Profile", documentSnapshot.data());
+          // let userFullData = {};
+          signedUp.data = documentSnapshot.data();
+          signedUp.data.id = documentSnapshot.id;
+          console.log("this is signedUp", signedUp);
+          setNewUser(signedUp.data);
+          setLoading(false)
+        }
+      });
+    console.log("this is newUSer", newUser);
+  };
+  
   const handleSignOut = async () => {
     try {
       await auth.signOut();
@@ -40,7 +63,7 @@ export default function HomeScreen({ navigation }) {
         .collection("users")
         .get()
         .then((querySnapshot) => {
-          console.log("Total Users: ", querySnapshot.size);
+         // console.log("Total Users: ", querySnapshot.size);
           querySnapshot.forEach((doc) => {
             const { id, firstName, userImage, audio, aboutMe } = doc.data();
             list.push({
@@ -53,16 +76,18 @@ export default function HomeScreen({ navigation }) {
           });
         });
       setUsers(list);
-      console.log("list", list);
-      console.log("Users: ", users);
+      // console.log("list", list);
+      // console.log("Users: ", users);
     } catch (e) {
       console.log(e);
     }
   };
 
   useEffect(() => {
+    getUser();
     fetchUsers();
-  }, []);
+    navigation.addListener("focus", () => setLoading(!loading));
+  }, [navigation, loading]);
 
   const renderItem = ({ item }) => {
     return (
@@ -78,6 +103,8 @@ export default function HomeScreen({ navigation }) {
   };
   return (
     <View style={styles.container}>
+      {newUser ? (
+      <View> 
       <FlatList
         ListHeaderComponent={
           <>
@@ -94,12 +121,12 @@ export default function HomeScreen({ navigation }) {
                 color="black"
                 onPress={handleSignOut}
               />
-              <Text style={styles.text}>
+              {/* <Text style={styles.text}>
                 Your UID is: {user.uid}
                 {"\n"}
                 {"\n"}
                 {"\n"}
-              </Text>
+              </Text> */}
             </View>
             <Text style={styles.stories}>Stories</Text>
           </>
@@ -111,7 +138,9 @@ export default function HomeScreen({ navigation }) {
         // }
         keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}
-      />
+      /></View>):(<Welcome/>)
+      }
+                
     </View>
   );
 }

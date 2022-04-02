@@ -13,7 +13,8 @@ import Map from "../screens/Map";
 import AudioRecord from "../screens/AudioRecord";
 import EditProfileScreen from "../screens/EditProfileScreen";
 import { LinearGradient } from "expo-linear-gradient";
-import Welcome from "../screens/Welcome";
+import Decide from "../screens/Decide"
+ import Welcome from "../screens/Welcome";
 // import AppIntro from "../screens/AppIntro";
 // import CheckLoad from "../screens/CheckLoad";
 
@@ -64,6 +65,7 @@ const MessagesStack = ({ navigation }) => (
 );
 
 const ProfileStackScreen = ({ navigation }) => {
+  console.log('navigation in profile stack===========',navigation.getState())
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -132,6 +134,20 @@ const HomeStackScreen = ({ navigation }) => {
       name="Intro"
       component={AppIntro}
     /> */}
+           {/* <Stack.Screen
+      name="Decide"
+      component={Decide}
+      options={{
+        headerTitle: "Messages",
+        headerBackTitleVisible: false,
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: "#fff",
+          shadowColor: "#fff",
+          elevation: 0,
+        },
+      }}
+    /> */}
     <Stack.Screen
       name="Home"
       component={HomeScreen}
@@ -170,6 +186,7 @@ const HomeStackScreen = ({ navigation }) => {
         },
       }}
     />
+
   </Stack.Navigator>
   )
 };

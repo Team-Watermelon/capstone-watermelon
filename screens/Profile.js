@@ -67,11 +67,11 @@ const PersonalPage = ({ navigation, route }) => {
   useEffect(() => {
     getUser();
     getLoggedInUser();
-    console.log("THIS IS USERDATA___________________________", userData);
-    console.log(
-      "THIS IS LOGGEDIN USERDATA==========================>>>>>>>>>>>>",
-      loggedInUserData
-    );
+    // console.log("THIS IS USERDATA___________________________", userData);
+    // console.log(
+    //   "THIS IS LOGGEDIN USERDATA==========================>>>>>>>>>>>>",
+    //   loggedInUserData
+    // );
     navigation.addListener("focus", () => setLoading(!loading));
   }, [navigation, loading]);
 

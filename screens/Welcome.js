@@ -20,12 +20,9 @@ import DropDownPicker from "react-native-dropdown-picker";
 import firebase from "firebase/app";
 import "firebase/firestore";
 import { AuthenticatedUserContext } from "../navigation/AuthenticatedUserProvider";
-import * as ImagePicker from "expo-image-picker";
-import { saveProfileImage } from "../api/saveProfileImage";
-import { toDataURL } from "../helper/Base64";
-import { NavigationContainer } from "@react-navigation/native";
+import { useNavigation } from '@react-navigation/native';
 
-const Welcome = ({navigation}) => {
+const Welcome = () => {
   const { colors } = useTheme();
   const { user } = useContext(AuthenticatedUserContext);
   const [isModalVisible, setModalVisible] = useState(true);
@@ -37,6 +34,7 @@ const Welcome = ({navigation}) => {
     { label: "Miscarriage", value: "Miscarriage" },
     { label: "Support", value: "Support" },
   ]);
+const navigation = useNavigation()
 
   const getUser = async () => {
     const currentUser = await firebase
@@ -53,18 +51,20 @@ const Welcome = ({navigation}) => {
   };
 
   const handleUpdate = async () => {
-     await firebase
-      .firestore()
-      .collection("users")
-      .doc(user.uid)
-      .update({
+      const currentUser = firebase.auth().currentUser;
+      const db = firebase.firestore();
+      await db.collection("users")
+        .doc(currentUser.uid)
+        .set({
         firstName: userData.firstName,
         aboutMe: userData.aboutMe,
         city: userData.city,
         category: value,
-      })
-      .then(() => {
-        navigation.navigate('Home')
+        })
+        .then(() => {
+        navigation.navigate('Profile')
+        setModalVisible(false)
+        //console.log('navigation',navigation)
         console.log("User Updated!", userData.category);
       });
   };
@@ -74,15 +74,15 @@ const Welcome = ({navigation}) => {
   }, []);
 
   return (
-//     <Modal
-//     visible={isModalVisible}
-//     animationType="slide"
-//     presentationStyle="fullScreen"
-//     onRequestClose={() => {
-//       Alert.alert("Modal has been closed.");
-//       setModalVisible(false);
-//     }}
-//   >
+    <Modal
+    visible={isModalVisible}
+    animationType="slide"
+    presentationStyle="fullScreen"
+    onRequestClose={() => {
+      Alert.alert("Modal has been closed.");
+      setModalVisible(false);
+    }}
+  >
     <View style={styles.container}>
       <View style={{ alignItems: "center" }}>
         <Text style={{ marginTop: 10, fontSize: 18, fontWeight: "bold" }}>
@@ -149,12 +149,15 @@ const Welcome = ({navigation}) => {
         <TouchableOpacity style={styles.commandButton} onPress={handleUpdate}>
           <Text style={styles.panelButtonTitle}>Update</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.commandButton} onPress={()=>navigation.navigate('Home')}>
+          <Text style={styles.panelButtonTitle}>Find your people</Text>
+        </TouchableOpacity>
     </View>
-    // </Modal>
+    </Modal>
   );
 };
 
-export default Welcome;
+export default  Welcome;
 
 const styles = StyleSheet.create({
   container: {

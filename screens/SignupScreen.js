@@ -4,9 +4,12 @@ import { useState } from "react";
 import { StyleSheet, Text, View, Button as RNButton, ImageBackground, Image } from "react-native";
 
 import { Button, InputField, ErrorMessage } from "../components";
-//import Firebase from "../config/firebase";
+import Firebase from "../config/firebase";
 import { registration } from "../api/registration";
 import Welcome from "./Welcome"
+import firebase from "firebase/app";
+import "firebase/firestore";
+import {Alert} from "react-native";
 
 export default function SignupScreen({ navigation }) {
   const [email, setEmail] = useState("");
@@ -16,6 +19,8 @@ export default function SignupScreen({ navigation }) {
   const [passwordVisibility, setPasswordVisibility] = useState(true);
   const [rightIcon, setRightIcon] = useState("eye");
   const [signupError, setSignupError] = useState("");
+
+  const auth = Firebase.auth();
 
   const handlePasswordVisibility = () => {
     if (rightIcon === "eye") {
@@ -27,19 +32,15 @@ export default function SignupScreen({ navigation }) {
     }
   };
 
-  const onHandleSignup = ({navigation}) => {
-    if (!email) {
-      Alert.alert("Email field is required.");
-    } else if (!password) {
-      Alert.alert("Password field is required.");
-    } else {
-      registration(
-        email,
-        password
-      );
-      navigation.navigate('EditProfile')
+  const onHandleSignup = async () => {
+    try {
+      if (email !== '' && password !== '') {
+        await auth.createUserWithEmailAndPassword(email, password);
+      }
+    } catch (error) {
+      setSignupError(error.message);
     }
-  }
+  };
 
   return (
     <View style={styles.container}>
