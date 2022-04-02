@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   StyleSheet,
@@ -8,12 +8,15 @@ import {
   Modal,
   TouchableOpacity,
   ActivityIndicator,
+  ImageBackground,
 } from "react-native";
 import { Audio } from "expo-av";
 import { saveAudio } from "../api/saveAudio";
 import { toDataURL } from "../helper/Base64";
 import { Alert } from "react-native";
 import { StatusWrapper } from "../styles/FeedStyle";
+import { Feather } from "@expo/vector-icons";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 export default function AudioRecord({ navigation }) {
   const [recording, setRecording] = useState({});
@@ -58,7 +61,7 @@ export default function AudioRecord({ navigation }) {
     });
     setRecorded(recording);
     setSound(sound);
-    
+
     // console.log("recording in stop Recording..", recording);
     //console.log("recorded in stop Recording..", recorded);
   }
@@ -66,7 +69,7 @@ export default function AudioRecord({ navigation }) {
   const handleUpload = () => {
     //console.log("recording inside handleupload", recording);
     //console.log("recorded inside handleupload", recorded);
-    if ( Object.keys(recorded).length===0) {
+    if (Object.keys(recorded).length === 0) {
       Alert.alert("Ops, please record again :)");
     } else {
       setUploading(true);
@@ -102,74 +105,137 @@ export default function AudioRecord({ navigation }) {
   };
 
   return (
-    <Modal
-      visible={isModalVisible}
-      animationType="slide"
-      presentationStyle="fullScreen"
-      onRequestClose={() => {
-        Alert.alert("Modal has been closed.");
-        setModalVisible(false);
-      }}
+    <View
+      style={styles.container}
+      // contentContainerStyle={{
+      //   justifyContent: "center",
+      //   alignItems: "center",
+      // }}
     >
-      <View style={styles.modal}
-     contentContainerStyle={{
-      justifyContent: "center",
-      alignItems: "center",
-      paddingTop: 310,
-    }} >
-        <Text>{message}</Text>
-        <Button
+      <Modal
+        visible={isModalVisible}
+        animationType="slide"
+        presentationStyle="fullScreen"
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setModalVisible(false);
+        }}
+      >
+        <ImageBackground
+          style={styles.image}
+          source={require("../assets/coverhands.png")}
+        >
+          <View style={styles.modal}>
+            <Text
+              style={{
+                marginBottom: 70,
+                fontSize: 27,
+                fontWeight: "bold",
+                color: "#E8A196",
+                justifyContent: "center",
+                // alignItems:"center",
+                marginLeft: 40,
+                marginRight: 40,
+              }}
+            >
+              Tell Your Story
+            </Text>
+            <View
+              style={{
+                position: "absolute",
+                right: 30,
+                top: 110,
+                fontWeight: "bold",
+                color:"#6666"
+                // position: 'absolute', // add if dont work with above
+              }}
+            >
+              <Button title="X" onPress={() => navigation.navigate("Profile")}>
+                X
+              </Button>
+            </View>
+            <Text style={{ marginBottom: 50, color: "#6666", fontSize: 20 }}>
+              Tab to start recording
+            </Text>
+            <Feather
+              style={{ marginBottom: 30 }}
+              //  style={styles.playButtonContainer}
+              name={
+                Object.keys(recording).length
+                  ? "stop-circle"
+                  : "mic" && sound
+                  ? "play"
+                  : "pause"
+              }
+              color="#AC9292"
+              size={20}
+              onPress={
+                Object.keys(recording).length ? stopRecording : startRecording
+              }
+            ></Feather>
+            {/* <Button
           title={
             Object.keys(recording).length ? "Stop Recording" : "Start Recording"
           }
           onPress={
             Object.keys(recording).length ? stopRecording : startRecording
           }
-        />
-        <Button
+        /> */}
+            {sound ? (
+              <Button
+                title="Listen to my story"
+                color="#AC9292"
+                size={20}
+                onPress={() => sound.replayAsync()}
+              ></Button>
+            ) : null}
+
+            {/* <Button
           style={styles.button}
           onPress={() => sound.replayAsync()}
           title="Play"
-        ></Button>
-        <Button
-          title="Save"
-          onPress={() => {
-            handleUpload();
-          }}
-        ></Button>
-        <StatusBar style="auto" />
-        {uploading ? (
-          <StatusWrapper>
-            <Text>Uploading Your Story!</Text>
-            <ActivityIndicator size="large" color="#0000ff" />
-          </StatusWrapper>
-        ) : (
-          <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
-            <Text style={styles.modalHeaderCloseText}>X</Text>
-          </TouchableOpacity>
-        )}
-      </View>
-    </Modal>
+        ></Button> */}
+            {sound ? (
+              <Button
+                title="Save"
+                onPress={() => {
+                  handleUpload();
+                }}
+              ></Button>
+            ) : null}
+            {uploading ? (
+              <StatusWrapper>
+                <Text>Uploading Your Story!</Text>
+                <ActivityIndicator size="large" color="#0000ff" />
+              </StatusWrapper>
+            ) : null}
+          </View>
+        </ImageBackground>
+      </Modal>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingTop: 50,
-    paddingHorizontal: 12,
+    // padding: 30,
+    // marginTop: 150,
   },
-  row: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  fill: {
+  // row: {
+  //   flexDirection: "row",
+  //   alignItems: "center",
+  //   justifyContent: "center",
+  // },
+  // fill: {
+  //   flex: 1,
+  //   margin: 16,
+  // },
+  modal: {
     flex: 1,
-    margin: 16,
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 100,
   },
   button: {
     borderRadius: 20,
@@ -181,25 +247,56 @@ const styles = StyleSheet.create({
     textAlign: "center",
     paddingLeft: 5,
     paddingRight: 5,
+    // position: 'absolute',
+    // left: 0,
+    // right: 0,
+    // top: 0,
+    // bottom: 0
   },
-  modal: {
+  playButtonContainer: {
+    borderColor: "rgba(93, 63, 106, 0.2)",
+    borderWidth: 5,
+    width: 70,
+    height: 70,
+    borderRadius: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    marginHorizontal: 32,
+    shadowColor: "#333",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    // shadowColor: "#5D3F6A",
+    // shadowRadius: 25,
+    // shadowOpacity: 0.5,
+    // elevation: 3,
+  },
+  image: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22
-    // flex: 1,
-    // margin: 15,
-    // padding: 15,
-    // backgroundColor: "white",
-    // shadowColor: "purple",
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 2,
-    // },
-    // shadowOpacity: 0.25,
-    // shadowRadius: 4,
-    // elevation: 5,
   },
+  // modal: {
+  //   flex: 1,
+  //   justifyContent: "center",
+  //   alignItems: "center",
+  //   marginTop: 22,
+  // flex: 1,
+  // margin: 15,
+  // padding: 15,
+  // backgroundColor: "white",
+  // shadowColor: "purple",
+  // shadowOffset: {
+  //   width: 0,
+  //   height: 2,
+  // },
+  // shadowOpacity: 0.25,
+  // shadowRadius: 4,
+  // elevation: 5,
+  // },
 });
 
 //upload audio to firebase storage

@@ -92,7 +92,15 @@ const ProfileStackScreen = ({ navigation }) => {
           ),
         }}
       />
-      <Stack.Screen name="AudioRecord" component={AudioRecord} />
+      <Stack.Screen name="AudioRecord" component={AudioRecord} 
+      options={{
+        headerLeft: () => (
+          <Image
+            style={{ width: 80, height: 40, margin: 20 }}
+            source={require("../assets/logo.png")}
+          />
+        ),
+      }}/>
       <Stack.Screen
         name="EditProfile"
         component={EditProfileScreen}
