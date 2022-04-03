@@ -188,7 +188,7 @@ const EditProfileScreen = ({ navigation }) => {
         />
       </View>
       <View style={styles.action}>
-        <FontAwesome name="users" color={colors.text} size={20} />
+        <FontAwesome name="user-o" color={colors.text} size={20} />
         <TextInput
           placeholder="Pronouns"
           placeholderTextColor="#666666"
