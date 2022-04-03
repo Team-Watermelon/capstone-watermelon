@@ -17,7 +17,7 @@ import { Alert } from "react-native";
 import { StatusWrapper } from "../styles/FeedStyle";
 import { Feather } from "@expo/vector-icons";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import LottieView from 'lottie-react-native';
+import LottieView from "lottie-react-native";
 
 export default function AudioRecord({ navigation }) {
   const [recording, setRecording] = useState({});
@@ -26,7 +26,7 @@ export default function AudioRecord({ navigation }) {
   const [sound, setSound] = useState(null);
   const [isModalVisible, setModalVisible] = useState(true);
   const [uploading, setUploading] = useState(false);
- const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   async function startRecording() {
     try {
@@ -107,12 +107,12 @@ export default function AudioRecord({ navigation }) {
   };
 
   const playSound = () => {
-    if(sound){ 
+    if (sound) {
       sound.replayAsync();
     } else {
-      Alert.alert("Ops,please record again :)")
+      Alert.alert("Ops,please record again :)");
     }
-  }
+  };
 
   // const pauseSound = () =>{
   //   if(isPlaying){
@@ -140,16 +140,14 @@ export default function AudioRecord({ navigation }) {
           <View
             style={{
               position: "absolute",
-              right: 30,
-              top: 60,
+              right: 40,
+              top: 80,
               fontWeight: "bold",
-              color: "#6666",
-              // position: 'absolute', // add if dont work with above
             }}
           >
-            <Button title="X" onPress={() => navigation.navigate("Profile")}>
-              X
-            </Button>
+            <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+              <Text>X</Text>
+            </TouchableOpacity>
           </View>
           <View style={styles.modal}>
             <Text
@@ -159,13 +157,30 @@ export default function AudioRecord({ navigation }) {
                 fontWeight: "bold",
                 color: "#E8A196",
                 justifyContent: "center",
-                // alignItems:"center",
                 marginLeft: 40,
                 marginRight: 40,
               }}
             >
               Tell Your Story
             </Text>
+            <View>
+              {uploading ? (
+                <StatusWrapper
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Text>Uploading Your Story!</Text>
+                  <ActivityIndicator size="large" color="#0000ff" />
+                </StatusWrapper>
+              ) : null}
+            </View>
             <View
               style={{
                 flex: 1,
@@ -176,45 +191,42 @@ export default function AudioRecord({ navigation }) {
               <Text style={{ marginBottom: 50, color: "#6666", fontSize: 20 }}>
                 Tab to start recording
               </Text>
-              <View style={styles.playButtonContainer}>  
-              <Feather
-                name={Object.keys(recording).length ? "stop-circle" : "mic"}
-                color="#AC9292"
-                size={20}
-                onPress={
-                  Object.keys(recording).length ? stopRecording : startRecording
-                }
-              ></Feather>
-              </View>
-            </View>
-            <View style={{ flex: 1, elevation:10 }}>
-              {sound ? (
-                <Button
-                  title = "Play"
+
+              <View style={styles.playButtonContainer}>
+                <Feather
+                  name={Object.keys(recording).length ? "stop-circle" : "mic"}
                   color="#AC9292"
                   size={20}
+                  onPress={
+                    Object.keys(recording).length
+                      ? stopRecording
+                      : startRecording
+                  }
+                ></Feather>
+              </View>
+            </View>
+            <View style={{ flex: 1, elevation: 10 }}>
+              {sound ? (
+                <Button
+                  title="Play"
+                  color="#AC9292"
+                  size={20}
+                  fontWeight="bold"
                   onPress={playSound}
                   // style={{ top:600,position:"relative" }}
                 ></Button>
               ) : null}
               {/* {isPlaying? (<LottieView source={require('../assets/15031-playing-status-animation.json')} autoPlay loop />):null} */}
-            {/* </View>
-            <View style={styles.commandButton}> */}
-            {sound ? (
-              <Button
-                title="Save"
-                color="#AC9292"
-                onPress={() => {
-                  handleUpload();
-                }}
-              ></Button>
-            ) : null}
-            {uploading ? (
-              <StatusWrapper>
-                <Text>Uploading Your Story!</Text>
-                <ActivityIndicator size="large" color="#0000ff" />
-              </StatusWrapper>
-            ) : null}
+              {sound ? (
+                <TouchableOpacity
+                  style={styles.commandButton}
+                  onPress={() => {
+                    handleUpload();
+                  }}
+                >
+                  <Text style={styles.panelButtonTitle}>Save</Text>
+                </TouchableOpacity>
+              ) : null}
             </View>
           </View>
         </ImageBackground>
@@ -266,12 +278,16 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: "#AF8EC9",
     alignItems: "center",
-    marginTop: 1,
+    marginTop: 20,
     justifyContent: "center",
-    width: 150,
+    width: 100,
+  },
+  panelButtonTitle: {
+    fontSize: 17,
+    fontWeight: "bold",
+    color: "white",
   },
   playButtonContainer: {
-   
     backgroundColor: "#FFF",
     borderColor: "rgba(93, 63, 106, 0.2)",
     borderWidth: 15,
@@ -281,7 +297,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginHorizontal: 32,
-    shadowColor:"#5D3F6A",
+    shadowColor: "#5D3F6A",
     shadowOffset: {
       width: 0,
       height: 2,
