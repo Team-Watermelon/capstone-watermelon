@@ -99,7 +99,7 @@ const UserCard = ({ item, onPress }) => {
                 }}
               >
                 {item ? item.firstName || "Test" : "Test"}{" "} 
-                <Text style={{
+                {/* <Text style={{
                     fontSize: 14,
                     color: "#AC9292",
                 }} 
@@ -109,9 +109,10 @@ const UserCard = ({ item, onPress }) => {
                     <FontAwesome name="arrow-circle-o-right" style={{
                   size: 25, color: "#AC9292"
               }}/>
-              </Text>
               
-
+              */}
+              
+              </Text>
             </TouchableOpacity>
             {/* <Text
                       style={{
