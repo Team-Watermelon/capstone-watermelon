@@ -6,6 +6,7 @@ import { StyleSheet, Text, View, Button as RNButton, ImageBackground, Image } fr
 import { Button, InputField, ErrorMessage } from "../components";
 //import Firebase from "../config/firebase";
 import { registration } from "../api/registration";
+import Welcome from "./Welcome"
 
 export default function SignupScreen({ navigation }) {
   const [email, setEmail] = useState("");
@@ -26,7 +27,7 @@ export default function SignupScreen({ navigation }) {
     }
   };
 
-  const onHandleSignup = () => {
+  const onHandleSignup = (navigate) => {
     if (!email) {
       Alert.alert("Email field is required.");
     } else if (!password) {

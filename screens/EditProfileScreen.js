@@ -10,14 +10,14 @@ import {
   Button,
   Image,
   Platform,
-  ActivityIndicator
+  ActivityIndicator,
 } from "react-native";
 import { useTheme } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import DropDown from "../components/DropDown";
-import { StatusWrapper } from '../styles/FeedStyle';
-
+import { StatusWrapper } from "../styles/FeedStyle";
+import DropDownPicker from "react-native-dropdown-picker";
 // import Feather from 'react-native-vector-icons/Feather';
 import firebase from "firebase/app";
 import "firebase/firestore";
@@ -34,6 +34,13 @@ const EditProfileScreen = () => {
   // const [transferred, setTransferred] = useState(0);
   const [userData, setUserData] = useState(null);
   const [imageURL, setImageURL] = useState(null);
+   const [open, setOpen] = useState(false);
+   const [value, setValue] = useState(null);
+  const [items, setItems] = useState([
+    { label: "IVF", value: "IVF" },
+    { label: "Miscarriage", value: "Miscarriage" },
+    { label: "Support", value: "Support" },
+  ]);
 
   const getUser = async () => {
     const currentUser = await firebase
@@ -79,8 +86,8 @@ const EditProfileScreen = () => {
         .then((resp) => resp.json())
         .then((data) => {
           const url = data.url;
-           saveProfileImage(url);
-          setUploading(false)
+          saveProfileImage(url);
+          setUploading(false);
           console.log("data.url in uploadImage", data.url);
           Alert.alert(
             "Profile Updated!",
@@ -91,7 +98,7 @@ const EditProfileScreen = () => {
   };
 
   const handleUpdate = async () => {
-    setUploading(true)
+    setUploading(true);
     uploadImage();
     await firebase
       .firestore()
@@ -102,9 +109,10 @@ const EditProfileScreen = () => {
         aboutMe: userData.aboutMe,
         city: userData.city,
         userImage: userData.userImage,
+        category: value,
       })
       .then(() => {
-        console.log("User Updated!", userData.userImage);
+        console.log("User Updated!", userData.category);
       });
   };
 
@@ -178,20 +186,6 @@ const EditProfileScreen = () => {
           ]}
         />
       </View>
-      {/* <View style={styles.action}>
-        <TextInput
-          placeholder="Email"
-          placeholderTextColor="#666666"
-          keyboardType="email-address"
-          autoCorrect={false}
-          style={[
-            styles.textInput,
-            {
-              color: colors.text,
-            },
-          ]}
-        />
-      </View> */}
       <View style={styles.action}>
         <Icon name="map-marker-outline" color={colors.text} size={20} />
         <TextInput
@@ -224,18 +218,25 @@ const EditProfileScreen = () => {
           ]}
         />
       </View>
-      <DropDown />
+      <DropDownPicker
+      open={open}
+      value={value}
+      placeholder="What best describes your story?"
+      items={items}
+      setOpen={setOpen}
+      setValue={setValue}
+      setItems={setItems}
+    />
       {uploading ? (
-          <StatusWrapper>
-             <Text>Updating your profile!</Text>
-            <ActivityIndicator size="large" color="#0000ff" />
-          </StatusWrapper>
-        ) : (
-          <TouchableOpacity style={styles.commandButton} onPress={handleUpdate}>
-        <Text style={styles.panelButtonTitle}>Update</Text>
-      </TouchableOpacity>
-        )}
-     
+        <StatusWrapper>
+          <Text>Updating your profile!</Text>
+          <ActivityIndicator size="large" color="#0000ff" />
+        </StatusWrapper>
+      ) : (
+        <TouchableOpacity style={styles.commandButton} onPress={handleUpdate}>
+          <Text style={styles.panelButtonTitle}>Update</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

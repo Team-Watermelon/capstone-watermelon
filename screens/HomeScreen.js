@@ -102,8 +102,7 @@ export default function HomeScreen({ navigation }) {
           color='black'
           onPress={handleSignOut}
         />
-        <Text style={styles.text}>Your UID is: {user.uid}{"\n"}{"\n"}{"\n"}</Text>
-        
+  
       </View> */}
         <Text style={styles.stories}>Stories</Text>
         {/* <UserCard /> */}

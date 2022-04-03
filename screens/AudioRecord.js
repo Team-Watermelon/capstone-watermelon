@@ -7,18 +7,21 @@ import {
   View,
   Modal,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import { Audio } from "expo-av";
 import { saveAudio } from "../api/saveAudio";
 import { toDataURL } from "../helper/Base64";
 import { Alert } from "react-native";
+import { StatusWrapper } from "../styles/FeedStyle";
 
-export default function AudioRecord({navigation}) {
+export default function AudioRecord({ navigation }) {
   const [recording, setRecording] = useState({});
   const [recorded, setRecorded] = useState({});
   const [message, setMessage] = useState("");
   const [sound, setSound] = useState(null);
   const [isModalVisible, setModalVisible] = useState(true);
+  const [uploading, setUploading] = useState(false);
 
   async function startRecording() {
     try {
@@ -53,8 +56,9 @@ export default function AudioRecord({navigation}) {
       rate: 1.0,
       shouldCorrectPitch: true,
     });
-    setSound(sound);
     setRecorded(recording);
+    setSound(sound);
+    
     // console.log("recording in stop Recording..", recording);
     //console.log("recorded in stop Recording..", recorded);
   }
@@ -62,30 +66,39 @@ export default function AudioRecord({navigation}) {
   const handleUpload = () => {
     //console.log("recording inside handleupload", recording);
     //console.log("recorded inside handleupload", recorded);
-    const recordedURI = recorded.getURI();
-    toDataURL(recordedURI, function (dataUrl) {
-      console.log("RESULT:", dataUrl);
-      const formData = new FormData();
-      formData.append("file", `${dataUrl}`);
-      formData.append("upload_preset", "openArms");
-      formData.append("cloud_name", "capstonewatermelon");
-      formData.append("resource_type", "audio");
-      fetch("https://api.cloudinary.com/v1_1/capstonewatermelon/auto/upload", {
-        method: "post",
-        body: formData,
-      })
-        .then(async (response) => {
-          let recordedObj = await response.json();
-          console.log("Cloudinary Info in handleUpload:", recordedObj);
-          const recordingURL = recordedObj.url;
-          saveAudio(recordingURL);
-          console.log("recordingURL inside handleUpload", recordingURL);
-          console.log("audio saved in handleUpdate");
-        })
-        .catch((err) => {
-          Alert.alert("An Error Occured While Uploading");
-        });
-    });
+    if ( Object.keys(recorded).length===0) {
+      Alert.alert("Ops, please record again :)");
+    } else {
+      setUploading(true);
+      const recordedURI = recorded.getURI();
+      toDataURL(recordedURI, function (dataUrl) {
+        console.log("RESULT:", dataUrl);
+        const formData = new FormData();
+        formData.append("file", `${dataUrl}`);
+        formData.append("upload_preset", "openArms");
+        formData.append("cloud_name", "capstonewatermelon");
+        formData.append("resource_type", "audio");
+        fetch(
+          "https://api.cloudinary.com/v1_1/capstonewatermelon/auto/upload",
+          {
+            method: "post",
+            body: formData,
+          }
+        )
+          .then(async (response) => {
+            let recordedObj = await response.json();
+            console.log("Cloudinary Info in handleUpload:", recordedObj);
+            const recordingURL = recordedObj.url;
+            saveAudio(recordingURL);
+            setUploading(false);
+            console.log("recordingURL inside handleUpload", recordingURL);
+            console.log("audio saved in handleUpdate");
+          })
+          .catch((err) => {
+            Alert.alert("An Error Occured While Uploading");
+          });
+      });
+    }
   };
 
   return (
@@ -98,7 +111,12 @@ export default function AudioRecord({navigation}) {
         setModalVisible(false);
       }}
     >
-      <View style={styles.modal}>
+      <View style={styles.modal}
+     contentContainerStyle={{
+      justifyContent: "center",
+      alignItems: "center",
+      paddingTop: 310,
+    }} >
         <Text>{message}</Text>
         <Button
           title={
@@ -120,9 +138,16 @@ export default function AudioRecord({navigation}) {
           }}
         ></Button>
         <StatusBar style="auto" />
-        <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
-          <Text style={styles.modalHeaderCloseText}>X</Text>
-        </TouchableOpacity>
+        {uploading ? (
+          <StatusWrapper>
+            <Text>Uploading Your Story!</Text>
+            <ActivityIndicator size="large" color="#0000ff" />
+          </StatusWrapper>
+        ) : (
+          <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+            <Text style={styles.modalHeaderCloseText}>X</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </Modal>
   );
@@ -134,6 +159,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    paddingTop: 50,
+    paddingHorizontal: 12,
   },
   row: {
     flexDirection: "row",
@@ -145,7 +172,10 @@ const styles = StyleSheet.create({
     margin: 16,
   },
   button: {
-    margin: 16,
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    backgroundColor: "#F194FF",
   },
   modalHeaderCloseText: {
     textAlign: "center",
@@ -154,17 +184,21 @@ const styles = StyleSheet.create({
   },
   modal: {
     flex: 1,
-    margin: 15,
-    padding: 15,
-    backgroundColor: "white",
-    shadowColor: "purple",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22
+    // flex: 1,
+    // margin: 15,
+    // padding: 15,
+    // backgroundColor: "white",
+    // shadowColor: "purple",
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 2,
+    // },
+    // shadowOpacity: 0.25,
+    // shadowRadius: 4,
+    // elevation: 5,
   },
 });
 

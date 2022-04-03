@@ -61,21 +61,14 @@ const styles = StyleSheet.create({
   playButtonContainer: {
     backgroundColor: "#FFF",
     borderColor: "rgba(93, 63, 106, 0.2)",
-    borderWidth: 15,
-    width: 70,
-    height: 70,
+    borderWidth: 3,
+    width: 30,
+    height: 30,
     borderRadius: 50,
     alignItems: "center",
     justifyContent: "center",
     marginHorizontal: 32,
     shadowColor: "#333",
-shadowOffset: {
-	width: 0,
-	height: 2,
-},
-shadowOpacity: 0.25,
-shadowRadius: 3.84,
-
 elevation: 5
     // shadowColor: "#5D3F6A",
     // shadowRadius: 25,
