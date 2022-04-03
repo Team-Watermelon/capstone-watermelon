@@ -38,23 +38,32 @@ const UserCard = ({ item, onPress }) => {
       <View
         key={item.id}
         style={{
+          backgroundColor:"white",
           borderWidth: .5,
           borderColor: "#CDCDCD",
-          margin: 10,
-          borderRadius: 10,
-            // shadowOpacity: 0.30,
-            //   shadowRadius: 4.65,
-              elevation: 20,
+          margin: 5,
+          shadowColor: '#333',
+          shadowOpacity: .15,
+          shadowRadius: 2,
+          elevation: 3,
+          shadowOffset: {width: 3, height: 3},
+          borderRadius:10
+         
         }}
       >
         <View
           style={{
             flexDirection: "row",
+            borderRadius: 10,
+            // shadowOpacity: 3,
+            // shadowRadius: 4.65,
+            //     elevation: 20,
             // shadowOpacity: 0.30,
             // shadowRadius: 4.65,
             // elevation: 8,
           }}
         >
+          <View>
           <TouchableOpacity onPress={onPress}>
             <Image
               source={{
@@ -80,6 +89,7 @@ const UserCard = ({ item, onPress }) => {
               }}
             />
           </TouchableOpacity>
+          </View>
           {/* <Card.Title> */}
           <View style={{ marginLeft: 16 }}>
             <TouchableOpacity onPress={onPress}>
