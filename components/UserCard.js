@@ -1,17 +1,19 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, { useContext, useEffect, useState } from "react";
 import Card from "react-native-card-component";
-import { SafeAreaView, StyleSheet, View} from 'react-native';
-import { Button, Text } from 'react-native-paper';
+import { SafeAreaView, StyleSheet, View } from "react-native";
+import { Button, Text } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import firebase from "firebase/app";
 import "firebase/firestore";
-import { AuthenticatedUserContext } from '../navigation/AuthenticatedUserProvider';
-import NewAudioPlayer from './NewAudioPlayer';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import { AuthenticatedUserContext } from "../navigation/AuthenticatedUserProvider";
+import NewAudioPlayer from "./NewAudioPlayer";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { useNavigation } from "@react-navigation/native";
 
-const UserCard = ({item, onPress}) => {
-    const {user, logout} = useContext(AuthenticatedUserContext);
-    const [userData, setUserData] = useState(null);
+const UserCard = ({ item, onPress }) => {
+  const { user, logout } = useContext(AuthenticatedUserContext);
+  const [userData, setUserData] = useState(null);
+  const navigation = useNavigation();
 
   const getUser = async () => {
     await firebase
@@ -32,30 +34,40 @@ const UserCard = ({item, onPress}) => {
     console.log("USER (userData", userData)
   }, []);
 
-        useEffect(() => {
-            getUser();
-          }, []);
-
-    return (
-<SafeAreaView >
-<TouchableOpacity onPress={onPress}>
-    <Card key={item.id}>
-        <Card.Thumbnail
-        source={{
-            uri: item
-              ? item.userImage ||
-                'https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg'
-              : 'https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg',
-          }} 
+  return (
+    <SafeAreaView>
+      <Card key={item.id}>
+        <TouchableOpacity onPress={onPress}>
+          <Card.Thumbnail
+            source={{
+              uri: item
+                ? item.userImage ||
+                  "https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg"
+                : "https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg",
+            }}
             // uri: 'https://i.pinimg.com/custom_covers/222x/85498161615209203_1636332751.jpg' }}
-        style={{ height: 85, width: 97 }}
-        align={'left'}
-        // stretch
-        // imageProps={{resizeMode: 'contain'}}
-        containerStyle={{ justifyContent: 'center', alignItems: 'center' }}
-    />
+            style={{ height: 85, width: 97 }}
+            align={"left"}
+            // stretch
+            // imageProps={{resizeMode: 'contain'}}
+            containerStyle={{ justifyContent: "center", alignItems: "center" }}
+          />
+        </TouchableOpacity>
         {/* <Card.Title> */}
-        <View style={{marginLeft: 16}}>
+        <View style={{ marginLeft: 16 }}>
+          <Text
+            style={{
+              fontSize: 18,
+              color: "#AC9292",
+              fontWeight: "bold",
+              fontFamily: "Arial",
+              textTransform: "capitalize",
+              paddingLeft: 15,
+              paddingTop: 0,
+            }}
+          >
+            {item ? item.firstName || "Test" : "Test"}{" "}
+          </Text>
 
           <Text
             style={{
@@ -98,24 +110,34 @@ const UserCard = ({item, onPress}) => {
                   }
                    } /> 
 
-</Card>
-</TouchableOpacity>
-</SafeAreaView>
-    )
-}
+            <Text
+              style={{
+                color: "#AC9292",
+                fontSize: 14,
+              }}
+            >
+              Connect with {item ? item.firstName || "Test" : "Test"}{" "}
+            </Text>
+          </View>
+        </View>
+      </Card>
+    </SafeAreaView>
+  );
+};
 
 export default UserCard;
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      alignItems: 'center',
-      // justifyContent: 'center',
-      backgroundColor: '#f7f7f7',
-    },
-    box: {
-      width: 60,
-      height: 60,
-      marginVertical: 20,
-    },
-  });
+  container: {
+    flex: 1,
+    alignItems: "center",
+    // justifyContent: 'center',
+    backgroundColor: "#f7f7f7",
+  },
+  box: {
+    width: 60,
+    height: 60,
+    marginVertical: 20,
+  },
+});
+
