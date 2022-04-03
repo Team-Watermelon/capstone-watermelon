@@ -75,9 +75,9 @@ shadowOffset: {
 	height: 3,
 },
 shadowOpacity: 0.25,
-shadowRadius: 1,
+shadowRadius: 2,
 
-elevation: 5
+elevation: 3
     // shadowColor: "#5D3F6A",
     // shadowRadius: 25,
     // shadowOpacity: 0.5,
