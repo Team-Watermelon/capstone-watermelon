@@ -15,14 +15,32 @@ import Firebase from "../config/firebase";
 import firebase from "firebase/app";
 import "firebase/firestore";
 import { AuthenticatedUserContext } from "../navigation/AuthenticatedUserProvider";
-// import EditProfileScreen from "./EditProfileScreen";
- import Welcome from "./Welcome"
+import Welcome from "./Welcome"
 const auth = firebase.auth();
 
 export default function HomeScreen({ navigation }) {
   const [users, setUsers] = useState(null);
   const [loading, setLoading] = useState(true);
   const [newUser, setNewUser] =useState(null);
+
+const auth = firebase.auth();
+
+export const reachOut = ({ navigation }) => {
+  firebase
+    .firestore()
+    .collection("THREADS")
+    .add({
+      id: userData.id,
+      users: [userData.id, user.uid],
+      receiverID: userData.id,
+      senderID: user.uid,
+      receiverName: userData.firstName,
+      senderName: loggedInUserData.firstName,
+    })
+    .then(() => {
+      navigation.navigate("Message", { thread: userData.id });
+    });
+};
 
   const { user } = useContext(AuthenticatedUserContext);
   let signedUp = {};
@@ -63,7 +81,7 @@ export default function HomeScreen({ navigation }) {
         .collection("users")
         .get()
         .then((querySnapshot) => {
-         // console.log("Total Users: ", querySnapshot.size);
+          console.log("Total Users: ", querySnapshot.size);
           querySnapshot.forEach((doc) => {
             const { id, firstName, userImage, audio, aboutMe } = doc.data();
             list.push({

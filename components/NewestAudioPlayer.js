@@ -63,9 +63,10 @@ export default function NewestAudio({ url }) {
 
 const styles = StyleSheet.create({
   playButtonContainer: {
+    elevation: 10,
     backgroundColor: "#FFF",
     borderColor: "rgba(93, 63, 106, 0.2)",
-    borderWidth: 15,
+    borderWidth: 1,
     width: 70,
     height: 70,
     borderRadius: 50,
@@ -80,6 +81,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+
   },
   status :{
     marginTop: 3,
