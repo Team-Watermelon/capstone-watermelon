@@ -129,7 +129,7 @@ const auth = firebase.auth();
           <>
             <StatusBar style="dark-content" />
             <View style={styles.row}>
-              <Text style={styles.title}>
+              {/* <Text style={styles.title}>
                 open.{"\n"}
                 {"\n"}
                 {"\n"}
@@ -139,7 +139,7 @@ const auth = firebase.auth();
                 size={24}
                 color="black"
                 onPress={handleSignOut}
-              />
+              /> */}
               {/* <Text style={styles.text}>
                 Your UID is: {user.uid}
                 {"\n"}
