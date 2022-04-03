@@ -25,22 +25,22 @@ export default function HomeScreen({ navigation }) {
 
 const auth = firebase.auth();
 
-export const reachOut = ({ navigation }) => {
-  firebase
-    .firestore()
-    .collection("THREADS")
-    .add({
-      id: userData.id,
-      users: [userData.id, user.uid],
-      receiverID: userData.id,
-      senderID: user.uid,
-      receiverName: userData.firstName,
-      senderName: loggedInUserData.firstName,
-    })
-    .then(() => {
-      navigation.navigate("Message", { thread: userData.id });
-    });
-};
+// export const reachOut = ({ navigation }) => {
+//   firebase
+//     .firestore()
+//     .collection("THREADS")
+//     .add({
+//       id: userData.id,
+//       users: [userData.id, user.uid],
+//       receiverID: userData.id,
+//       senderID: user.uid,
+//       receiverName: userData.firstName,
+//       senderName: loggedInUserData.firstName,
+//     })
+//     .then(() => {
+//       navigation.navigate("Message", { thread: userData.id });
+//     });
+// };
 
   const { user } = useContext(AuthenticatedUserContext);
   let signedUp = {};
@@ -121,26 +121,6 @@ export const reachOut = ({ navigation }) => {
   };
   return (
     <View style={styles.container}>
-<<<<<<< HEAD
-      <ScrollView>
-      <StatusBar style='dark-content' />
-      {/* <View style={styles.row}>
-        <Text style={styles.title}>open.{"\n"}{"\n"}{"\n"}</Text>
-        <IconButton
-          name="logout"
-          size={24}
-          color='black'
-          onPress={handleSignOut}
-        />
-        <Text style={styles.text}>Your UID is: {user.uid}{"\n"}{"\n"}{"\n"}</Text>
-      </View> */}
-      <Text style={styles.stories}>
-        Stories
-      </Text>
-      {/* <UserCard /> */}
-      
-          <FlatList
-=======
 
       {newUser ? (
       <View> 
