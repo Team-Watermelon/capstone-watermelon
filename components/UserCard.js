@@ -13,19 +13,24 @@ const UserCard = ({item, onPress}) => {
     const {user, logout} = useContext(AuthenticatedUserContext);
     const [userData, setUserData] = useState(null);
 
-    const getUser = async () => {
-        await firebase
-          .firestore()
-          .collection("users")
-          .doc(item.uid)
-          .get()
-          .then((documentSnapshot) => {
-            if (documentSnapshot.exists) {
-                console.log('User Data', documentSnapshot.data());
-                setUserData(documentSnapshot.data());
-              }
-            });
-        };
+  const getUser = async () => {
+    await firebase
+      .firestore()
+      .collection("users")
+      .doc(item.id)
+      .get()
+      .then((documentSnapshot) => {
+        if (documentSnapshot.exists) {
+          console.log("User Data", documentSnapshot.data());
+          setUserData(documentSnapshot.data());
+        }
+      });
+  };
+
+  useEffect(() => {
+    getUser();
+    console.log("USER (userData", userData)
+  }, []);
 
         useEffect(() => {
             getUser();
@@ -52,47 +57,47 @@ const UserCard = ({item, onPress}) => {
         {/* <Card.Title> */}
         <View style={{marginLeft: 16}}>
 
-
-            <Text
-              style={{
-                fontSize: 18,
-                color: '#AC9292',
-                fontWeight: 'bold',
-                fontFamily: 'Arial',
-                textTransform: 'capitalize',
-                paddingLeft: 15,
-                paddingTop: 0
-              }}>
-          {item ? item.firstName || 'Test' : 'Test'}{' '}
-          </Text>
-         
           <Text
-                style={{
-                  color: '#AC9292',
-                  fontSize: 14,
-                }}>
-                Listen to {item ? item.firstName || 'Test' : 'Test'}{' '}'s Story
-              </Text>     
-            {/* <Button mode={'outlined'}>Listen to their story</Button> */}
-            <NewAudioPlayer url ={item.audio} />
-            <View
-              style={{
-                marginTop: 4,
-                borderWidth: 0,
-                paddingLeft: 15,
-                flexDirection: 'row'
-                // width: '85%',
-              }}>
-               <Icon name="message" color='#AC9292' size={20} /> 
-              <Text
-                style={{
-                  color: '#AC9292',
-                  fontSize: 14,
-                }}>
-                Connect with {item ? item.firstName || 'Test' : 'Test'}{' '}
-              </Text>              
-            </View>
-            </View>
+            style={{
+              color: "#AC9292",
+              fontSize: 14,
+            }}
+          >
+            Listen to {item ? item.firstName || "Test" : "Test"} 's Story
+          </Text>
+          {/* <Button mode={'outlined'}>Listen to their story</Button> */}
+          <NewAudioPlayer url={item.audio} />
+          <View
+            style={{
+              marginTop: 4,
+              borderWidth: 0,
+              paddingLeft: 15,
+              flexDirection: "row",
+              // width: '85%',
+            }}
+          >
+            <Icon name="message" color='#AC9292' size={20} onPress={() => {
+                
+                firebase.firestore()
+                .collection('THREADS')
+                .doc(`${item.id}_${user.uid}`)
+                .set({
+                  id: `${item.id}_${user.uid}`,
+                  //this is setting the thread id to the userid
+                  users: [item.id, user.uid],
+                  receiverID: item.id,
+                  senderID: user.uid,
+                  receiverName: item.firstName,
+                  // senderName: user.firstName
+                  // receiverImage: item.userImage
+                }
+                )
+                .then(() => {
+                  navigation.navigate('Message', { thread: `${item.id}_${user.uid}` });
+                });   
+                  }
+                   } /> 
+
 </Card>
 </TouchableOpacity>
 </SafeAreaView>

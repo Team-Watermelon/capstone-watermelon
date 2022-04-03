@@ -24,6 +24,7 @@ const PersonalPage = ({ navigation, route }) => {
   let loggedInUserFullData = {};
 
   const getUser = async () => {
+    console.log('this is ROUTEPARAMS================>', route.params)
     await firebase
       .firestore()
       .collection("users")
@@ -138,25 +139,28 @@ const PersonalPage = ({ navigation, route }) => {
                   {userData ? userData.firstName || "Test" : "Test"}'s Story
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.userBtn}
-                onPress={() => {
-                  firebase
-                    .firestore()
-                    .collection("THREADS")
-                    .add({
-                      id: userData.id,
-                      users: [userData.id, user.uid],
-                      receiverID: userData.id,
-                      senderID: user.uid,
-                      receiverName: userData.firstName,
-                      senderName: loggedInUserData.firstName,
-                    })
-                    .then(() => {
-                      navigation.navigate("Message", { thread: userData.id });
-                    });
-                }}
-              >
+
+              <TouchableOpacity style={styles.userBtn} onPress={() => {
+                
+                 firebase.firestore()
+                 .collection('THREADS')
+                 .doc(`${userData.id}_${user.uid}`)
+                 .set({
+                   id: `${userData.id}_${user.uid}`,
+                   //this is setting the thread id to the userid
+                   users: [userData.id, user.uid],
+                   receiverID: userData.id,
+                   senderID: user.uid,
+                   receiverName: userData.firstName,
+                   senderName: loggedInUserData.firstName,
+                  //  receiverImage: userData.userImage
+                 }
+                 )
+                 .then(() => {
+                   navigation.navigate('Message', { thread: `${userData.id}_${user.uid}` });
+                 });   
+                   }
+              }>
                 <Text style={styles.userBtnTxt}>Message</Text>
               </TouchableOpacity>
             </>
