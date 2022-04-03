@@ -100,6 +100,7 @@ const ProfileStackScreen = ({ navigation }) => {
             source={require("../assets/logo.png")}
           />
         ),
+
       }}/>
       <Stack.Screen
         name="EditProfile"
@@ -130,6 +131,7 @@ const ProfileStackScreen = ({ navigation }) => {
     </Stack.Navigator>
   );
 }
+
 
 const HomeStackScreen = ({ navigation }) => {
   return ( 

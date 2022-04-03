@@ -40,6 +40,30 @@ export default function NewestAudio({ url }) {
   };
 
   return (
+// <<<<<<< ss-styling
+//     <View style={{
+//       alignItems: "center",
+//       justifyContent: "center",
+  
+//     }}>
+//     <View style={styles.playButtonContainer}>
+//     <Feather name={IsPLaying? "pause":"play"} 
+//     color='#AC9292'
+//     size={20}
+//     onPress={IsPLaying ? StopPlaying : PlayRecordedAudio}
+//     >
+//   </Feather>
+//   </View>
+//   <View>
+//   <Text style={{
+//     alignItems: "center",
+//     justifyContent: "center",
+
+//   }}>
+//     Tap to listen to their story
+//   </Text>
+//   </View>
+// =======
     <View>
     <View style={styles.playButtonContainer}>
       <Feather
@@ -51,12 +75,15 @@ export default function NewestAudio({ url }) {
       </View>
       <View style={styles.status}>  
     {IsPLaying ? (<LottieView source={require('../assets/playing-purple.json')} autoPlay loop />):null}
+
       {/* <Button
         title={IsPLaying ? "pause":"play"}
         color={IsPLaying ? "red" : "orange"}
         onPress={IsPLaying ? StopPlaying : PlayRecordedAudio}
       /> */}
+
       </View>
+
     </View>
   );
 }

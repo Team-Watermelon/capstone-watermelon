@@ -121,6 +121,27 @@ export const reachOut = ({ navigation }) => {
   };
   return (
     <View style={styles.container}>
+<<<<<<< HEAD
+      <ScrollView>
+      <StatusBar style='dark-content' />
+      {/* <View style={styles.row}>
+        <Text style={styles.title}>open.{"\n"}{"\n"}{"\n"}</Text>
+        <IconButton
+          name="logout"
+          size={24}
+          color='black'
+          onPress={handleSignOut}
+        />
+        <Text style={styles.text}>Your UID is: {user.uid}{"\n"}{"\n"}{"\n"}</Text>
+      </View> */}
+      <Text style={styles.stories}>
+        Stories
+      </Text>
+      {/* <UserCard /> */}
+      
+          <FlatList
+=======
+
       {newUser ? (
       <View> 
       <FlatList
@@ -164,6 +185,8 @@ export const reachOut = ({ navigation }) => {
 }
 {
   /* <FlatList
+
+>>>>>>> 77144cd138ad1f9bb50fccf7d412bdff6e54b25d
             data={users}
             renderItem={({item}) => (
               <UserCard
@@ -184,15 +207,18 @@ export const reachOut = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    paddingTop: 50,
+
+    backgroundColor: '#fff',
+    paddingTop: 0,
+
     paddingHorizontal: 12,
   },
   row: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 24,
+    marginBottom: 0,
+
   },
   title: {
     fontSize: 24,
@@ -206,8 +232,10 @@ const styles = StyleSheet.create({
   },
   stories: {
     fontSize: 28,
-    fontWeight: "normal",
-    color: "#AC9292",
-    padding: 10,
-  },
+
+    fontWeight: 'normal',
+    color: '#AC9292',
+    padding: 8,
+  }
+
 });
