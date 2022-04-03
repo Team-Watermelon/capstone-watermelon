@@ -134,28 +134,6 @@ const ProfileStackScreen = ({ navigation }) => {
 const HomeStackScreen = ({ navigation }) => {
   return ( 
   <Stack.Navigator>
-    {/* <Stack.Screen
-      name="CheckLoad"
-      component={CheckLoad}
-    /> */}
-    {/* <Stack.Screen
-      name="Intro"
-      component={AppIntro}
-    /> */}
-           {/* <Stack.Screen
-      name="Decide"
-      component={Decide}
-      options={{
-        headerTitle: "Messages",
-        headerBackTitleVisible: false,
-        headerTitleAlign: "center",
-        headerStyle: {
-          backgroundColor: "#fff",
-          shadowColor: "#fff",
-          elevation: 0,
-        },
-      }}
-    /> */}
     <Stack.Screen
       name="Home"
       component={HomeScreen}

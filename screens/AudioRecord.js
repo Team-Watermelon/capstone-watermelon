@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Button,
   StyleSheet,
@@ -16,8 +16,6 @@ import { toDataURL } from "../helper/Base64";
 import { Alert } from "react-native";
 import { StatusWrapper } from "../styles/FeedStyle";
 import { Feather } from "@expo/vector-icons";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import LottieView from "lottie-react-native";
 
 export default function AudioRecord({ navigation }) {
   const [recording, setRecording] = useState({});
@@ -26,7 +24,6 @@ export default function AudioRecord({ navigation }) {
   const [sound, setSound] = useState(null);
   const [isModalVisible, setModalVisible] = useState(true);
   const [uploading, setUploading] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
 
   async function startRecording() {
     try {
@@ -216,7 +213,7 @@ export default function AudioRecord({ navigation }) {
                   // style={{ top:600,position:"relative" }}
                 ></Button>
               ) : null}
-              {/* {isPlaying? (<LottieView source={require('../assets/15031-playing-status-animation.json')} autoPlay loop />):null} */}
+         
               {sound ? (
                 <TouchableOpacity
                   style={styles.commandButton}
