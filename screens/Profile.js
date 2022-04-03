@@ -8,7 +8,7 @@ import {
   ScrollView,
   SafeAreaView,
 } from "react-native";
-import { NewestAudioPlayer, RNActionButton } from "../components";
+import { NewestAudioPlayer } from "../components";
 import Icon from "react-native-vector-icons/Ionicons";
 import firebase from "firebase/app";
 import "firebase/firestore";
@@ -24,6 +24,7 @@ const PersonalPage = ({ navigation, route }) => {
   let loggedInUserFullData = {};
 
   const getUser = async () => {
+    console.log('this is ROUTEPARAMS================>', route.params)
     await firebase
       .firestore()
       .collection("users")
@@ -67,11 +68,11 @@ const PersonalPage = ({ navigation, route }) => {
   useEffect(() => {
     getUser();
     getLoggedInUser();
-    console.log("THIS IS USERDATA___________________________", userData);
-    console.log(
-      "THIS IS LOGGEDIN USERDATA==========================>>>>>>>>>>>>",
-      loggedInUserData
-    );
+    // console.log("THIS IS USERDATA___________________________", userData);
+    // console.log(
+    //   "THIS IS LOGGEDIN USERDATA==========================>>>>>>>>>>>>",
+    //   loggedInUserData
+    // );
     navigation.addListener("focus", () => setLoading(!loading));
   }, [navigation, loading]);
 
@@ -143,25 +144,28 @@ const PersonalPage = ({ navigation, route }) => {
                   {/* {userData ? userData.firstName || "Test" : "Test"}'s Story */}
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.userBtn}
-                onPress={() => {
-                  firebase
-                    .firestore()
-                    .collection("THREADS")
-                    .add({
-                      id: userData.id,
-                      users: [userData.id, user.uid],
-                      receiverID: userData.id,
-                      senderID: user.uid,
-                      receiverName: userData.firstName,
-                      senderName: loggedInUserData.firstName,
-                    })
-                    .then(() => {
-                      navigation.navigate("Message", { thread: userData.id });
-                    });
-                }}
-              >
+
+              <TouchableOpacity style={styles.userBtn} onPress={() => {
+                
+                 firebase.firestore()
+                 .collection('THREADS')
+                 .doc(`${userData.id}_${user.uid}`)
+                 .set({
+                   id: `${userData.id}_${user.uid}`,
+                   //this is setting the thread id to the userid
+                   users: [userData.id, user.uid],
+                   receiverID: userData.id,
+                   senderID: user.uid,
+                   receiverName: userData.firstName,
+                   senderName: loggedInUserData.firstName,
+                  //  receiverImage: userData.userImage
+                 }
+                 )
+                 .then(() => {
+                   navigation.navigate('Message', { thread: `${userData.id}_${user.uid}` });
+                 });   
+                   }
+              }>
                 <Text style={styles.userBtnTxt}>Message</Text>
               </TouchableOpacity>
             </>

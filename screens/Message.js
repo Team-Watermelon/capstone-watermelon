@@ -8,6 +8,59 @@ export default function RoomScreen({ route }) {
   const { user } = useContext(AuthenticatedUserContext);
   const currentUser = user.toJSON();
   const { thread } = route.params;
+  const [threadObj, setThreadObj] = useState(null);
+
+  
+
+  const getThreadObj = async () => {
+    console.log('this is ROUTEPARAMS================>', route.params)
+    await firebase
+      .firestore()
+      .collection("THREADS")
+      .doc(route.params.thread)
+      .get()
+      .then((documentSnapshot) => {
+        if (documentSnapshot.exists) {
+          console.log("THREAD OBJ DOC SNAP>>>>>>>>>>>>", documentSnapshot.data());
+          let threadData = documentSnapshot.data().
+          console.log('this is threadData', threadData)
+          setThreadObj(threadData);
+          
+        }
+      });
+
+     
+      
+   
+  };
+
+  getThreadObj()
+  console.log('this is currentUser??????????????', currentUser)
+
+  // const getReceiverObj = async () => {
+  //   console.log('this is receiverID', threadObj.receiverID)
+  //   await firebase
+  //     .firestore()
+  //     .collection("users")
+  //     .doc(threadObj.receiverID)
+  //     .get()
+  //     .then((documentSnapshot) => {
+  //       if (documentSnapshot.exists) {
+  //         console.log("ReceiverObj>>>>>>>>>>>>", documentSnapshot.data());
+  //         let receiverData = documentSnapshot.data().
+  //         console.log('this is receiverData', receiverData)
+  //         setThreadObj(receiverData);
+          
+  //       }
+  //     });
+
+     
+      
+   
+  // };
+  // getReceiverObj();
+
+
 
   // useEffect(() => {
   //   console.log('this is thread', { thread })
@@ -37,29 +90,31 @@ export default function RoomScreen({ route }) {
     // },
   ]);
 
-  const getThreads = async () => {
-    await firebase
-      .firestore()
-      .collection('THREADS')
-      .where('user1', '==', "19nD7SIhT6aXCBFohpWEtlyJuPp2")
-      .get()
-      .then((querySnapshot) => {
-        const data = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        console.log('Users with id 19nD7SIhT6aXCBFohpWEtlyJuPp2', data);
-      });
-  };
+  // const getThreads = async () => {
+  //   await firebase
+  //     .firestore()
+  //     .collection('THREADS')
+  //     .where('user1', '==', "19nD7SIhT6aXCBFohpWEtlyJuPp2")
+  //     .get()
+  //     .then((querySnapshot) => {
+  //       const data = querySnapshot.docs.map((doc) => ({
+  //         id: doc.id,
+  //         ...doc.data(),
+  //       }));
+  //       console.log('Users with id 19nD7SIhT6aXCBFohpWEtlyJuPp2', data);
+  //     });
+  // };
 
   // helper method that is sends a message
   async function handleSend(messages) {
+    
+    console.log('threadObj!!!!!!!>>>>>>>>>>>>>>>>>>>>>', threadObj)
     const text = messages[0].text;
 
     firebase
       .firestore()
       .collection("THREADS")
-      .doc(thread._id)
+      .doc(route.params.thread)
       .collection("MESSAGES")
       .add({
         text,
@@ -67,14 +122,19 @@ export default function RoomScreen({ route }) {
         user: {
           _id: currentUser.uid,
           email: currentUser.email,
+          // avatar: threadObj.receiverImage
+          
+         
         },
+       
       });
 
     await firebase
       .firestore()
       .collection("THREADS")
-      .doc(thread._id)
+      .doc(route.params.thread)
       .set(
+        
         {
           latestMessage: {
             text,
@@ -86,9 +146,11 @@ export default function RoomScreen({ route }) {
   }
 
   useEffect(() => {
+    
+   
     const messagesListener = firebase.firestore()
       .collection("THREADS")
-      .doc(thread._id)
+      .doc(route.params.thread)
       .collection("MESSAGES")
       .orderBy("createdAt", "desc")
       .onSnapshot((querySnapshot) => {
@@ -121,11 +183,12 @@ export default function RoomScreen({ route }) {
   return (
     <GiftedChat
     messages={messages}
+    isTyping={false}
     // Modify the following
     onSend={handleSend}
     user={{ _id: currentUser.uid }}
     // ...rest remains same
-      placeholder="Changed this message!!! Woohoo..."
+      placeholder= "Type you message here"
       showUserAvatar
       alwaysShowSend
       scrollToBottom
