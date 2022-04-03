@@ -21,7 +21,7 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import { AuthenticatedUserContext } from "../navigation/AuthenticatedUserProvider";
 import { useNavigation } from "@react-navigation/native";
-import { LinearGradient } from "expo-linear-gradient";
+import LottieView from "lottie-react-native";
 
 const Welcome = () => {
   const { colors } = useTheme();
@@ -207,11 +207,6 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: "bold",
     color: "#F25037",
-    shadowRadius: 10,
-    shadowColor: "#AF8EC9",
-    shadowOffset: { width: -1, height: -3 },
-    shadowRadius: 2,
-    shadowOpacity: 0.5,
   },
   commandButton: {
     padding: 15,
