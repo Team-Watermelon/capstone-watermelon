@@ -38,21 +38,25 @@ const UserCard = ({ item, onPress }) => {
       <View
         key={item.id}
         style={{
+          
           borderWidth: .5,
           borderColor: "#CDCDCD",
           margin: 10,
           borderRadius: 10,
             // shadowOpacity: 0.30,
             //   shadowRadius: 4.65,
-              elevation: 20,
+            //   elevation: 20,
         }}
       >
         <View
           style={{
             flexDirection: "row",
-            // shadowOpacity: 0.30,
-            // shadowRadius: 4.65,
-            // elevation: 8,
+            shadowOpacity: 0.10,
+            shadowRadius: 3,
+            elevation: 4,
+            shadowOffset: { width :3, height: 3},
+            backgroundColor:'white',
+            borderRadius: 10,
           }}
         >
           <TouchableOpacity onPress={onPress}>
