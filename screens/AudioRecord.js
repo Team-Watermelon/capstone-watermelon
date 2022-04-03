@@ -17,6 +17,7 @@ import { Alert } from "react-native";
 import { StatusWrapper } from "../styles/FeedStyle";
 import { Feather } from "@expo/vector-icons";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import LottieView from 'lottie-react-native';
 
 export default function AudioRecord({ navigation }) {
   const [recording, setRecording] = useState({});
@@ -25,6 +26,7 @@ export default function AudioRecord({ navigation }) {
   const [sound, setSound] = useState(null);
   const [isModalVisible, setModalVisible] = useState(true);
   const [uploading, setUploading] = useState(false);
+ const [isPlaying, setIsPlaying] = useState(false);
 
   async function startRecording() {
     try {
@@ -104,14 +106,24 @@ export default function AudioRecord({ navigation }) {
     }
   };
 
+  const playSound = () => {
+    if(sound){ 
+      sound.replayAsync();
+    } else {
+      Alert.alert("Ops,please record again :)")
+    }
+  }
+
+  // const pauseSound = () =>{
+  //   if(isPlaying){
+  //     setIsPlaying(false)
+  //     sound.unloadAsync();
+  //   } else {
+  //     setIsPlaying(true)
+  //   }
+  // }
   return (
-    <View
-      style={styles.container}
-      // contentContainerStyle={{
-      //   justifyContent: "center",
-      //   alignItems: "center",
-      // }}
-    >
+    <View style={styles.container}>
       <Modal
         visible={isModalVisible}
         animationType="slide"
@@ -125,6 +137,20 @@ export default function AudioRecord({ navigation }) {
           style={styles.image}
           source={require("../assets/coverhands.png")}
         >
+          <View
+            style={{
+              position: "absolute",
+              right: 30,
+              top: 60,
+              fontWeight: "bold",
+              color: "#6666",
+              // position: 'absolute', // add if dont work with above
+            }}
+          >
+            <Button title="X" onPress={() => navigation.navigate("Profile")}>
+              X
+            </Button>
+          </View>
           <View style={styles.modal}>
             <Text
               style={{
@@ -142,55 +168,42 @@ export default function AudioRecord({ navigation }) {
             </Text>
             <View
               style={{
-                position: "absolute",
-                right: 30,
-                top: 110,
-                fontWeight: "bold",
-                color:"#6666"
-                // position: 'absolute', // add if dont work with above
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
               }}
             >
-              <Button title="X" onPress={() => navigation.navigate("Profile")}>
-                X
-              </Button>
-            </View>
-            <View style={{flex:1}}>  
-            <Text style={{ marginBottom: 50, color: "#6666", fontSize: 20}}>
-              Tab to start recording
-            </Text>
-            <Feather
-              style={{ top: 420,position:"absolute" }}
-              //  style={styles.playButtonContainer}
-              name={
-                Object.keys(recording).length ?  "stop-circle" :"mic"
-              }
-              color="#AC9292"
-              size={20}
-              onPress={
-                Object.keys(recording).length ? stopRecording : startRecording
-              }
-            ></Feather>
-            </View>
-            <View style={{flex:1}}>  
-            {sound ? (
-              <Button
-                title="Listen to my story"
+              <Text style={{ marginBottom: 50, color: "#6666", fontSize: 20 }}>
+                Tab to start recording
+              </Text>
+              <View style={styles.playButtonContainer}>  
+              <Feather
+                name={Object.keys(recording).length ? "stop-circle" : "mic"}
                 color="#AC9292"
                 size={20}
-                onPress={() => sound.replayAsync()}
-                // style={{ top:600,position:"relative" }}
-              ></Button>
-            ) : null}
+                onPress={
+                  Object.keys(recording).length ? stopRecording : startRecording
+                }
+              ></Feather>
+              </View>
             </View>
-
-            {/* <Button
-          style={styles.button}
-          onPress={() => sound.replayAsync()}
-          title="Play"
-        ></Button> */}
+            <View style={{ flex: 1, elevation:10 }}>
+              {sound ? (
+                <Button
+                  title = "Play"
+                  color="#AC9292"
+                  size={20}
+                  onPress={playSound}
+                  // style={{ top:600,position:"relative" }}
+                ></Button>
+              ) : null}
+              {/* {isPlaying? (<LottieView source={require('../assets/15031-playing-status-animation.json')} autoPlay loop />):null} */}
+            {/* </View>
+            <View style={styles.commandButton}> */}
             {sound ? (
               <Button
                 title="Save"
+                color="#AC9292"
                 onPress={() => {
                   handleUpload();
                 }}
@@ -202,6 +215,7 @@ export default function AudioRecord({ navigation }) {
                 <ActivityIndicator size="large" color="#0000ff" />
               </StatusWrapper>
             ) : null}
+            </View>
           </View>
         </ImageBackground>
       </Modal>
@@ -228,7 +242,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 100,
+    //marginBottom: 100,
+    marginTop: 200,
   },
   button: {
     borderRadius: 20,
@@ -246,23 +261,34 @@ const styles = StyleSheet.create({
     // top: 0,
     // bottom: 0
   },
+  commandButton: {
+    padding: 5,
+    borderRadius: 10,
+    backgroundColor: "#AF8EC9",
+    alignItems: "center",
+    marginTop: 1,
+    justifyContent: "center",
+    width: 150,
+  },
   playButtonContainer: {
+   
+    backgroundColor: "#FFF",
     borderColor: "rgba(93, 63, 106, 0.2)",
-    borderWidth: 5,
+    borderWidth: 15,
     width: 70,
     height: 70,
     borderRadius: 50,
     alignItems: "center",
     justifyContent: "center",
     marginHorizontal: 32,
-    shadowColor: "#333",
+    shadowColor:"#5D3F6A",
     shadowOffset: {
       width: 0,
       height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5,
+    elevation: 10,
     // shadowColor: "#5D3F6A",
     // shadowRadius: 25,
     // shadowOpacity: 0.5,

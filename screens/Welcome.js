@@ -198,6 +198,7 @@ const styles = StyleSheet.create({
   },
   image: {
     justifyContent: "center",
+    alignItems:"center",
   },
   message: {
     alignItems: "center",
@@ -210,7 +211,7 @@ const styles = StyleSheet.create({
     shadowColor: "#AF8EC9",
     shadowOffset: { width: -1, height: -3 },
     shadowRadius: 2,
-    shadowOpacity: 0.4,
+    shadowOpacity: 0.5,
   },
   commandButton: {
     padding: 15,
@@ -219,6 +220,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 10,
     justifyContent: "center",
+    width: 150
   },
   panel: {
     padding: 20,
