@@ -1,7 +1,8 @@
-import React, { useState, useRef, useEffect } from "react";
-import { View, StyleSheet, Button, Text } from "react-native";
+import React, { useState, useRef } from "react";
+import { View, StyleSheet } from "react-native";
 import { Audio } from "expo-av";
 import { Feather } from "@expo/vector-icons";
+import LottieView from "lottie-react-native";
 
 export default function NewestAudio({ url }) {
   // Refs for the audio
@@ -14,10 +15,8 @@ export default function NewestAudio({ url }) {
     try {
       // Load the Recorded URI
       await AudioPlayer.current.loadAsync({ uri: url }, {}, true);
-
       // Get Player Status
       const playerStatus = await AudioPlayer.current.getStatusAsync();
-
       // Play if song is loaded successfully
       if (playerStatus.isLoaded) {
         if (playerStatus.isPlaying === false) {
@@ -41,18 +40,23 @@ export default function NewestAudio({ url }) {
   };
 
   return (
-    <View style={styles.playButtonContainer}>     
-    <Feather name={IsPLaying? "pause":"play"} 
-    color='#AC9292'
-    size={20}
-    onPress={IsPLaying ? StopPlaying : PlayRecordedAudio}
-    >
-  </Feather>
+    <View>
+    <View style={styles.playButtonContainer}>
+      <Feather
+        name={IsPLaying ? "pause" : "play"}
+        color="#AC9292"
+        size={20}
+        onPress={IsPLaying ? StopPlaying : PlayRecordedAudio}
+      ></Feather>
+      </View>
+      <View style={styles.status}>  
+    {IsPLaying ? (<LottieView source={require('../assets/playing-purple.json')} autoPlay loop />):null}
       {/* <Button
         title={IsPLaying ? "pause":"play"}
         color={IsPLaying ? "red" : "orange"}
         onPress={IsPLaying ? StopPlaying : PlayRecordedAudio}
       /> */}
+      </View>
     </View>
   );
 }
@@ -70,17 +74,22 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginHorizontal: 32,
     shadowColor: "#333",
-shadowOffset: {
-	width: 3,
-	height: 3,
-},
-shadowOpacity: 0.25,
-shadowRadius: 2,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
 
-elevation: 3
-    // shadowColor: "#5D3F6A",
-    // shadowRadius: 25,
-    // shadowOpacity: 0.5,
-    // elevation: 3,
   },
+  status :{
+    marginTop: 3,
+    width: 70,
+    height: 70,
+    alignItems: "center",
+    justifyContent: "center",
+    marginHorizontal: 32,
+    elevation: 5,
+  }
 });
