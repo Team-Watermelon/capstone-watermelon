@@ -159,7 +159,8 @@ const PersonalPage = ({ navigation, route }) => {
                    receiverID: userData.id,
                    senderID: user.uid,
                    receiverName: userData.firstName,
-                   senderName: loggedInUserData.firstName
+                   senderName: loggedInUserData.firstName,
+                  //  receiverImage: userData.userImage
                  }
                  )
                  .then(() => {

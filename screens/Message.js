@@ -8,31 +8,59 @@ export default function RoomScreen({ route }) {
   const { user } = useContext(AuthenticatedUserContext);
   const currentUser = user.toJSON();
   const { thread } = route.params;
-  // const [receiver, setReceiver] = useState(null);
+  const [threadObj, setThreadObj] = useState(null);
 
-  // const getReceiver = async () => {
-  //   console.log('this is ROUTEPARAMS================>', route.params)
+  
+
+  const getThreadObj = async () => {
+    console.log('this is ROUTEPARAMS================>', route.params)
+    await firebase
+      .firestore()
+      .collection("THREADS")
+      .doc(route.params.thread)
+      .get()
+      .then((documentSnapshot) => {
+        if (documentSnapshot.exists) {
+          console.log("THREAD OBJ DOC SNAP>>>>>>>>>>>>", documentSnapshot.data());
+          let threadData = documentSnapshot.data().
+          console.log('this is threadData', threadData)
+          setThreadObj(threadData);
+          
+        }
+      });
+
+     
+      
+   
+  };
+
+  getThreadObj()
+  console.log('this is currentUser??????????????', currentUser)
+
+  // const getReceiverObj = async () => {
+  //   console.log('this is receiverID', threadObj.receiverID)
   //   await firebase
   //     .firestore()
   //     .collection("users")
-  //     .doc(route.params.thread)
+  //     .doc(threadObj.receiverID)
   //     .get()
   //     .then((documentSnapshot) => {
   //       if (documentSnapshot.exists) {
-  //         console.log("User Data in Profile", documentSnapshot.data());
-  //         let receiverData = {};
-  //         receiverData.data = documentSnapshot.data()
-  //         receiverData.data.id = documentSnapshot.id;
+  //         console.log("ReceiverObj>>>>>>>>>>>>", documentSnapshot.data());
+  //         let receiverData = documentSnapshot.data().
   //         console.log('this is receiverData', receiverData)
-  //         setReceiver(receiverData.data);
+  //         setThreadObj(receiverData);
           
   //       }
   //     });
-  //     console.log('this is receiverDAta', receiverData)
+
      
       
    
   // };
+  // getReceiverObj();
+
+
 
   // useEffect(() => {
   //   console.log('this is thread', { thread })
@@ -79,8 +107,8 @@ export default function RoomScreen({ route }) {
 
   // helper method that is sends a message
   async function handleSend(messages) {
-  
-    // console.log('RECEEIVER!!!!!!!>>>>>>>>>>>>>>>>>>>>>', receiver)
+    
+    console.log('threadObj!!!!!!!>>>>>>>>>>>>>>>>>>>>>', threadObj)
     const text = messages[0].text;
 
     firebase
@@ -94,6 +122,9 @@ export default function RoomScreen({ route }) {
         user: {
           _id: currentUser.uid,
           email: currentUser.email,
+          // avatar: threadObj.receiverImage
+          
+         
         },
        
       });
@@ -115,7 +146,8 @@ export default function RoomScreen({ route }) {
   }
 
   useEffect(() => {
-    // getReceiver()
+    
+   
     const messagesListener = firebase.firestore()
       .collection("THREADS")
       .doc(route.params.thread)
@@ -151,11 +183,12 @@ export default function RoomScreen({ route }) {
   return (
     <GiftedChat
     messages={messages}
+    isTyping={false}
     // Modify the following
     onSend={handleSend}
     user={{ _id: currentUser.uid }}
     // ...rest remains same
-      placeholder="Changed this message!!! Woohooo..."
+      placeholder= "Type you message here"
       showUserAvatar
       alwaysShowSend
       scrollToBottom

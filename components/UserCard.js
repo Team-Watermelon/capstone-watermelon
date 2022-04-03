@@ -101,6 +101,7 @@ const UserCard = ({ item, onPress }) => {
                   senderID: user.uid,
                   receiverName: item.firstName,
                   // senderName: user.firstName
+                  // receiverImage: item.userImage
                 }
                 )
                 .then(() => {
