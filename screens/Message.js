@@ -39,7 +39,7 @@ export default function RoomScreen({ route }) {
     await firebase
       .firestore()
       .collection("THREADS")
-      .doc(route.params.thread)
+      .doc(`${route.params.receiver}_${route.params.sender}`)
       .get()
       .then((documentSnapshot) => {
         if (documentSnapshot.exists) {
