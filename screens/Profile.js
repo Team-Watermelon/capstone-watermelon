@@ -34,7 +34,7 @@ const PersonalPage = ({ navigation, route }) => {
 
 
   const getUser = async () => {
-    console.log('this is ROUTEPARAMS================>', route.params)
+    console.log("this is ROUTEPARAMS================>", route.params);
     await firebase
       .firestore()
       .collection("users")
@@ -86,7 +86,7 @@ const PersonalPage = ({ navigation, route }) => {
     navigation.addListener("focus", () => setLoading(!loading));
   }, [navigation, loading]);
 
-  return (
+  return userData ? (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
       <ScrollView
         style={styles.container}
@@ -98,14 +98,15 @@ const PersonalPage = ({ navigation, route }) => {
         showsVerticalScrollIndicator={false}
       >
         {/* <Text style={styles.userName}>{userData ? userData.firstName || 'Test' : 'Test'}</Text>
-        <Text style={styles.userLocation}>{userData ? userData.city || 'City' : 'City'}</Text> */}
+      <Text style={styles.userLocation}>{userData ? userData.city || 'City' : 'City'}</Text> */}
         <View>
-        <Text style={styles.userName}>
-          {userData ? userData.firstName || "Test" : "Test"}
-        <Text style={styles.pronouns}>
-        ({userData ? userData.pronouns  || "Pronouns " : "Pronouns "})
-        </Text></Text>
-          </View>
+          <Text style={styles.userName}>
+            {userData ? userData.firstName || "Test" : "Test"}
+            <Text style={styles.pronouns}>
+              ({userData ? userData.pronouns || "Pronouns " : "Pronouns "})
+            </Text>
+          </Text>
+        </View>
         <Text style={styles.userLocation}>
           {userData ? userData.city || "City" : "City"}
         </Text>
@@ -128,23 +129,23 @@ const PersonalPage = ({ navigation, route }) => {
           </TouchableOpacity>
         </View>
         {/* <TouchableOpacity style={styles.userBtn} onPress={() => {
-          //we need to check whether the two users (route.params.uid and user.uid) already have a chat
-          //YES: get the existing chat and direct to message room
-          //NO: create a new room
-          firebase.firestore()
-      .collection('THREADS')
-      .add({
-        id: userData.data.id,
-        users: [userData.data.id, user.uid],
-        name: userData.data.firstName
-      }
-      )
-      .then(() => {
-        navigation.navigate('Message', { thread: userData.data.id });
-      });
-        }}>
-                <Text style={styles.userBtnTxt}>Message</Text>
-              </TouchableOpacity> */}
+        //we need to check whether the two users (route.params.uid and user.uid) already have a chat
+        //YES: get the existing chat and direct to message room
+        //NO: create a new room
+        firebase.firestore()
+    .collection('THREADS')
+    .add({
+      id: userData.data.id,
+      users: [userData.data.id, user.uid],
+      name: userData.data.firstName
+    }
+    )
+    .then(() => {
+      navigation.navigate('Message', { thread: userData.data.id });
+    });
+      }}>
+              <Text style={styles.userBtnTxt}>Message</Text>
+            </TouchableOpacity> */}
         <View style={styles.userBtnWrapper}>
           {route.params ? (
             <>
@@ -155,27 +156,30 @@ const PersonalPage = ({ navigation, route }) => {
                 </Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.userBtn} onPress={() => {
-                
-                 firebase.firestore()
-                 .collection('THREADS')
-                 .doc(`${userData.id}_${user.uid}`)
-                 .set({
-                   id: `${userData.id}_${user.uid}`,
-                   //this is setting the thread id to the userid
-                   users: [userData.id, user.uid],
-                   receiverID: userData.id,
-                   senderID: user.uid,
-                   receiverName: userData.firstName,
-                   senderName: loggedInUserData.firstName,
-                  //  receiverImage: userData.userImage
-                 }
-                 )
-                 .then(() => {
-                   navigation.navigate('Message', { thread: `${userData.id}_${user.uid}` });
-                 });   
-                   }
-              }>
+              <TouchableOpacity
+                style={styles.userBtn}
+                onPress={() => {
+                  firebase
+                    .firestore()
+                    .collection("THREADS")
+                    .doc(`${userData.id}_${user.uid}`)
+                    .set({
+                      id: `${userData.id}_${user.uid}`,
+                      //this is setting the thread id to the userid
+                      users: [userData.id, user.uid],
+                      receiverID: userData.id,
+                      senderID: user.uid,
+                      receiverName: userData.firstName,
+                      senderName: loggedInUserData.firstName,
+                      //  receiverImage: userData.userImage
+                    })
+                    .then(() => {
+                      navigation.navigate("Message", {
+                        thread: `${userData.id}_${user.uid}`,
+                      });
+                    });
+                }}
+              >
                 <Text style={styles.userBtnTxt}>Message</Text>
               </TouchableOpacity>
             </>
@@ -204,9 +208,9 @@ const PersonalPage = ({ navigation, route }) => {
           </Text>
         </View>
         {/* <View style={styles.userInfoItem}>
-            <Text style={styles.userInfoTitle}>10</Text>
-            <Text style={styles.userInfoSubTitle}>Posts</Text>
-          </View> */}
+          <Text style={styles.userInfoTitle}>10</Text>
+          <Text style={styles.userInfoSubTitle}>Posts</Text>
+        </View> */}
         <View>
           <NewestAudioPlayer url={userData ? userData.audio : null} />
         </View>
@@ -217,7 +221,7 @@ const PersonalPage = ({ navigation, route }) => {
              </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
-  );
+  ) : null;
 };
 
 export default PersonalPage;
