@@ -92,7 +92,7 @@ const Welcome = () => {
         >
           <View style={styles.message}>
 
-            <Text style={styles.text}>Welcome to OpenArms! </Text>
+            <Text style={styles.text}>Welcome to Open! </Text>
             <Text
               style={{
                 marginTop: 20,
