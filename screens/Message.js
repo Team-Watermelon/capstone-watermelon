@@ -9,6 +9,28 @@ export default function RoomScreen({ route }) {
   const currentUser = user.toJSON();
   const { thread } = route.params;
   const [threadObj, setThreadObj] = useState(null);
+  const [userData, setUserData] = useState(null)
+
+  const getUser = async () => {
+    await firebase
+      .firestore()
+      .collection("users")
+      .doc(user.uid)
+      .get()
+      .then((documentSnapshot) => {
+        if (documentSnapshot.exists) {
+        console.log('exists')
+        console.log("User Data in Profile", documentSnapshot.data());
+          // let userFullData = {};
+          let userinfo = documentSnapshot.data();
+          userinfo.id = documentSnapshot.id;
+          console.log("this is userinfo", userinfo);
+          setUserData(userinfo);
+
+        }
+      });
+    console.log("this is loggedinuser", userData);
+  };
 
   
 
@@ -17,7 +39,7 @@ export default function RoomScreen({ route }) {
     await firebase
       .firestore()
       .collection("THREADS")
-      .doc(route.params.thread)
+      .doc(`${route.params.receiver}_${route.params.sender}`)
       .get()
       .then((documentSnapshot) => {
         if (documentSnapshot.exists) {
@@ -28,10 +50,6 @@ export default function RoomScreen({ route }) {
           
         }
       });
-
-     
-      
-   
   };
 
   getThreadObj()
@@ -114,7 +132,7 @@ export default function RoomScreen({ route }) {
     firebase
       .firestore()
       .collection("THREADS")
-      .doc(route.params.thread)
+      .doc(`${route.params.receiver}_${route.params.sender}`)
       .collection("MESSAGES")
       .add({
         text,
@@ -122,9 +140,8 @@ export default function RoomScreen({ route }) {
         user: {
           _id: currentUser.uid,
           email: currentUser.email,
-          // avatar: threadObj.receiverImage
-          
-         
+             avatar: currentUser.uid === route.params.receiverID ? route.params.receiverImage : route.params.senderImage 
+          // avatar: route.params.senderImage
         },
        
       });
@@ -146,7 +163,7 @@ export default function RoomScreen({ route }) {
   }
 
   useEffect(() => {
-    
+    getUser();
    
     const messagesListener = firebase.firestore()
       .collection("THREADS")

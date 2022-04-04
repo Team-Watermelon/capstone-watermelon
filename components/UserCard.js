@@ -10,10 +10,29 @@ import "firebase/firestore";
 import { AuthenticatedUserContext } from "../navigation/AuthenticatedUserProvider";
 import HomePageAudio from "./HomePageAudio";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { useNavigation } from "@react-navigation/native";
+
 
 const UserCard = ({ item, onPress }) => {
   const { user, logout } = useContext(AuthenticatedUserContext);
   const [userData, setUserData] = useState(null);
+  const [loggedInUserData, setloggedInUserData] = useState(null);
+  const navigation = useNavigation();
+
+  const categoryStyle = (category) => {
+    if(category === "IVF") {
+      return styles.userCategoryIVF
+    }
+    if(category === "Partner") {
+      return styles.userCategoryPartner
+    }
+    if(category === "Miscarriage") {
+      return styles.userCategoryMiscarriage
+    }
+    if(category === "Support") {
+      return styles.userCategorySupport
+    }
+  }
 
   const getUser = async () => {
     await firebase
@@ -29,11 +48,36 @@ const UserCard = ({ item, onPress }) => {
       });
   };
 
+  const getLoggedInUser = async () => {
+    await firebase
+      .firestore()
+      .collection("users")
+      .doc(user.uid)
+      .get()
+      .then((documentSnapshot) => {
+        if (documentSnapshot.exists) {
+          console.log("User Data in Profile", documentSnapshot.data());
+          console.log(
+            "Logged in User Data in Profile",
+            documentSnapshot.data()
+          );
+          // let userFullData = {};
+          let loggedInUserFullData = documentSnapshot.data();
+          console.log("this is LOGGED IN userFullData", loggedInUserFullData);
+          setloggedInUserData(loggedInUserFullData);
+        }
+      });
+    console.log("this is loggedin userFullData.name", loggedInUserFullData);
+  };
+
+
   useEffect(() => {
     getUser();
+    getLoggedInUser();
     console.log("this is user in homescreen", userData);
   }, []);
   console.log("this is user in homescreen", userData);
+  console.log("this is logged in user in home", loggedInUserData)
   return (
     <SafeAreaView>
       <View
@@ -69,8 +113,8 @@ const UserCard = ({ item, onPress }) => {
               }}
               // uri: 'https://i.pinimg.com/custom_covers/222x/85498161615209203_1636332751.jpg' }}
               style={{
-                height: 97,
-                width: 97,
+                height:117, 
+                width: 107,
                 borderBottomLeftRadius: 10,
                 borderTopLeftRadius: 10,
                 // borderRadius: 25
@@ -116,8 +160,8 @@ const UserCard = ({ item, onPress }) => {
                 />
               </Text>
               <View>
-                <TouchableOpacity style={styles.userCategoryIvf}>
-                  <Text style={styles.userCategoryBtnTxtIvf}>
+                <TouchableOpacity style={categoryStyle(item.category)}>
+                  <Text style={ styles.userCategoryBtnTxtIvf}>
                     {item ? item.category : null}
                   </Text>
                 </TouchableOpacity>
@@ -147,15 +191,34 @@ const UserCard = ({ item, onPress }) => {
                 // width: '85%',
               }}
             >
-              <Icon name="message" color="#AC9292" size={20} />
-              <Text
-                style={{
-                  color: "#AC9292",
-                  fontSize: 16,
-                }}
-              >
-                Connect with {item ? item.firstName || "Test" : "Test"}{" "}
-              </Text>
+              <Icon name="message" color='#AC9292' size={20}       onPress={() => {
+                  firebase
+                    .firestore()
+                    .collection("THREADS")
+                    .doc(`${item.id}_${user.uid}`)
+                    .set({
+                      id: `${item.id}_${user.uid}`,
+                      //this is setting the thread id to the userid
+                      users: [item.id, user.uid],
+                      receiverID: item.id,
+                      senderID: user.uid,
+                      receiverName: item.firstName,
+                      senderName: loggedInUserData.firstName,
+                      receiverImage: item.userImage,
+                      senderImage: loggedInUserData.userImage
+                    })
+                    .then(() => {
+                      navigation.navigate("Message", {
+                        thread: `${item.id}_${user.uid}`,
+                        receiver: item.firstName,
+                        receiverImage: item.userImage,
+                        sender: loggedInUserData.firstName,
+                        senderImage: loggedInUserData.userImage,
+                        receiverID: item.id
+
+                      });
+                    });
+                }} /> 
             </View>
           </View>
         </View>
@@ -178,15 +241,63 @@ const styles = StyleSheet.create({
     height: 60,
     marginVertical: 20,
   },
-  userCategoryIvf: {
+  userCategoryMiscarriage: {
     fontSize: 8,
     borderColor: "#E8A196",
     borderWidth: 0,
     borderRadius: 4,
     paddingVertical: 4,
-    paddingHorizontal: 14,
-    marginHorizontal: 14,
+    paddingHorizontal: 4,
+    
+    marginLeft: 16,
+    marginRight: 100,
     backgroundColor: "#E8A196",
+    marginVertical: 0,
+    // padding: 3,
+    // margin: 3,
+  },
+  userCategoryPartner: {
+    fontSize: 8,
+    borderColor: "#BDCFE9",
+    borderWidth: 0,
+    borderRadius: 4,
+    paddingVertical: 4,
+    paddingHorizontal: 4,
+    
+    marginLeft: 16,
+    marginRight: 100,
+    backgroundColor: "#BDCFE9",
+    marginVertical: 0,
+    // padding: 3,
+    // margin: 3,
+   
+  },
+  userCategoryIVF: {
+    fontSize: 8,
+    borderColor: "#AF8EC9",
+    borderWidth: 0,
+    borderRadius: 4,
+    paddingVertical: 4,
+    paddingHorizontal: 4,
+    
+    marginLeft: 16,
+    marginRight: 100,
+    backgroundColor: "#AF8EC9",
+    marginVertical: 0,
+    // padding: 3,
+    // margin: 3,
+  },
+  userCategorySupport: {
+    fontSize: 8,
+    borderColor: "#E39AD8",
+    borderWidth: 0,
+    borderRadius: 4,
+    paddingVertical: 4,
+    paddingHorizontal: 4,
+    
+    marginLeft: 16,
+    marginRight: 100,
+    backgroundColor: "#E39AD8",
     marginVertical: 0,
     // padding: 3,
     // margin: 3,
@@ -195,6 +306,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "bold",
     color: "#fff",
-    backgroundColor: "#E8A196",
+    // backgroundColor: "#E8A196",
   },
 });

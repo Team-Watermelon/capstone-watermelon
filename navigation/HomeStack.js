@@ -38,16 +38,14 @@ const MessagesStack = ({ navigation }) => (
     <Stack.Screen
       name="Message"
       component={Message}
-      options={{
-        headerTitle: "Messages",
-        headerBackTitleVisible: false,
-        headerTitleAlign: "center",
-        headerStyle: {
-          backgroundColor: "#fff",
-          shadowColor: "#fff",
-          elevation: 0,
-        },
-      }}
+      options={({ route }) => ({
+        title: route.params.receiver
+            })
+      
+    }
+      
+        
+    
     />
     <Stack.Screen
       name="Profile"
@@ -83,14 +81,9 @@ const ProfileStackScreen = ({ navigation }) => {
       <Stack.Screen
         name="Message"
         component={Message}
-        options={{
-          headerLeft: () => (
-            <Image
-              style={{ width: 80, height: 40, margin: 20 }}
-              source={require("../assets/logo.png")}
-            />
-          ),
-        }}
+        options={({ route }) => ({
+          title: route.params.thread.receiver
+        })}
       />
       <Stack.Screen name="AudioRecord" component={AudioRecord} 
       options={{
@@ -163,16 +156,9 @@ const HomeStackScreen = ({ navigation }) => {
     <Stack.Screen
       name="Message"
       component={Message}
-      options={{
-        headerTitle: "Messages",
-        headerBackTitleVisible: false,
-        headerTitleAlign: "center",
-        headerStyle: {
-          backgroundColor: "#fff",
-          shadowColor: "#fff",
-          elevation: 0,
-        },
-      }}
+      options={({ route }) => ({
+        title: route.params.receiver
+      })}
     />
 
   </Stack.Navigator>
