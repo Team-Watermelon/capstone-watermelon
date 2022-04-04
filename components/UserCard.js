@@ -117,7 +117,6 @@ const UserCard = ({ item, onPress }) => {
               <View>
           <TouchableOpacity style={styles.userCategoryIvf}>
             <Text style={styles.userCategoryBtnTxtIvf}>
-              {item.aboutMe ? item.aboutMe : ""}
             </Text>
           </TouchableOpacity>
         </View>
