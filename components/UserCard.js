@@ -10,10 +10,14 @@ import "firebase/firestore";
 import { AuthenticatedUserContext } from "../navigation/AuthenticatedUserProvider";
 import HomePageAudio from "./HomePageAudio";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { useNavigation } from "@react-navigation/native";
+
 
 const UserCard = ({ item, onPress }) => {
   const { user, logout } = useContext(AuthenticatedUserContext);
   const [userData, setUserData] = useState(null);
+  const [loggedInUserData, setloggedInUserData] = useState(null);
+  const navigation = useNavigation();
 
   const getUser = async () => {
     await firebase
@@ -29,11 +33,36 @@ const UserCard = ({ item, onPress }) => {
       });
   };
 
+  const getLoggedInUser = async () => {
+    await firebase
+      .firestore()
+      .collection("users")
+      .doc(user.uid)
+      .get()
+      .then((documentSnapshot) => {
+        if (documentSnapshot.exists) {
+          console.log("User Data in Profile", documentSnapshot.data());
+          console.log(
+            "Logged in User Data in Profile",
+            documentSnapshot.data()
+          );
+          // let userFullData = {};
+          let loggedInUserFullData = documentSnapshot.data();
+          console.log("this is LOGGED IN userFullData", loggedInUserFullData);
+          setloggedInUserData(loggedInUserFullData);
+        }
+      });
+    console.log("this is loggedin userFullData.name", loggedInUserFullData);
+  };
+
+
   useEffect(() => {
     getUser();
+    getLoggedInUser();
     console.log("this is user in homescreen", userData);
   }, []);
   console.log("this is user in homescreen", userData);
+  console.log("this is logged in user in home", loggedInUserData)
   return (
     <SafeAreaView>
       <View
@@ -147,15 +176,34 @@ const UserCard = ({ item, onPress }) => {
                 // width: '85%',
               }}
             >
-              <Icon name="message" color="#AC9292" size={20} />
-              <Text
-                style={{
-                  color: "#AC9292",
-                  fontSize: 16,
-                }}
-              >
-                Connect with {item ? item.firstName || "Test" : "Test"}{" "}
-              </Text>
+              <Icon name="message" color='#AC9292' size={20}       onPress={() => {
+                  firebase
+                    .firestore()
+                    .collection("THREADS")
+                    .doc(`${item.id}_${user.uid}`)
+                    .set({
+                      id: `${item.id}_${user.uid}`,
+                      //this is setting the thread id to the userid
+                      users: [item.id, user.uid],
+                      receiverID: item.id,
+                      senderID: user.uid,
+                      receiverName: item.firstName,
+                      senderName: loggedInUserData.firstName,
+                      receiverImage: item.userImage,
+                      senderImage: loggedInUserData.userImage
+                    })
+                    .then(() => {
+                      navigation.navigate("Message", {
+                        thread: `${item.id}_${user.uid}`,
+                        receiver: item.firstName,
+                        receiverImage: item.userImage,
+                        sender: loggedInUserData.firstName,
+                        senderImage: loggedInUserData.userImage,
+                        receiverID: item.id
+
+                      });
+                    });
+                }} /> 
             </View>
           </View>
         </View>
