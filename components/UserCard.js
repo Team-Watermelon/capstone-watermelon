@@ -19,6 +19,9 @@ const UserCard = ({ item, onPress }) => {
   const [loggedInUserData, setloggedInUserData] = useState(null);
   const navigation = useNavigation();
 
+  let docName = Math.floor(Math.random() * 1000000);
+let stringDocName = String(docName)
+
   const categoryStyle = (category) => {
     if(category === "IVF") {
       return styles.userCategoryIVF
@@ -195,7 +198,7 @@ const UserCard = ({ item, onPress }) => {
                   firebase
                     .firestore()
                     .collection("THREADS")
-                    .doc(`${item.id}_${user.uid}`)
+                    .doc()
                     .set({
                       id: `${item.id}_${user.uid}`,
                       //this is setting the thread id to the userid

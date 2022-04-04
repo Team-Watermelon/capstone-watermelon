@@ -94,6 +94,8 @@ const PersonalPage = ({ navigation, route }) => {
   useEffect(() => {
     getUser();
     getLoggedInUser();
+
+
     // console.log("THIS IS USERDATA___________________________", userData);
     // console.log(
     //   "THIS IS LOGGEDIN USERDATA==========================>>>>>>>>>>>>",
@@ -179,10 +181,10 @@ const PersonalPage = ({ navigation, route }) => {
                     .firestore()
                     .collection("THREADS")
                     // .doc(`${userData.id}_${user.uid}`? `${userData.id}_${user.uid}`: `${user.uid}_${userData.id}`)
-                    .doc(user.uid === userData.id ? `${userData.id}_${user.uid}` : `${user.id}_${userData.uid}`)
+                    .doc(stringDocName)
                     // .doc("test_test")
                     .set({
-                      id: `${userData.id}_${user.uid}`,
+                      id: stringDocName,
                       //this is setting the thread id to the userid
                       users: [userData.id, user.uid],
                       receiverID: userData.id,
@@ -194,7 +196,7 @@ const PersonalPage = ({ navigation, route }) => {
                     })
                     .then(() => {
                       navigation.navigate("Message", {
-                        thread: `${userData.id}_${user.uid}`,
+                        thread: stringDocName,
                         receiver: userData.firstName,
                         receiverImage: userData.userImage,
                         sender: loggedInUserData.firstName,
