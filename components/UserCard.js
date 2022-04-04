@@ -38,21 +38,25 @@ const UserCard = ({ item, onPress }) => {
       <View
         key={item.id}
         style={{
+          
           borderWidth: .5,
           borderColor: "#CDCDCD",
           margin: 10,
           borderRadius: 10,
             // shadowOpacity: 0.30,
             //   shadowRadius: 4.65,
-              elevation: 20,
+            //   elevation: 20,
         }}
       >
         <View
           style={{
             flexDirection: "row",
-            // shadowOpacity: 0.30,
-            // shadowRadius: 4.65,
-            // elevation: 8,
+            shadowOpacity: 0.10,
+            shadowRadius: 3,
+            elevation: 4,
+            shadowOffset: { width :3, height: 3},
+            backgroundColor:'white',
+            borderRadius: 10,
           }}
         >
           <TouchableOpacity onPress={onPress}>
@@ -95,7 +99,7 @@ const UserCard = ({ item, onPress }) => {
                 }}
               >
                 {item ? item.firstName || "Test" : "Test"}{" "} 
-                <Text style={{
+                {/* <Text style={{
                     fontSize: 14,
                     color: "#AC9292",
                 }} 
@@ -105,9 +109,10 @@ const UserCard = ({ item, onPress }) => {
                     <FontAwesome name="arrow-circle-o-right" style={{
                   size: 25, color: "#AC9292"
               }}/>
-              </Text>
               
-
+              */}
+              
+              </Text>
             </TouchableOpacity>
             {/* <Text
                       style={{

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
-import MapView, { PROVIDER_GOOGLE, Marker} from 'react-native-maps';
+// import MapView, { PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 export default
 class Map extends React.Component {
   render() {
