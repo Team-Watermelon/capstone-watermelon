@@ -39,7 +39,7 @@ export default function RoomScreen({ route }) {
     await firebase
       .firestore()
       .collection("THREADS")
-      .doc(`${route.params.receiver}_${route.params.sender}`)
+      .doc(`${route.params.receiverID}_${user.uid}`)
       .get()
       .then((documentSnapshot) => {
         if (documentSnapshot.exists) {
@@ -132,7 +132,7 @@ export default function RoomScreen({ route }) {
     firebase
       .firestore()
       .collection("THREADS")
-      .doc(`${route.params.receiver}_${route.params.sender}`)
+      .doc(`${route.params.receiverID}_${user.uid}`)
       .collection("MESSAGES")
       .add({
         text,
