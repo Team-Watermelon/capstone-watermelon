@@ -83,19 +83,21 @@ const auth = firebase.auth();
         .then((querySnapshot) => {
           console.log("Total Users: ", querySnapshot.size);
           querySnapshot.forEach((doc) => {
-            const { id, firstName, userImage, audio, aboutMe } = doc.data();
+            const { id, firstName, userImage, audio, aboutMe, category, pronouns } = doc.data();
             list.push({
               id: doc.id,
               firstName,
               userImage,
               audio,
               aboutMe,
+              category,
+              pronouns
             });
           });
         });
       setUsers(list);
       // console.log("list", list);
-      // console.log("Users: ", users);
+       console.log("Users: ", users);
     } catch (e) {
       console.log(e);
     }

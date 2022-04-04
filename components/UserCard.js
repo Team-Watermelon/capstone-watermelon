@@ -100,23 +100,22 @@ const UserCard = ({ item, onPress }) => {
                 }}
               >
                 {item ? item.firstName || "Test" : "Test"}{" "} 
-                {/* <Text style={{
+                <Text style={{
                     fontSize: 14,
                     color: "#AC9292",
                 }} 
                 >
-                    {item ? item.pronouns || "pronouns" : "pronouns"}{" "}
+                    {item ? item.pronouns : null}{" "}
                     </Text>
                     <FontAwesome name="arrow-circle-o-right" style={{
                   size: 25, color: "#AC9292"
               }}/>
               
-              */}
-              
               </Text>
               <View>
           <TouchableOpacity style={styles.userCategoryIvf}>
             <Text style={styles.userCategoryBtnTxtIvf}>
+            {item ? item.category  : null}
             </Text>
           </TouchableOpacity>
         </View>
