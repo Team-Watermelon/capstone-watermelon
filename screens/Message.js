@@ -141,7 +141,7 @@ export default function RoomScreen({ route }) {
           _id: currentUser.uid,
           email: currentUser.email,
              // avatar: currentUser.uid === route.params.receiverID ? route.params.receiverImage : route.params.senderImage 
-          avatar: route.params.receiverID 
+          avatar: route.params.senderImage
         },
        
       });
