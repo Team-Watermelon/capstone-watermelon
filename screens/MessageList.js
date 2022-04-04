@@ -124,14 +124,14 @@ export default function HomeScreen( {navigation}) {
           <TouchableOpacity
             onPress={() => navigation.navigate('Message', { 
               thread: item.id,
-                receiver: item.receiverName,
-                receiverImage: item.receiverImage,
-                sender: item.senderName,
-                // senderImage: loggedInUserData.userImage,
-                receiverID: item.receiverID})}
+              receiver: item.receiverName,
+              receiverImage: item.receiverImage,
+              sender: item.senderName,
+              senderImage: item.senderImage,
+              receiverID: item.receiverID})}
           >
             <List.Item
-              title={item.senderID === user.uid ? item.receiverName : "Katie"}
+              title={item.senderID === user.uid ? item.receiverName : item.sender}
               description={item.latestMessage.text}
               titleNumberOfLines={1}
               titleStyle={styles.listTitle}

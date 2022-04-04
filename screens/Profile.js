@@ -172,7 +172,8 @@ const PersonalPage = ({ navigation, route }) => {
                       senderID: user.uid,
                       receiverName: userData.firstName,
                       senderName: loggedInUserData.firstName,
-                      receiverImage: userData.userImage
+                      receiverImage: userData.userImage,
+                      senderImage: loggedInUserData.userImage
                     })
                     .then(() => {
                       navigation.navigate("Message", {
