@@ -39,14 +39,14 @@ export default function RoomScreen({ route }) {
     await firebase
       .firestore()
       .collection("THREADS")
-      .doc(`${route.params.receiver}_${route.params.sender}`)
+      .doc(route.params.receiverID ===user.uid ? `${route.params.senderID}_${user.uid}` : `${user.uid}_${route.params.receiverID}`)
       .get()
       .then((documentSnapshot) => {
         if (documentSnapshot.exists) {
           console.log("THREAD OBJ DOC SNAP>>>>>>>>>>>>", documentSnapshot.data());
           let threadData = documentSnapshot.data().
           console.log('this is threadData', threadData)
-          setThreadObj(threadData);
+          setThreadObj(threadData);``
           
         }
       });
@@ -132,7 +132,7 @@ export default function RoomScreen({ route }) {
     firebase
       .firestore()
       .collection("THREADS")
-      .doc(`${route.params.receiver}_${route.params.sender}`)
+      .doc(`${route.params.receiverID}_${user.uid}`)
       .collection("MESSAGES")
       .add({
         text,
