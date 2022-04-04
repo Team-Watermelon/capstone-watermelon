@@ -245,8 +245,17 @@ const EditProfileScreen = ({ navigation }) => {
         setItems={setItems}
       />
       {uploading ? (
-        <StatusWrapper>
-          <Text>Updating your profile!</Text>
+        <StatusWrapper
+        style={{
+          position: "absolute",
+          top: 300,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          justifyContent: "center",
+          alignItems: "center",
+        }}>
+          {/* <Text>Updating your profile!</Text> */}
           <ActivityIndicator size="large" color="#0000ff" />
         </StatusWrapper>
       ) : (
