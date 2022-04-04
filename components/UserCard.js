@@ -31,8 +31,9 @@ const UserCard = ({ item, onPress }) => {
 
   useEffect(() => {
     getUser();
+    console.log('this is user in homescreen', userData)
   }, []);
-
+  console.log('this is user in homescreen', userData)
   return (
     <SafeAreaView>
       <View
@@ -113,6 +114,13 @@ const UserCard = ({ item, onPress }) => {
               */}
               
               </Text>
+              <View>
+          <TouchableOpacity style={styles.userCategoryIvf}>
+            <Text style={styles.userCategoryBtnTxtIvf}>
+              {item.category}
+            </Text>
+          </TouchableOpacity>
+        </View>
             </TouchableOpacity>
             {/* <Text
                       style={{
@@ -175,5 +183,24 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     marginVertical: 20,
+  },
+  userCategoryIvf: {
+    fontSize: 8,
+    borderColor: "#E8A196",
+    borderWidth: 0,
+    borderRadius: 4,
+    paddingVertical: 4,
+    paddingHorizontal: 14,
+    marginHorizontal: 14,
+    backgroundColor: "#E8A196",
+    marginVertical:0
+    // padding: 3,
+    // margin: 3,
+  },
+  userCategoryBtnTxtIvf: {
+    fontSize:12,
+    fontWeight:"bold",
+    color: "#fff",
+    backgroundColor: "#E8A196",
   },
 });
