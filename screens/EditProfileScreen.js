@@ -7,18 +7,14 @@ import {
   TextInput,
   StyleSheet,
   Alert,
-  Button,
-  Image,
   Platform,
   ActivityIndicator,
 } from "react-native";
 import { useTheme } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import DropDown from "../components/DropDown";
 import { StatusWrapper } from "../styles/FeedStyle";
 import DropDownPicker from "react-native-dropdown-picker";
-// import Feather from 'react-native-vector-icons/Feather';
 import firebase from "firebase/app";
 import "firebase/firestore";
 import { AuthenticatedUserContext } from "../navigation/AuthenticatedUserProvider";
@@ -26,16 +22,14 @@ import * as ImagePicker from "expo-image-picker";
 import { saveProfileImage } from "../api/saveProfileImage";
 import { toDataURL } from "../helper/Base64";
 
-const EditProfileScreen = () => {
+const EditProfileScreen = ({ navigation }) => {
   const { colors } = useTheme();
   const { user } = useContext(AuthenticatedUserContext);
   const [imageURI, setImageURI] = useState(null);
   const [uploading, setUploading] = useState(false);
-  // const [transferred, setTransferred] = useState(0);
   const [userData, setUserData] = useState(null);
-  const [imageURL, setImageURL] = useState(null);
-   const [open, setOpen] = useState(false);
-   const [value, setValue] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
   const [items, setItems] = useState([
     { label: "IVF", value: "IVF" },
     { label: "Miscarriage", value: "Miscarriage" },
@@ -93,6 +87,7 @@ const EditProfileScreen = () => {
             "Profile Updated!",
             "Your profile has been updated successfully."
           );
+          navigation.navigate("Profile");
         });
     });
   };
@@ -110,14 +105,20 @@ const EditProfileScreen = () => {
         city: userData.city,
         userImage: userData.userImage,
         category: value,
+        pronouns: userData.pronouns
       })
       .then(() => {
+        
         console.log("User Updated!", userData.category);
       });
   };
 
   useEffect(() => {
     getUser();
+    return () => {
+      setUserData(null);
+      setImageURI(null);
+    };
   }, []);
 
   return (
@@ -187,6 +188,22 @@ const EditProfileScreen = () => {
         />
       </View>
       <View style={styles.action}>
+        <FontAwesome name="user-o" color={colors.text} size={20} />
+        <TextInput
+          placeholder="Pronouns"
+          placeholderTextColor="#666666"
+          autoCorrect={false}
+          value={userData ? userData.pronouns : ""}
+          onChangeText={(txt) => setUserData({ ...userData, pronouns: txt })}
+          style={[
+            styles.textInput,
+            {
+              color: colors.text,
+            },
+          ]}
+        />
+      </View>
+      <View style={styles.action}>
         <Icon name="map-marker-outline" color={colors.text} size={20} />
         <TextInput
           placeholder="City"
@@ -219,17 +236,26 @@ const EditProfileScreen = () => {
         />
       </View>
       <DropDownPicker
-      open={open}
-      value={value}
-      placeholder="What best describes your story?"
-      items={items}
-      setOpen={setOpen}
-      setValue={setValue}
-      setItems={setItems}
-    />
+        open={open}
+        value={value}
+        placeholder="What best describes your story?"
+        items={items}
+        setOpen={setOpen}
+        setValue={setValue}
+        setItems={setItems}
+      />
       {uploading ? (
-        <StatusWrapper>
-          <Text>Updating your profile!</Text>
+        <StatusWrapper
+        style={{
+          position: "absolute",
+          top: 300,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          justifyContent: "center",
+          alignItems: "center",
+        }}>
+          {/* <Text>Updating your profile!</Text> */}
           <ActivityIndicator size="large" color="#0000ff" />
         </StatusWrapper>
       ) : (

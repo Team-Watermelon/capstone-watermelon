@@ -1,4 +1,4 @@
-import React, {userEffect, useState} from "react";
+import React, { userEffect, useState } from "react";
 import { View, TouchableOpacity, Text, Image } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
@@ -13,6 +13,8 @@ import Map from "../screens/Map";
 import AudioRecord from "../screens/AudioRecord";
 import EditProfileScreen from "../screens/EditProfileScreen";
 import { LinearGradient } from "expo-linear-gradient";
+import Decide from "../screens/Decide"
+ import Welcome from "../screens/Welcome";
 // import AppIntro from "../screens/AppIntro";
 // import CheckLoad from "../screens/CheckLoad";
 
@@ -36,16 +38,14 @@ const MessagesStack = ({ navigation }) => (
     <Stack.Screen
       name="Message"
       component={Message}
-      options={{
-        headerTitle: "Messages",
-        headerBackTitleVisible: false,
-        headerTitleAlign: "center",
-        headerStyle: {
-          backgroundColor: "#fff",
-          shadowColor: "#fff",
-          elevation: 0,
-        },
-      }}
+      options={({ route }) => ({
+        title: route.params.receiver
+            })
+      
+    }
+      
+        
+    
     />
     <Stack.Screen
       name="Profile"
@@ -62,68 +62,73 @@ const MessagesStack = ({ navigation }) => (
   </Stack.Navigator>
 );
 
-const ProfileStackScreen = ({ navigation }) => (
-  <Stack.Navigator>
-    <Stack.Screen
-      name="Profile"
-      component={Profile}
-      options={{
-        headerLeft: () => (
-          <Image
-            style={{ width: 80, height: 40, margin: 20 }}
-            source={require("../assets/logo.png")}
-          />
-        ),
-      }}
-    />
-    <Stack.Screen
-      name="Message"
-      component={Message}
-      options={{
-        headerLeft: () => (
-          <Image
-            style={{ width: 80, height: 40, margin: 20 }}
-            source={require("../assets/logo.png")}
-          />
-        ),
-      }}
-    />
-
-    <Stack.Screen name="AudioRecord" component={AudioRecord} />
-    <Stack.Screen
-      name="EditProfile"
-      component={EditProfileScreen}
-      options={
-        {
+const ProfileStackScreen = ({ navigation }) => {
+  console.log('navigation in profile stack===========',navigation.getState())
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Profile"
+        component={Profile}
+        options={{
           headerLeft: () => (
             <Image
               style={{ width: 80, height: 40, margin: 20 }}
               source={require("../assets/logo.png")}
             />
           ),
-        }
-        // headerLeft: () => (
-        //   <Image
-        //     style={{ width: 80, height: 40, margin: 20 }}
-        //     source={require("../assets/logo.png")}
-        //   />
-        // ),
-      }
-    />
-  </Stack.Navigator>
-);
+        }}
+      />
+      <Stack.Screen
+        name="Message"
+        component={Message}
+        options={({ route }) => ({
+          title: route.params.thread.receiver
+        })}
+      />
+      <Stack.Screen name="AudioRecord" component={AudioRecord} 
+      options={{
+        headerLeft: () => (
+          <Image
+            style={{ width: 80, height: 40, margin: 20 }}
+            source={require("../assets/logo.png")}
+          />
+        ),
 
-const HomeStackScreen = ({ navigation }) => (
+      }}/>
+      <Stack.Screen
+        name="EditProfile"
+        component={EditProfileScreen}
+        options={
+          {
+            headerLeft: () => (
+              <Image
+                style={{ width: 80, height: 40, margin: 20 }}
+                source={require("../assets/logo.png")}
+              />
+            ),
+          }
+        }
+      />
+      <Stack.Screen
+        name="Welcome"
+        component={Welcome}
+        options={{
+          headerLeft: () => (
+            <Image
+              style={{ width: 80, height: 40, margin: 20 }}
+              source={require("../assets/logo.png")}
+            />
+          ),
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
+
+
+const HomeStackScreen = ({ navigation }) => {
+  return ( 
   <Stack.Navigator>
-       {/* <Stack.Screen
-      name="CheckLoad"
-      component={CheckLoad}
-    /> */}
-      {/* <Stack.Screen
-      name="Intro"
-      component={AppIntro}
-    /> */}
-        
     <Stack.Screen
       name="Home"
       component={HomeScreen}
@@ -151,20 +156,14 @@ const HomeStackScreen = ({ navigation }) => (
     <Stack.Screen
       name="Message"
       component={Message}
-      options={{
-        headerTitle: "Messages",
-        headerBackTitleVisible: false,
-        headerTitleAlign: "center",
-        headerStyle: {
-          backgroundColor: "#fff",
-          shadowColor: "#fff",
-          elevation: 0,
-        },
-      }}
+      options={({ route }) => ({
+        title: route.params.receiver
+      })}
     />
-   
+
   </Stack.Navigator>
-);
+  )
+};
 
 export default function HomeTabs() {
   return (

@@ -7,13 +7,15 @@ import {
   StyleSheet,
   ScrollView,
   SafeAreaView,
+  ActivityIndicator,
 } from "react-native";
-import { NewestAudioPlayer, RNActionButton } from "../components";
+import { NewestAudioPlayer } from "../components";
 import Icon from "react-native-vector-icons/Ionicons";
 import firebase from "firebase/app";
 import "firebase/firestore";
 // import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { AuthenticatedUserContext } from "../navigation/AuthenticatedUserProvider";
+import { StatusWrapper } from "../styles/FeedStyle";
 
 const PersonalPage = ({ navigation, route }) => {
   const { user } = useContext(AuthenticatedUserContext);
@@ -22,9 +24,33 @@ const PersonalPage = ({ navigation, route }) => {
   const [loggedInUserData, setloggedInUserData] = useState(null);
   let userFullData = {};
   let loggedInUserFullData = {};
+  const auth = firebase.auth();
+
+  const handleSignOut = async () => {
+    try {
+      await auth.signOut();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const categoryStyle = (category) => {
+    if(category === "IVF") {
+      return styles.userCategoryIVF
+    }
+    if(category === "Partner") {
+      return styles.userCategoryPartner
+    }
+    if(category === "Miscarriage") {
+      return styles.userCategoryMiscarriage
+    }
+    if(category === "Support") {
+      return styles.userCategorySupport
+    }
+  }
 
   const getUser = async () => {
-    console.log('this is ROUTEPARAMS================>', route.params)
+    console.log("this is ROUTEPARAMS================>", route.params);
     await firebase
       .firestore()
       .collection("users")
@@ -68,30 +94,35 @@ const PersonalPage = ({ navigation, route }) => {
   useEffect(() => {
     getUser();
     getLoggedInUser();
-    console.log("THIS IS USERDATA___________________________", userData);
-    console.log(
-      "THIS IS LOGGEDIN USERDATA==========================>>>>>>>>>>>>",
-      loggedInUserData
-    );
+    // console.log("THIS IS USERDATA___________________________", userData);
+    // console.log(
+    //   "THIS IS LOGGEDIN USERDATA==========================>>>>>>>>>>>>",
+    //   loggedInUserData
+    // );
     navigation.addListener("focus", () => setLoading(!loading));
   }, [navigation, loading]);
 
-  return (
+  return userData ? (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
       <ScrollView
         style={styles.container}
         contentContainerStyle={{
-          justifyContent: "center",
+          // justifyContent: "center",
           alignItems: "center",
-          paddingTop: 30,
+          paddingTop: 20,
         }}
         showsVerticalScrollIndicator={false}
       >
         {/* <Text style={styles.userName}>{userData ? userData.firstName || 'Test' : 'Test'}</Text>
-        <Text style={styles.userLocation}>{userData ? userData.city || 'City' : 'City'}</Text> */}
-        <Text style={styles.userName}>
-          {userData ? userData.firstName || "Test" : "Test"}
-        </Text>
+      <Text style={styles.userLocation}>{userData ? userData.city || 'City' : 'City'}</Text> */}
+        <View>
+          <Text style={styles.userName}>
+            {userData ? userData.firstName || "Test" : "Test"}
+            <Text style={styles.pronouns}>
+              ({userData ? userData.pronouns || "Pronouns " : "Pronouns "})
+            </Text>
+          </Text>
+        </View>
         <Text style={styles.userLocation}>
           {userData ? userData.city || "City" : "City"}
         </Text>
@@ -107,60 +138,72 @@ const PersonalPage = ({ navigation, route }) => {
 
         {/* <Icon name="map-marker-outline" color="#777777" size={15}/> */}
         <View>
-          <TouchableOpacity style={styles.userCategoryIvf}>
+          <TouchableOpacity style={categoryStyle(userData.category)}>
             <Text style={styles.userCategoryBtnTxtIvf}>
               {userData ? userData.category || "Category" : "Category"}
             </Text>
           </TouchableOpacity>
         </View>
         {/* <TouchableOpacity style={styles.userBtn} onPress={() => {
-          //we need to check whether the two users (route.params.uid and user.uid) already have a chat
-          //YES: get the existing chat and direct to message room
-          //NO: create a new room
-          firebase.firestore()
-      .collection('THREADS')
-      .add({
-        id: userData.data.id,
-        users: [userData.data.id, user.uid],
-        name: userData.data.firstName
-      }
-      )
-      .then(() => {
-        navigation.navigate('Message', { thread: userData.data.id });
-      });
-        }}>
-                <Text style={styles.userBtnTxt}>Message</Text>
-              </TouchableOpacity> */}
+        //we need to check whether the two users (route.params.uid and user.uid) already have a chat
+        //YES: get the existing chat and direct to message room
+        //NO: create a new room
+        firebase.firestore()
+    .collection('THREADS')
+    .add({
+      id: userData.data.id,
+      users: [userData.data.id, user.uid],
+      name: userData.data.firstName
+    }
+    )
+    .then(() => {
+      navigation.navigate('Message', { thread: userData.data.id });
+    });
+      }}>
+              <Text style={styles.userBtnTxt}>Message</Text>
+            </TouchableOpacity> */}
         <View style={styles.userBtnWrapper}>
           {route.params ? (
             <>
               <TouchableOpacity style={styles.userBtn} onPress={() => {}}>
                 <Text style={styles.userBtnTxt}>
-                  {userData ? userData.firstName || "Test" : "Test"}'s Story
+                  Follow
+                  {/* {userData ? userData.firstName || "Test" : "Test"}'s Story */}
                 </Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.userBtn} onPress={() => {
-                
-                 firebase.firestore()
-                 .collection('THREADS')
-                 .doc(`${userData.id}_${user.uid}`)
-                 .set({
-                   id: `${userData.id}_${user.uid}`,
-                   //this is setting the thread id to the userid
-                   users: [userData.id, user.uid],
-                   receiverID: userData.id,
-                   senderID: user.uid,
-                   receiverName: userData.firstName,
-                   senderName: loggedInUserData.firstName,
-                  //  receiverImage: userData.userImage
-                 }
-                 )
-                 .then(() => {
-                   navigation.navigate('Message', { thread: `${userData.id}_${user.uid}` });
-                 });   
-                   }
-              }>
+              <TouchableOpacity
+                style={styles.userBtn}
+                onPress={() => {
+                  firebase
+                    .firestore()
+                    .collection("THREADS")
+                    .doc(`${userData.id}_${user.uid}`)
+                    // .doc(user.uid === userData.id ? `${userData.id}_${user.uid}` : `${user.id}_${userData.uid}`)
+                    .set({
+                      id: `${userData.id}_${user.uid}`,
+                      //this is setting the thread id to the userid
+                      users: [userData.id, user.uid],
+                      receiverID: userData.id,
+                      senderID: user.uid,
+                      receiverName: userData.firstName,
+                      senderName: loggedInUserData.firstName,
+                      receiverImage: userData.userImage,
+                      senderImage: loggedInUserData.userImage
+                    })
+                    .then(() => {
+                      navigation.navigate("Message", {
+                        thread: `${userData.id}_${user.uid}`,
+                        receiver: userData.firstName,
+                        receiverImage: userData.userImage,
+                        sender: loggedInUserData.firstName,
+                        senderImage: loggedInUserData.userImage,
+                        receiverID: userData.id
+
+                      });
+                    });
+                }}
+              >
                 <Text style={styles.userBtnTxt}>Message</Text>
               </TouchableOpacity>
             </>
@@ -189,14 +232,36 @@ const PersonalPage = ({ navigation, route }) => {
           </Text>
         </View>
         {/* <View style={styles.userInfoItem}>
-            <Text style={styles.userInfoTitle}>10</Text>
-            <Text style={styles.userInfoSubTitle}>Posts</Text>
-          </View> */}
+          <Text style={styles.userInfoTitle}>10</Text>
+          <Text style={styles.userInfoSubTitle}>Posts</Text>
+        </View> */}
         <View>
           <NewestAudioPlayer url={userData ? userData.audio : null} />
         </View>
+        {userData && userData.id === user.uid ? (
+          <TouchableOpacity style={styles.logoutBtn} onPress={handleSignOut}>
+            <Text style={styles.userBtnTxt}>Logout</Text>
+          </TouchableOpacity>
+        ) : (
+          <View></View>
+        )}
       </ScrollView>
     </SafeAreaView>
+  ) : (
+    <StatusWrapper
+      style={{
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      {/* <Text>Updating your profile!</Text> */}
+      <ActivityIndicator size="large" color="#0000ff" />
+    </StatusWrapper>
   );
 };
 
@@ -218,9 +283,16 @@ const styles = StyleSheet.create({
   userName: {
     fontSize: 40,
     fontWeight: "bold",
+    marginTop: 5,
+    marginBottom: 0,
+    color: "#AF8EC9",
+  },
+  pronouns: {
+    fontSize: 16,
     marginTop: 10,
     marginBottom: 10,
     color: "#AF8EC9",
+    marginBottom: 20,
   },
   aboutMe: {
     fontSize: 14,
@@ -252,20 +324,77 @@ const styles = StyleSheet.create({
   userBtnTxt: {
     color: "#AF8EC9",
   },
-  userCategoryIvf: {
+  userCategoryMiscarriage: {
+    fontSize: 8,
     borderColor: "#E8A196",
+    borderWidth: 0,
+    borderRadius: 4,
+    paddingVertical: 4,
+    paddingHorizontal: 4,
+    marginTop: 10,
+   
+    backgroundColor: "#E8A196",
+    marginVertical: 0,
+    // padding: 3,
+    // margin: 3,
+  },
+  userCategoryPartner: {
+    fontSize: 8,
+    borderColor: "#BDCFE9",
+    borderWidth: 0,
+    borderRadius: 4,
+    paddingVertical: 4,
+    paddingHorizontal: 4,
+    marginTop: 10,
+    // marginLeft: 16,
+    // marginRight: 16,
+    backgroundColor: "#BDCFE9",
+    marginVertical: 0,
+    // padding: 3,
+    // margin: 3,
+   
+  },
+  userCategoryIVF: {
+    fontSize: 8,
+    borderColor: "#AF8EC9",
+    borderWidth: 0,
+    borderRadius: 4,
+    paddingVertical: 4,
+    paddingHorizontal: 4,
+    marginTop: 10,
+    
+    backgroundColor: "#AF8EC9",
+    marginVertical: 0,
+    // padding: 3,
+    // margin: 3,
+  },
+  userCategorySupport: {
+    borderColor: "#E39AD8",
     borderWidth: 2,
     borderRadius: 10,
     paddingVertical: 4,
     paddingHorizontal: 6,
     marginHorizontal: 15,
-    backgroundColor: "#E8A196",
+    backgroundColor: "#E39AD8",
     padding: 10,
     margin: 10,
+    marginTop: 10,
+    // fontSize: 8,
+    // borderColor: "#B7EAD8",
+    // borderWidth: 0,
+    // borderRadius: 4,
+    // paddingVertical: 4,
+    // paddingHorizontal: 4,
+    
+    
+    // backgroundColor: "#B7EAD8",
+    marginVertical: 0,
+    // padding: 3,
+    // margin: 3,
   },
   userCategoryBtnTxtIvf: {
     color: "#fff",
-    backgroundColor: "#E8A196",
+    // backgroundColor: "#E8A196",
   },
   userInfoItem: {
     justifyContent: "center",
@@ -280,5 +409,15 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#666",
     textAlign: "center",
+  },
+  logoutBtn: {
+    borderColor: "#AF8EC9",
+    borderWidth: 2,
+    borderRadius: 3,
+    paddingVertical: 4,
+    paddingHorizontal: 12,
+    marginHorizontal: 5,
+    marginTop: 0,
+    marginBottom: 34,
   },
 });
