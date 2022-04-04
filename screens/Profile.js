@@ -178,8 +178,9 @@ const PersonalPage = ({ navigation, route }) => {
                   firebase
                     .firestore()
                     .collection("THREADS")
-                    .doc(`${userData.id}_${user.uid}`? `${userData.id}_${user.uid}`: `${user.uid}_${userData.id}`)
-                    // .doc(user.uid === userData.id ? `${userData.id}_${user.uid}` : `${user.id}_${userData.uid}`)
+                    // .doc(`${userData.id}_${user.uid}`? `${userData.id}_${user.uid}`: `${user.uid}_${userData.id}`)
+                    .doc(user.uid === userData.id ? `${userData.id}_${user.uid}` : `${user.id}_${userData.uid}`)
+                    // .doc("test_test")
                     .set({
                       id: `${userData.id}_${user.uid}`,
                       //this is setting the thread id to the userid
