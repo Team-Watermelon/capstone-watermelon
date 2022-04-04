@@ -3,6 +3,7 @@ import { GiftedChat } from "react-native-gifted-chat";
 import { AuthenticatedUserContext } from "../navigation/AuthenticatedUserProvider";
 import "firebase/firestore";
 import firebase from "firebase/app";
+import { Bubble } from 'react-native-gifted-chat';
 
 export default function RoomScreen({ route }) {
   const { user } = useContext(AuthenticatedUserContext);
@@ -209,6 +210,18 @@ export default function RoomScreen({ route }) {
       showUserAvatar
       alwaysShowSend
       scrollToBottom
+      renderBubble={props => {
+        return (
+          <Bubble
+            {...props}
+            wrapperStyle={{
+              right: {
+                backgroundColor: "#AF8EC9",
+              },
+            }}
+          />
+        );
+      }}
     />
   );
 }

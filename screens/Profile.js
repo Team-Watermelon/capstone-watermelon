@@ -94,8 +94,7 @@ const PersonalPage = ({ navigation, route }) => {
   useEffect(() => {
     getUser();
     getLoggedInUser();
-
-
+    
     // console.log("THIS IS USERDATA___________________________", userData);
     // console.log(
     //   "THIS IS LOGGEDIN USERDATA==========================>>>>>>>>>>>>",
@@ -103,6 +102,10 @@ const PersonalPage = ({ navigation, route }) => {
     // );
     navigation.addListener("focus", () => setLoading(!loading));
   }, [navigation, loading]);
+
+let docName = Math.floor(Math.random() * 1000000);
+let stringDocName = String(docName)
+  
 
   return userData ? (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>

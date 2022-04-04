@@ -73,7 +73,6 @@ let stringDocName = String(docName)
     console.log("this is loggedin userFullData.name", loggedInUserFullData);
   };
 
-
   useEffect(() => {
     getUser();
     getLoggedInUser();
