@@ -178,7 +178,7 @@ const PersonalPage = ({ navigation, route }) => {
                   firebase
                     .firestore()
                     .collection("THREADS")
-                    .doc(`${userData.id}_${user.uid}`)
+                    .doc(`${userData.id}_${user.uid}`? `${userData.id}_${user.uid}`: `${user.uid}_${userData.id}`)
                     // .doc(user.uid === userData.id ? `${userData.id}_${user.uid}` : `${user.id}_${userData.uid}`)
                     .set({
                       id: `${userData.id}_${user.uid}`,
