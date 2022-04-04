@@ -69,8 +69,8 @@ const UserCard = ({ item, onPress }) => {
               }}
               // uri: 'https://i.pinimg.com/custom_covers/222x/85498161615209203_1636332751.jpg' }}
               style={{
-                height: 97,
-                width: 97,
+                height:117, 
+                width: 107,
                 borderBottomLeftRadius: 10,
                 borderTopLeftRadius: 10,
                 // borderRadius: 25
@@ -116,7 +116,7 @@ const UserCard = ({ item, onPress }) => {
                 />
               </Text>
               <View>
-                <TouchableOpacity style={styles.userCategoryIvf}>
+                <TouchableOpacity style={styles.userCategory}>
                   <Text style={styles.userCategoryBtnTxtIvf}>
                     {item ? item.category : null}
                   </Text>
@@ -178,14 +178,37 @@ const styles = StyleSheet.create({
     height: 60,
     marginVertical: 20,
   },
-  userCategoryIvf: {
+  userCategory: {
     fontSize: 8,
     borderColor: "#E8A196",
     borderWidth: 0,
     borderRadius: 4,
     paddingVertical: 4,
-    paddingHorizontal: 14,
-    marginHorizontal: 14,
+    paddingHorizontal: 4,
+    
+    marginLeft: 16,
+    marginRight: 100,
+    backgroundColor: "#E8A196",
+    marginVertical: 0,
+    // padding: 3,
+    // margin: 3,
+  },
+  userCategoryPartner: {
+    fontSize: 8,
+    borderColor: "#E8A196",
+    backgroundColor: "#FFF",
+   
+  },
+  userCategoryIVF: {
+    fontSize: 8,
+    borderColor: "#E8A196",
+    borderWidth: 0,
+    borderRadius: 4,
+    paddingVertical: 4,
+    paddingHorizontal: 4,
+    
+    marginLeft: 16,
+    marginRight: 100,
     backgroundColor: "#E8A196",
     marginVertical: 0,
     // padding: 3,

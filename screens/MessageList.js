@@ -122,7 +122,13 @@ export default function HomeScreen( {navigation}) {
         ItemSeparatorComponent={() => <Divider />}
         renderItem={({ item }) => (
           <TouchableOpacity
-            onPress={() => navigation.navigate('Message', { thread: item.id })}
+            onPress={() => navigation.navigate('Message', { 
+              thread: item.id,
+                receiver: item.receiverName,
+                receiverImage: item.receiverImage,
+                sender: item.senderName,
+                // senderImage: loggedInUserData.userImage,
+                receiverID: item.receiverID})}
           >
             <List.Item
               title={item.senderID === user.uid ? item.receiverName : "Katie"}
@@ -163,6 +169,8 @@ const styles = StyleSheet.create({
   },
   listTitle: {
     fontSize: 22,
+    color: '#AF8EC9', 
+    fontWeight: "bold"
   },
   listDescription: {
     fontSize: 16,

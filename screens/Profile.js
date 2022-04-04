@@ -172,11 +172,17 @@ const PersonalPage = ({ navigation, route }) => {
                       senderID: user.uid,
                       receiverName: userData.firstName,
                       senderName: loggedInUserData.firstName,
-                      //  receiverImage: userData.userImage
+                      receiverImage: userData.userImage
                     })
                     .then(() => {
                       navigation.navigate("Message", {
                         thread: `${userData.id}_${user.uid}`,
+                        receiver: userData.firstName,
+                        receiverImage: userData.userImage,
+                        sender: loggedInUserData.firstName,
+                        senderImage: loggedInUserData.userImage,
+                        receiverID: userData.id
+
                       });
                     });
                 }}
