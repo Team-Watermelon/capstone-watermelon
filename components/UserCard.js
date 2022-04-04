@@ -289,7 +289,7 @@ const styles = StyleSheet.create({
   },
   userCategorySupport: {
     fontSize: 8,
-    borderColor: "#B7EAD8",
+    borderColor: "#E39AD8",
     borderWidth: 0,
     borderRadius: 4,
     paddingVertical: 4,
@@ -297,7 +297,7 @@ const styles = StyleSheet.create({
     
     marginLeft: 16,
     marginRight: 100,
-    backgroundColor: "#B7EAD8",
+    backgroundColor: "#E39AD8",
     marginVertical: 0,
     // padding: 3,
     // margin: 3,
