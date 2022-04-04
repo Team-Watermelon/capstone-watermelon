@@ -210,9 +210,10 @@ const PersonalPage = ({ navigation, route }) => {
         <View>
           <NewestAudioPlayer url={userData ? userData.audio : null} />
         </View>
+        
         <TouchableOpacity style={styles.logoutBtn} onPress={handleSignOut}
              >
-               <Text style={styles.userBtnTxt}>Logout</Text>
+               <Text style={styles.userBtnTxt}>{userData && userData.id === user.uid ? "Logout" : ""}</Text>
              </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
