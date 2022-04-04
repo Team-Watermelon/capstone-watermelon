@@ -22,6 +22,16 @@ const PersonalPage = ({ navigation, route }) => {
   const [loggedInUserData, setloggedInUserData] = useState(null);
   let userFullData = {};
   let loggedInUserFullData = {};
+  const auth = firebase.auth();
+
+  const handleSignOut = async () => {
+    try {
+      await auth.signOut();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
 
   const getUser = async () => {
     console.log('this is ROUTEPARAMS================>', route.params)
@@ -200,6 +210,10 @@ const PersonalPage = ({ navigation, route }) => {
         <View>
           <NewestAudioPlayer url={userData ? userData.audio : null} />
         </View>
+        <TouchableOpacity style={styles.logoutBtn} onPress={handleSignOut}
+             >
+               <Text style={styles.userBtnTxt}>Logout</Text>
+             </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
@@ -213,6 +227,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     paddingTop: 50,
     paddingHorizontal: 12,
+
   },
   userImage: {
     height: 170,
@@ -292,5 +307,15 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#666",
     textAlign: "center",
+  },
+  logoutBtn: {
+    borderColor: "#AF8EC9",
+    borderWidth: 2,
+    borderRadius: 3,
+    paddingVertical: 4,
+    paddingHorizontal:12,
+    marginHorizontal: 5,
+    marginTop: 0,
+    marginBottom: 34
   },
 });
