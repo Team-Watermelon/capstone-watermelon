@@ -132,7 +132,7 @@ export default function RoomScreen({ route }) {
     firebase
       .firestore()
       .collection("THREADS")
-      .doc(route.params.thread)
+      .doc(`${route.params.receiver}_${route.params.sender}`)
       .collection("MESSAGES")
       .add({
         text,
