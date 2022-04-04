@@ -102,7 +102,7 @@ const Welcome = () => {
                 color: "#E8A196",
               }}
             >
-              We are here with you
+              Please complete your profile
             </Text>
           </View>
           <Text style={{ marginTop: 10, fontSize: 18, fontWeight: "bold" }}>
