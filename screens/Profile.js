@@ -34,6 +34,21 @@ const PersonalPage = ({ navigation, route }) => {
     }
   };
 
+  const categoryStyle = (category) => {
+    if(category === "IVF") {
+      return styles.userCategoryIVF
+    }
+    if(category === "Partner") {
+      return styles.userCategoryPartner
+    }
+    if(category === "Miscarriage") {
+      return styles.userCategoryMiscarriage
+    }
+    if(category === "Support") {
+      return styles.userCategorySupport
+    }
+  }
+
   const getUser = async () => {
     console.log("this is ROUTEPARAMS================>", route.params);
     await firebase
@@ -123,7 +138,7 @@ const PersonalPage = ({ navigation, route }) => {
 
         {/* <Icon name="map-marker-outline" color="#777777" size={15}/> */}
         <View>
-          <TouchableOpacity style={styles.userCategoryIvf}>
+          <TouchableOpacity style={categoryStyle(userData.category)}>
             <Text style={styles.userCategoryBtnTxtIvf}>
               {userData ? userData.category || "Category" : "Category"}
             </Text>
@@ -308,16 +323,66 @@ const styles = StyleSheet.create({
   userBtnTxt: {
     color: "#AF8EC9",
   },
-  userCategoryIvf: {
+  userCategoryMiscarriage: {
+    fontSize: 8,
     borderColor: "#E8A196",
-    borderWidth: 2,
-    borderRadius: 10,
+    borderWidth: 0,
+    borderRadius: 4,
     paddingVertical: 4,
-    paddingHorizontal: 6,
-    marginHorizontal: 15,
+    paddingHorizontal: 4,
+    
+    marginLeft: 16,
+    marginRight: 100,
     backgroundColor: "#E8A196",
-    padding: 10,
-    margin: 10,
+    marginVertical: 0,
+    // padding: 3,
+    // margin: 3,
+  },
+  userCategoryPartner: {
+    fontSize: 8,
+    borderColor: "#BDCFE9",
+    borderWidth: 0,
+    borderRadius: 4,
+    paddingVertical: 4,
+    paddingHorizontal: 4,
+    
+    marginLeft: 16,
+    marginRight: 100,
+    backgroundColor: "#BDCFE9",
+    marginVertical: 0,
+    // padding: 3,
+    // margin: 3,
+   
+  },
+  userCategoryIVF: {
+    fontSize: 8,
+    borderColor: "#AF8EC9",
+    borderWidth: 0,
+    borderRadius: 4,
+    paddingVertical: 4,
+    paddingHorizontal: 4,
+    
+    marginLeft: 16,
+    marginRight: 100,
+    backgroundColor: "#AF8EC9",
+    marginVertical: 0,
+    // padding: 3,
+    // margin: 3,
+  },
+  userCategorySupport: {
+    fontSize: 8,
+    borderColor: "#B7EAD8",
+    borderWidth: 0,
+    borderRadius: 4,
+    paddingVertical: 4,
+    paddingHorizontal: 4,
+    
+    marginLeft: 16,
+    marginRight: 100,
+    backgroundColor: "#B7EAD8",
+    marginVertical: 0,
+    // padding: 3,
+    // margin: 3,
   },
   userCategoryBtnTxtIvf: {
     color: "#fff",
