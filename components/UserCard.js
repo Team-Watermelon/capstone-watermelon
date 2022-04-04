@@ -31,32 +31,31 @@ const UserCard = ({ item, onPress }) => {
 
   useEffect(() => {
     getUser();
-    console.log('this is user in homescreen', userData)
+    console.log("this is user in homescreen", userData);
   }, []);
-  console.log('this is user in homescreen', userData)
+  console.log("this is user in homescreen", userData);
   return (
     <SafeAreaView>
       <View
         key={item.id}
         style={{
-          
-          borderWidth: .5,
+          borderWidth: 0.5,
           borderColor: "#CDCDCD",
           margin: 10,
           borderRadius: 10,
-            // shadowOpacity: 0.30,
-            //   shadowRadius: 4.65,
-            //   elevation: 20,
+          // shadowOpacity: 0.30,
+          //   shadowRadius: 4.65,
+          //   elevation: 20,
         }}
       >
         <View
           style={{
             flexDirection: "row",
-            shadowOpacity: 0.10,
+            shadowOpacity: 0.1,
             shadowRadius: 3,
             elevation: 4,
-            shadowOffset: { width :3, height: 3},
-            backgroundColor:'white',
+            shadowOffset: { width: 3, height: 3 },
+            backgroundColor: "white",
             borderRadius: 10,
           }}
         >
@@ -99,26 +98,30 @@ const UserCard = ({ item, onPress }) => {
                   paddingTop: 8,
                 }}
               >
-                {item ? item.firstName || "Test" : "Test"}{" "} 
-                <Text style={{
+                {item ? item.firstName || "Test" : "Test"}{" "}
+                <Text
+                  style={{
                     fontSize: 14,
                     color: "#AC9292",
-                }} 
+                  }}
                 >
-                    {item ? item.pronouns : null}{" "}
-                    </Text>
-                    <FontAwesome name="arrow-circle-o-right" style={{
-                  size: 25, color: "#AC9292"
-              }}/>
-              
+                  {item ? item.pronouns : null}{" "}
+                </Text>
+                <FontAwesome
+                  name="arrow-circle-o-right"
+                  style={{
+                    size: 25,
+                    color: "#AC9292",
+                  }}
+                />
               </Text>
               <View>
-          <TouchableOpacity style={styles.userCategoryIvf}>
-            <Text style={styles.userCategoryBtnTxtIvf}>
-            {item ? item.category  : null}
-            </Text>
-          </TouchableOpacity>
-        </View>
+                <TouchableOpacity style={styles.userCategoryIvf}>
+                  <Text style={styles.userCategoryBtnTxtIvf}>
+                    {item ? item.category : null}
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </TouchableOpacity>
             {/* <Text
                       style={{
@@ -132,15 +135,8 @@ const UserCard = ({ item, onPress }) => {
             {/* <Button mode={'outlined'}>Listen to their story</Button> */}
 
             {item.audio ? (
-            <TouchableOpacity>
-                <HomePageAudio url={item.audio} userName={item.firstName}/>
-            </TouchableOpacity>
-            ) : 
-            <Text>
-                                    
-            </Text>
-            }
-            
+              <HomePageAudio url={item.audio} userName={item.firstName} />
+            ) : null}
             <View
               style={{
                 marginTop: 4,
@@ -158,7 +154,7 @@ const UserCard = ({ item, onPress }) => {
                   fontSize: 16,
                 }}
               >
-                  Connect with {item ? item.firstName || "Test" : "Test"}{" "}
+                Connect with {item ? item.firstName || "Test" : "Test"}{" "}
               </Text>
             </View>
           </View>
@@ -191,13 +187,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     marginHorizontal: 14,
     backgroundColor: "#E8A196",
-    marginVertical:0,
+    marginVertical: 0,
     // padding: 3,
     // margin: 3,
   },
   userCategoryBtnTxtIvf: {
-    fontSize:12,
-    fontWeight:"bold",
+    fontSize: 12,
+    fontWeight: "bold",
     color: "#fff",
     backgroundColor: "#E8A196",
   },
