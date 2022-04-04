@@ -77,131 +77,131 @@ const PersonalPage = ({ navigation, route }) => {
   }, [navigation, loading]);
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={{
-          // justifyContent: "center",
-          alignItems: "center",
-          paddingTop: 20,
+    userData ? (    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={{
+        // justifyContent: "center",
+        alignItems: "center",
+        paddingTop: 20,
+      }}
+      showsVerticalScrollIndicator={false}
+    >
+      {/* <Text style={styles.userName}>{userData ? userData.firstName || 'Test' : 'Test'}</Text>
+      <Text style={styles.userLocation}>{userData ? userData.city || 'City' : 'City'}</Text> */}
+      <View>
+      <Text style={styles.userName}>
+        {userData ? userData.firstName || "Test" : "Test"}
+      <Text style={styles.pronouns}>
+      ({userData ? userData.pronouns  || "Pronouns " : "Pronouns "})
+      </Text></Text>
+        </View>
+      <Text style={styles.userLocation}>
+        {userData ? userData.city || "City" : "City"}
+      </Text>
+      <Image
+        style={styles.userImage}
+        source={{
+          uri: userData
+            ? userData.userImage ||
+              "https://i.pinimg.com/custom_covers/222x/85498161615209203_1636332751.jpg"
+            : "https://i.pinimg.com/custom_covers/222x/85498161615209203_1636332751.jpg",
         }}
-        showsVerticalScrollIndicator={false}
-      >
-        {/* <Text style={styles.userName}>{userData ? userData.firstName || 'Test' : 'Test'}</Text>
-        <Text style={styles.userLocation}>{userData ? userData.city || 'City' : 'City'}</Text> */}
-        <View>
-        <Text style={styles.userName}>
-          {userData ? userData.firstName || "Test" : "Test"}
-        <Text style={styles.pronouns}>
-        ({userData ? userData.pronouns  || "Pronouns " : "Pronouns "})
-        </Text></Text>
-          </View>
-        <Text style={styles.userLocation}>
-          {userData ? userData.city || "City" : "City"}
-        </Text>
-        <Image
-          style={styles.userImage}
-          source={{
-            uri: userData
-              ? userData.userImage ||
-                "https://i.pinimg.com/custom_covers/222x/85498161615209203_1636332751.jpg"
-              : "https://i.pinimg.com/custom_covers/222x/85498161615209203_1636332751.jpg",
-          }}
-        />
+      />
 
-        {/* <Icon name="map-marker-outline" color="#777777" size={15}/> */}
-        <View>
-          <TouchableOpacity style={styles.userCategoryIvf}>
-            <Text style={styles.userCategoryBtnTxtIvf}>
-              {userData ? userData.category || "Category" : "Category"}
-            </Text>
-          </TouchableOpacity>
-        </View>
-        {/* <TouchableOpacity style={styles.userBtn} onPress={() => {
-          //we need to check whether the two users (route.params.uid and user.uid) already have a chat
-          //YES: get the existing chat and direct to message room
-          //NO: create a new room
-          firebase.firestore()
-      .collection('THREADS')
-      .add({
-        id: userData.data.id,
-        users: [userData.data.id, user.uid],
-        name: userData.data.firstName
-      }
-      )
-      .then(() => {
-        navigation.navigate('Message', { thread: userData.data.id });
-      });
-        }}>
-                <Text style={styles.userBtnTxt}>Message</Text>
-              </TouchableOpacity> */}
-        <View style={styles.userBtnWrapper}>
-          {route.params ? (
-            <>
-              <TouchableOpacity style={styles.userBtn} onPress={() => {}}>
-                <Text style={styles.userBtnTxt}>
-                  Follow
-                  {/* {userData ? userData.firstName || "Test" : "Test"}'s Story */}
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity style={styles.userBtn} onPress={() => {
-                
-                 firebase.firestore()
-                 .collection('THREADS')
-                 .doc(`${userData.id}_${user.uid}`)
-                 .set({
-                   id: `${userData.id}_${user.uid}`,
-                   //this is setting the thread id to the userid
-                   users: [userData.id, user.uid],
-                   receiverID: userData.id,
-                   senderID: user.uid,
-                   receiverName: userData.firstName,
-                   senderName: loggedInUserData.firstName,
-                  //  receiverImage: userData.userImage
-                 }
-                 )
-                 .then(() => {
-                   navigation.navigate('Message', { thread: `${userData.id}_${user.uid}` });
-                 });   
-                   }
-              }>
-                <Text style={styles.userBtnTxt}>Message</Text>
-              </TouchableOpacity>
-            </>
-          ) : (
-            <>
-              <TouchableOpacity
-                style={styles.userBtn}
-                onPress={() => {
-                  navigation.navigate("EditProfile");
-                }}
-              >
-                <Text style={styles.userBtnTxt}>Edit Profile</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.userBtn}
-                onPress={() => navigation.navigate("AudioRecord")}
-              >
-                <Text style={styles.userBtnTxt}>Record Story</Text>
-              </TouchableOpacity>
-            </>
-          )}
-        </View>
-        <View>
-          <Text style={styles.aboutMe}>
-            {userData ? userData.aboutMe || "About Me" : "About Me"}
+      {/* <Icon name="map-marker-outline" color="#777777" size={15}/> */}
+      <View>
+        <TouchableOpacity style={styles.userCategoryIvf}>
+          <Text style={styles.userCategoryBtnTxtIvf}>
+            {userData ? userData.category || "Category" : "Category"}
           </Text>
-        </View>
-        {/* <View style={styles.userInfoItem}>
-            <Text style={styles.userInfoTitle}>10</Text>
-            <Text style={styles.userInfoSubTitle}>Posts</Text>
-          </View> */}
-        <View>
-          <NewestAudioPlayer url={userData ? userData.audio : null} />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+        </TouchableOpacity>
+      </View>
+      {/* <TouchableOpacity style={styles.userBtn} onPress={() => {
+        //we need to check whether the two users (route.params.uid and user.uid) already have a chat
+        //YES: get the existing chat and direct to message room
+        //NO: create a new room
+        firebase.firestore()
+    .collection('THREADS')
+    .add({
+      id: userData.data.id,
+      users: [userData.data.id, user.uid],
+      name: userData.data.firstName
+    }
+    )
+    .then(() => {
+      navigation.navigate('Message', { thread: userData.data.id });
+    });
+      }}>
+              <Text style={styles.userBtnTxt}>Message</Text>
+            </TouchableOpacity> */}
+      <View style={styles.userBtnWrapper}>
+        {route.params ? (
+          <>
+            <TouchableOpacity style={styles.userBtn} onPress={() => {}}>
+              <Text style={styles.userBtnTxt}>
+                Follow
+                {/* {userData ? userData.firstName || "Test" : "Test"}'s Story */}
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.userBtn} onPress={() => {
+              
+               firebase.firestore()
+               .collection('THREADS')
+               .doc(`${userData.id}_${user.uid}`)
+               .set({
+                 id: `${userData.id}_${user.uid}`,
+                 //this is setting the thread id to the userid
+                 users: [userData.id, user.uid],
+                 receiverID: userData.id,
+                 senderID: user.uid,
+                 receiverName: userData.firstName,
+                 senderName: loggedInUserData.firstName,
+                //  receiverImage: userData.userImage
+               }
+               )
+               .then(() => {
+                 navigation.navigate('Message', { thread: `${userData.id}_${user.uid}` });
+               });   
+                 }
+            }>
+              <Text style={styles.userBtnTxt}>Message</Text>
+            </TouchableOpacity>
+          </>
+        ) : (
+          <>
+            <TouchableOpacity
+              style={styles.userBtn}
+              onPress={() => {
+                navigation.navigate("EditProfile");
+              }}
+            >
+              <Text style={styles.userBtnTxt}>Edit Profile</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.userBtn}
+              onPress={() => navigation.navigate("AudioRecord")}
+            >
+              <Text style={styles.userBtnTxt}>Record Story</Text>
+            </TouchableOpacity>
+          </>
+        )}
+      </View>
+      <View>
+        <Text style={styles.aboutMe}>
+          {userData ? userData.aboutMe || "About Me" : "About Me"}
+        </Text>
+      </View>
+      {/* <View style={styles.userInfoItem}>
+          <Text style={styles.userInfoTitle}>10</Text>
+          <Text style={styles.userInfoSubTitle}>Posts</Text>
+        </View> */}
+      <View>
+        <NewestAudioPlayer url={userData ? userData.audio : null} />
+      </View>
+    </ScrollView>
+  </SafeAreaView>):null
   );
 };
 
