@@ -7,6 +7,7 @@ import {
   StyleSheet,
   ScrollView,
   SafeAreaView,
+  ActivityIndicator,
 } from "react-native";
 import { NewestAudioPlayer } from "../components";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -14,6 +15,7 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 // import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { AuthenticatedUserContext } from "../navigation/AuthenticatedUserProvider";
+import { StatusWrapper } from "../styles/FeedStyle";
 
 const PersonalPage = ({ navigation, route }) => {
   const { user } = useContext(AuthenticatedUserContext);
@@ -31,7 +33,6 @@ const PersonalPage = ({ navigation, route }) => {
       console.log(error);
     }
   };
-
 
   const getUser = async () => {
     console.log("this is ROUTEPARAMS================>", route.params);
@@ -213,13 +214,32 @@ const PersonalPage = ({ navigation, route }) => {
         </View> */}
         <View>
           <NewestAudioPlayer url={userData ? userData.audio : null} />
-        </View>{userData && userData.id === user.uid ? ( <TouchableOpacity style={styles.logoutBtn} onPress={handleSignOut}
-             >
-               <Text style={styles.userBtnTxt}>Logout</Text>
-             </TouchableOpacity>) : <View></View>}
+        </View>
+        {userData && userData.id === user.uid ? (
+          <TouchableOpacity style={styles.logoutBtn} onPress={handleSignOut}>
+            <Text style={styles.userBtnTxt}>Logout</Text>
+          </TouchableOpacity>
+        ) : (
+          <View></View>
+        )}
       </ScrollView>
     </SafeAreaView>
-  ) : null;
+  ) : (
+    <StatusWrapper
+      style={{
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      {/* <Text>Updating your profile!</Text> */}
+      <ActivityIndicator size="large" color="#0000ff" />
+    </StatusWrapper>
+  );
 };
 
 export default PersonalPage;
@@ -230,7 +250,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     paddingTop: 50,
     paddingHorizontal: 12,
-
   },
   userImage: {
     height: 170,
@@ -316,9 +335,9 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 3,
     paddingVertical: 4,
-    paddingHorizontal:12,
+    paddingHorizontal: 12,
     marginHorizontal: 5,
     marginTop: 0,
-    marginBottom: 34
+    marginBottom: 34,
   },
 });
