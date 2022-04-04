@@ -133,7 +133,7 @@ const UserCard = ({ item, onPress }) => {
 
             {item.audio ? (
             <TouchableOpacity>
-                <HomePageAudio url={item.audio} />
+                <HomePageAudio url={item.audio} userName={item.firstName}/>
             </TouchableOpacity>
             ) : 
             <Text>
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     marginHorizontal: 14,
     backgroundColor: "#E8A196",
-    marginVertical:0
+    marginVertical:0,
     // padding: 3,
     // margin: 3,
   },

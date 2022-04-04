@@ -82,7 +82,8 @@ import { View, StyleSheet, Button, Text } from "react-native";
 import { Audio } from "expo-av";
 import { Feather } from "@expo/vector-icons";
 
-export default function NewestAudio({ url }) {
+export default function NewestAudio({ url, userName}) {
+
   // Refs for the audio
   const AudioPlayer = useRef(new Audio.Sound());
 
@@ -143,8 +144,7 @@ export default function NewestAudio({ url }) {
           // marginLeft: 16,
         }}
       >
-        Listen to Their Story
-        {/* {item ? item.firstName || "Test" : "Test"} */}
+        Listen to {userName ? userName : null}'s story 
       </Text>
     </View>
   );
