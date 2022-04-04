@@ -186,7 +186,7 @@ export default function AudioRecord({ navigation }) {
               }}
             >
               <Text style={{ marginBottom: 50, color: "#6666", fontSize: 20 }}>
-                Tab to start recording
+                Tap to start recording
               </Text>
 
               <View style={styles.playButtonContainer}>
