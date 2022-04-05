@@ -34,21 +34,6 @@ const PersonalPage = ({ navigation, route }) => {
     }
   };
 
-  const categoryStyle = (category) => {
-    if(category === "IVF") {
-      return styles.userCategoryIVF
-    }
-    if(category === "Partner") {
-      return styles.userCategoryPartner
-    }
-    if(category === "Miscarriage") {
-      return styles.userCategoryMiscarriage
-    }
-    if(category === "Support") {
-      return styles.userCategorySupport
-    }
-  }
-
   const getUser = async () => {
     console.log("this is ROUTEPARAMS================>", route.params);
     await firebase
@@ -138,7 +123,7 @@ const PersonalPage = ({ navigation, route }) => {
 
         {/* <Icon name="map-marker-outline" color="#777777" size={15}/> */}
         <View>
-          <TouchableOpacity style={categoryStyle(userData.category)}>
+          <TouchableOpacity style={styles.userCategoryIvf}>
             <Text style={styles.userCategoryBtnTxtIvf}>
               {userData ? userData.category || "Category" : "Category"}
             </Text>
@@ -179,7 +164,6 @@ const PersonalPage = ({ navigation, route }) => {
                     .firestore()
                     .collection("THREADS")
                     .doc(`${userData.id}_${user.uid}`)
-                    // .doc(user.uid === userData.id ? `${userData.id}_${user.uid}` : `${user.id}_${userData.uid}`)
                     .set({
                       id: `${userData.id}_${user.uid}`,
                       //this is setting the thread id to the userid
@@ -189,7 +173,8 @@ const PersonalPage = ({ navigation, route }) => {
                       receiverName: userData.firstName,
                       senderName: loggedInUserData.firstName,
                       receiverImage: userData.userImage,
-                      senderImage: loggedInUserData.userImage
+                      senderImage: loggedInUserData.userImage,
+                      
                     })
                     .then(() => {
                       navigation.navigate("Message", {
@@ -199,10 +184,11 @@ const PersonalPage = ({ navigation, route }) => {
                         sender: loggedInUserData.firstName,
                         senderImage: loggedInUserData.userImage,
                         receiverID: userData.id
-
                       });
                     });
+                    console.log('this is userImage', loggedInUserData.userImage)
                 }}
+                
               >
                 <Text style={styles.userBtnTxt}>Message</Text>
               </TouchableOpacity>
@@ -324,77 +310,20 @@ const styles = StyleSheet.create({
   userBtnTxt: {
     color: "#AF8EC9",
   },
-  userCategoryMiscarriage: {
-    fontSize: 8,
+  userCategoryIvf: {
     borderColor: "#E8A196",
-    borderWidth: 0,
-    borderRadius: 4,
-    paddingVertical: 4,
-    paddingHorizontal: 4,
-    marginTop: 10,
-   
-    backgroundColor: "#E8A196",
-    marginVertical: 0,
-    // padding: 3,
-    // margin: 3,
-  },
-  userCategoryPartner: {
-    fontSize: 8,
-    borderColor: "#BDCFE9",
-    borderWidth: 0,
-    borderRadius: 4,
-    paddingVertical: 4,
-    paddingHorizontal: 4,
-    marginTop: 10,
-    // marginLeft: 16,
-    // marginRight: 16,
-    backgroundColor: "#BDCFE9",
-    marginVertical: 0,
-    // padding: 3,
-    // margin: 3,
-   
-  },
-  userCategoryIVF: {
-    fontSize: 8,
-    borderColor: "#AF8EC9",
-    borderWidth: 0,
-    borderRadius: 4,
-    paddingVertical: 4,
-    paddingHorizontal: 4,
-    marginTop: 10,
-    
-    backgroundColor: "#AF8EC9",
-    marginVertical: 0,
-    // padding: 3,
-    // margin: 3,
-  },
-  userCategorySupport: {
-    borderColor: "#E39AD8",
     borderWidth: 2,
     borderRadius: 10,
     paddingVertical: 4,
     paddingHorizontal: 6,
     marginHorizontal: 15,
-    backgroundColor: "#E39AD8",
+    backgroundColor: "#E8A196",
     padding: 10,
     margin: 10,
-    marginTop: 10,
-    // fontSize: 8,
-    // borderColor: "#B7EAD8",
-    // borderWidth: 0,
-    // borderRadius: 4,
-    // paddingVertical: 4,
-    // paddingHorizontal: 4,
-    
-    
-    // backgroundColor: "#B7EAD8",
-    marginVertical: 0,
-    // padding: 3,
-    // margin: 3,
   },
   userCategoryBtnTxtIvf: {
     color: "#fff",
-    // backgroundColor: "#E8A196",
+    backgroundColor: "#E8A196",
   },
   userInfoItem: {
     justifyContent: "center",

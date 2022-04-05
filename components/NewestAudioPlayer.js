@@ -15,7 +15,7 @@ export default function NewestAudio({ url }) {
     try {
       // Load the Recorded URI
       await AudioPlayer.current.loadAsync({ uri: url }, {}, true);
-      // Get Player Status
+      // Get Player Status``
       const playerStatus = await AudioPlayer.current.getStatusAsync();
       // Play if song is loaded successfully
       if (playerStatus.isLoaded) {

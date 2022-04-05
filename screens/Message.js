@@ -3,6 +3,7 @@ import { GiftedChat } from "react-native-gifted-chat";
 import { AuthenticatedUserContext } from "../navigation/AuthenticatedUserProvider";
 import "firebase/firestore";
 import firebase from "firebase/app";
+import { Bubble } from 'react-native-gifted-chat';
 
 export default function RoomScreen({ route }) {
   const { user } = useContext(AuthenticatedUserContext);
@@ -132,7 +133,8 @@ export default function RoomScreen({ route }) {
     firebase
       .firestore()
       .collection("THREADS")
-      .doc(`${route.params.receiverID}_${user.uid}`)
+<
+      .doc(route.params.thread)
       .collection("MESSAGES")
       .add({
         text,
@@ -140,7 +142,8 @@ export default function RoomScreen({ route }) {
         user: {
           _id: currentUser.uid,
           email: currentUser.email,
-             avatar: currentUser.uid === route.params.receiverID ? route.params.receiverImage : route.params.senderImage 
+          //if the user sednding the message is the receiver, add the receivers photo. Otherwise, add the senders photo
+          avatar: currentUser.uid === route.params.receiverID  && route.params.receiverID !== undefined? route.params.receiverImage || "https://www.kindpng.com/picc/m/137-1370524_female-avatar-female-avatar-free-png-transparent-png.png" : route.params.senderImage || null
           // avatar: route.params.senderImage
         },
        
@@ -209,6 +212,21 @@ export default function RoomScreen({ route }) {
       showUserAvatar
       alwaysShowSend
       scrollToBottom
+      renderBubble={props => {
+        return (
+          <Bubble
+            {...props}
+            wrapperStyle={{
+              right: {
+                backgroundColor: "#AF8EC9",
+              },
+              left: {
+                backgroundColor: "white",
+              },
+            }}
+          />
+        );
+      }}
     />
   );
 }

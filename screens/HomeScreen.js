@@ -22,6 +22,7 @@ export default function HomeScreen({ navigation }) {
   const [users, setUsers] = useState(null);
   const [loading, setLoading] = useState(true);
   const [newUser, setNewUser] =useState(null);
+ 
 
 const auth = firebase.auth();
 
@@ -44,6 +45,29 @@ const auth = firebase.auth();
 
   const { user } = useContext(AuthenticatedUserContext);
   let signedUp = {};
+
+  const getLoggedInUser = async () => {
+    await firebase
+      .firestore()
+      .collection("users")
+      .doc(user.uid)
+      .get()
+      .then((documentSnapshot) => {
+        if (documentSnapshot.exists) {
+          console.log("User Data in Profile", documentSnapshot.data());
+          console.log(
+            "Logged in User Data in Profile",
+            documentSnapshot.data()
+          );
+          // let userFullData = {};
+          loggedInUserFullData.data = documentSnapshot.data();
+          loggedInUserFullData.data.id = documentSnapshot.id;
+          console.log("this is LOGGED IN userFullData", loggedInUserFullData);
+          setloggedInUserData(loggedInUserFullData.data);
+        }
+      });
+    console.log("this is loggedin userFullData.name", loggedInUserFullData);
+  };
 
   const getUser = async () => {
     await firebase
