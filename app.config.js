@@ -20,9 +20,7 @@ export default {
       supportsTablet: true,
       usesIcloudStorage: true,
       bundleIdentifier: "com.capstone-watermelon",
-      config: {
-        googleMapsApiKey: "AIzaSyBQ6cV4y2l-2oKNiPzelf27gdC2QZxHXqQ"
-        }
+      
         
     },
     android: {
