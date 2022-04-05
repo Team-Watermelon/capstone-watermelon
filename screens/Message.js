@@ -133,7 +133,6 @@ export default function RoomScreen({ route }) {
     firebase
       .firestore()
       .collection("THREADS")
-<
       .doc(route.params.thread)
       .collection("MESSAGES")
       .add({
