@@ -62,6 +62,7 @@ const Welcome = () => {
         aboutMe: userData.aboutMe,
         city: userData.city,
         category: value,
+        pronouns: userData.pronouns
       })
       .then(() => {
         navigation.navigate("Profile");
@@ -91,8 +92,7 @@ const Welcome = () => {
           source={require("../assets/coverhands.png")}
         >
           <View style={styles.message}>
-
-            <Text style={styles.text}>Welcome to OpenArms! </Text>
+            <Text style={styles.text}>Welcome to Open! </Text>
             <Text
               style={{
                 marginTop: 20,
@@ -102,7 +102,7 @@ const Welcome = () => {
                 color: "#E8A196",
               }}
             >
-              We are here with you
+              Please complete your profile
             </Text>
           </View>
           <Text style={{ marginTop: 10, fontSize: 18, fontWeight: "bold" }}>
@@ -135,6 +135,24 @@ const Welcome = () => {
               autoCorrect={false}
               value={userData ? userData.city : ""}
               onChangeText={(txt) => setUserData({ ...userData, city: txt })}
+              style={[
+                styles.textInput,
+                {
+                  color: colors.text,
+                },
+              ]}
+            />
+          </View>
+          <View style={styles.action}>
+            <FontAwesome name="user-o" color={colors.text} size={20} />
+            <TextInput
+              placeholder="Pronouns"
+              placeholderTextColor="#666666"
+              autoCorrect={false}
+              value={userData ? userData.pronouns : ""}
+              onChangeText={(txt) =>
+                setUserData({ ...userData, pronouns: txt })
+              }
               style={[
                 styles.textInput,
                 {
@@ -198,7 +216,7 @@ const styles = StyleSheet.create({
   },
   image: {
     justifyContent: "center",
-    alignItems:"center",
+    alignItems: "center",
   },
   message: {
     alignItems: "center",
@@ -215,7 +233,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 10,
     justifyContent: "center",
-    width: 150
+    width: 150,
   },
   panel: {
     padding: 20,

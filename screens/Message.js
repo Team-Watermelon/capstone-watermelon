@@ -47,7 +47,7 @@ export default function RoomScreen({ route }) {
           console.log("THREAD OBJ DOC SNAP>>>>>>>>>>>>", documentSnapshot.data());
           let threadData = documentSnapshot.data().
           console.log('this is threadData', threadData)
-          setThreadObj(threadData);
+          setThreadObj(threadData);``
           
         }
       });
@@ -133,6 +133,7 @@ export default function RoomScreen({ route }) {
     firebase
       .firestore()
       .collection("THREADS")
+<
       .doc(route.params.thread)
       .collection("MESSAGES")
       .add({

@@ -299,7 +299,7 @@ const styles = StyleSheet.create({
     
     marginLeft: 16,
     marginRight: 100,
-    backgroundColor: "#E39AD8",
+    backgroundColor: "#9AE3D6",
     marginVertical: 0,
     // padding: 3,
     // margin: 3,
