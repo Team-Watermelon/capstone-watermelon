@@ -131,7 +131,7 @@ export default function HomeScreen( {navigation}) {
               receiverID: item.receiverID})}
           >
             <List.Item
-              title={item.senderID === user.uid ? item.receiverName : item.sender}
+              title={item.senderID === user.uid ? item.receiverName : item.senderName}
               description={item.latestMessage.text}
               titleNumberOfLines={1}
               titleStyle={styles.listTitle}

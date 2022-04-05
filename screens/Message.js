@@ -141,7 +141,8 @@ export default function RoomScreen({ route }) {
         user: {
           _id: currentUser.uid,
           email: currentUser.email,
-             avatar: currentUser.uid === route.params.receiverID ? route.params.receiverImage : route.params.senderImage 
+          //if the user sednding the message is the receiver, add the receivers photo. Otherwise, add the senders photo
+          avatar: currentUser.uid === route.params.receiverID  && route.params.receiverID !== undefined? route.params.receiverImage || "https://www.kindpng.com/picc/m/137-1370524_female-avatar-female-avatar-free-png-transparent-png.png" : route.params.senderImage || null
           // avatar: route.params.senderImage
         },
        
@@ -217,6 +218,9 @@ export default function RoomScreen({ route }) {
             wrapperStyle={{
               right: {
                 backgroundColor: "#AF8EC9",
+              },
+              left: {
+                backgroundColor: "white",
               },
             }}
           />
