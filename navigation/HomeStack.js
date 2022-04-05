@@ -82,7 +82,7 @@ const ProfileStackScreen = ({ navigation }) => {
         name="Message"
         component={Message}
         options={({ route }) => ({
-          title: route.params.thread.receiver
+          title: "Jessica"
         })}
       />
       <Stack.Screen name="AudioRecord" component={AudioRecord} 
