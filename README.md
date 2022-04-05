@@ -1,7 +1,7 @@
 Article for reference:
 https://blog.jscrambler.com/how-to-integrate-firebase-authentication-with-an-expo-app
 
-GitHub source code for reference:
+GitHub source code Boilerplate for reference:
 https://github.com/amandeepmittal/react-native-examples/tree/main/expo-firebase-auth-example
 
 installations:
