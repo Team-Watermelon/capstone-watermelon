@@ -14,6 +14,8 @@ Open is a mobile platform for women+ and partners who are experiencing fertility
 ### Tech Stack
 Open is built with React Native and Expo for the front end design. We used the Firestore database from Firebase to store users’ information and messages for real-time updates. Users’ images and audio clips were sent to Cloudinary for efficient database storage management. Firebase authentication was used for sign up and log in functions. The chat feature was built by using React Native Gifted Chat and the audio recorder and player were built by using Expo Audio.
 
+![intro](https://user-images.githubusercontent.com/81700027/161850867-0dc13dcb-e5f5-41bb-b61b-336897d1872c.png)
+
 ![open-app](https://user-images.githubusercontent.com/81700027/161848243-1b91441c-242e-477b-965d-4047193d3058.gif)
 
 Boilerplate article for how we got started:
