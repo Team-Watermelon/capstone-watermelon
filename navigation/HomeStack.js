@@ -13,7 +13,7 @@ import Map from "../screens/Map";
 import AudioRecord from "../screens/AudioRecord";
 import EditProfileScreen from "../screens/EditProfileScreen";
 import { LinearGradient } from "expo-linear-gradient";
-import Decide from "../screens/Decide"
+// import Decide from "../screens/Decide"
  import Welcome from "../screens/Welcome";
 // import AppIntro from "../screens/AppIntro";
 // import CheckLoad from "../screens/CheckLoad";
