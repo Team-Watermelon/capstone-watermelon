@@ -160,35 +160,112 @@ const PersonalPage = ({ navigation, route }) => {
               <TouchableOpacity
                 style={styles.userBtn}
                 onPress={() => {
-                  firebase
+                  let docRef = firebase
                     .firestore()
                     .collection("THREADS")
-                    .doc(`${userData.id}_${user.uid}`)
-                    .set({
-                      id: `${userData.id}_${user.uid}`,
-                      //this is setting the thread id to the userid
-                      users: [userData.id, user.uid],
-                      receiverID: userData.id,
-                      senderID: user.uid,
-                      receiverName: userData.firstName,
-                      senderName: loggedInUserData.firstName,
-                      receiverImage: userData.userImage,
-                      senderImage: loggedInUserData.userImage,
+                    .doc(`${userData.id}_${user.uid}`);
+
+                  docRef.get().then((doc) => {
+                    if (doc.exists) {
+                      doc.set({
+                          id: `${userData.id}_${user.uid}`,
+                          //this is setting the thread id to the userid
+                          users: [userData.id, user.uid],
+                          receiverID: userData.id,
+                          senderID: user.uid,
+                          receiverName: userData.firstName,
+                          senderName: loggedInUserData.firstName,
+                          receiverImage: userData.userImage,
+                          senderImage: loggedInUserData.userImage,
+                        })
+                        .then(() => {
+                          navigation.navigate("Message", {
+                            thread: `${userData.id}_${user.uid}`,
+                            receiver: userData.firstName,
+                            receiverImage: userData.userImage,
+                            sender: loggedInUserData.firstName,
+                            senderImage: loggedInUserData.userImage,
+                            receiverID: userData.id,
+                          });
+                        });
+                      console.log(
+                        "this is userImage",
+                        loggedInUserData.userImage
+                      );
+                    } 
+                    
+                    else {
+                      docRef = firebase
+                        .firestore()
+                        .collection("THREADS")
+                        .doc(`${user.uid}_${userData.id}`);
+
+                        docRef.get().then((doc) => {
+                          if (doc.exists) {
+                            console.log("this thread exists", doc.data());
+                            doc
+                              .set({
+                                id: `${user.uid}_${userData.id}`,
+                                //this is setting the thread id to the userid
+                                users: [userData.id, user.uid],
+                                receiverID: userData.id,
+                                senderID: user.uid,
+                                receiverName: userData.firstName,
+                                senderName: loggedInUserData.firstName,
+                                receiverImage: userData.userImage,
+                                senderImage: loggedInUserData.userImage,
+                              })
+                              .then(() => {
+                                navigation.navigate("Message", {
+                                  thread: `${userData.id}_${user.uid}`,
+                                  receiver: userData.firstName,
+                                  receiverImage: userData.userImage,
+                                  sender: loggedInUserData.firstName,
+                                  senderImage: loggedInUserData.userImage,
+                                  receiverID: userData.id,
+                                });
+                              });
+                            console.log(
+                              "this is userImage",
+                              loggedInUserData.userImage
+                            );
+                          } else {
+                            
+                              firebase
+                                .firestore()
+                                .collection("THREADS")
+                                .doc(`${userData.id}_${user.uid}`)
+                                .set({
+                                  id: `${userData.id}_${user.uid}`,
+                                  //this is setting the thread id to the userid
+                                  users: [userData.id, user.uid],
+                                  receiverID: userData.id,
+                                  senderID: user.uid,
+                                  receiverName: userData.firstName,
+                                  senderName: loggedInUserData.firstName,
+                                  receiverImage: userData.userImage,
+                                  senderImage: loggedInUserData.userImage,
+                                  
+                                })
+                                .then(() => {
+                                  navigation.navigate("Message", {
+                                    thread: `${userData.id}_${user.uid}`,
+                                    receiver: userData.firstName,
+                                    receiverImage: userData.userImage,
+                                    sender: loggedInUserData.firstName,
+                                    senderImage: loggedInUserData.userImage,
+                                    receiverID: userData.id
+                                  });
+                                });
+                                console.log('new thread created')
+                          }
+
+                        })
+
                       
-                    })
-                    .then(() => {
-                      navigation.navigate("Message", {
-                        thread: `${userData.id}_${user.uid}`,
-                        receiver: userData.firstName,
-                        receiverImage: userData.userImage,
-                        sender: loggedInUserData.firstName,
-                        senderImage: loggedInUserData.userImage,
-                        receiverID: userData.id
-                      });
-                    });
-                    console.log('this is userImage', loggedInUserData.userImage)
+                    }
+                  });
                 }}
-                
               >
                 <Text style={styles.userBtnTxt}>Message</Text>
               </TouchableOpacity>
