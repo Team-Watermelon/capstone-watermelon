@@ -1,5 +1,6 @@
 # About
 Open is a mobile platform for women+ and their partners who are experiencing fertility challenges and are looking for a supportive community.
+https://www.youtube.com/watch?v=Mj4dG2zV-k0
 
 ## Key Features
 1. Audio recording, so users can record their story they want to share
@@ -7,7 +8,7 @@ Open is a mobile platform for women+ and their partners who are experiencing fer
 3. In-app messaging, for when users feel like they want to connect with someone 
 
 ### Future Features
-1. Interactive map showing other active users, to show that no one is alone in this
+1. Interactive map showing other active users, to show that no one is alone in their experience 
 2. A calendar to schedule events and group sessions
 3. In-app video chatting 
 
