@@ -1,5 +1,5 @@
 # About
-Open is a mobile platform for women+ and their partners who are experiencing fertility challenges and are looking for a supportive community.
+Open is a mobile platform for women+ and their partners who are experiencing fertility challenges and are looking for a supportive community.<br>
 https://www.youtube.com/watch?v=Mj4dG2zV-k0
 
 ## Key Features
